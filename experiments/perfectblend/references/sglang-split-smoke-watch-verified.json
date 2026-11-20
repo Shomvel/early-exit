@@ -1,0 +1,27 @@
+{
+  "observed_at": "2026-11-20T06:24:26.053786+00:00",
+  "phase": "Succeeded",
+  "run_uuid": "62ffa9ed-8521-42c2-8a4d-58cb4e4fb1b0",
+  "gpu_job_id": "j-1795155158-558246",
+  "source_commit": "94bfec7df86c8cb63d30657a3f61c750cb38ca79",
+  "summary_sha256": "101414b178be44e12fe2839fdc9d53ecd3bfbfa6747b7160cc3e7fd1c8a1f3ff",
+  "nested_passed_checks": 1728,
+  "batch_sizes": [
+    1,
+    2,
+    3,
+    4,
+    8
+  ],
+  "routing": "split_skip",
+  "cache_modes": [
+    "full",
+    "serial",
+    "async"
+  ],
+  "replica_exit_code": 0,
+  "all_allocated_replicas_succeeded": true,
+  "all_padding_skips_all_bodies": true,
+  "masked_kv_concurrent_streams": 2,
+  "resource_mutations": false
+}

@@ -56,8 +56,15 @@ next decode step. A packed BF16/NHD KV writer suppresses padding stores into
 slot 0 so concurrent groups retain disjoint cache writes. The
 [runtime contract](../python/sglang/srt/early_exit/README.md) and
 [split-group GPU verification](../experiments/perfectblend/references/sglang-split-smoke-report.md)
-record its behavior and numerical controls. Its throughput evaluation has a
-separate source and run from the completed batch-one benchmark.
+record its behavior and numerical controls. The completed
+[split-group throughput pilot](../experiments/perfectblend/references/sglang-split-batch-pilot-report.md)
+has a separate source and run from the batch-one benchmark. Same-input fixed128
+EE/full throughput ratios were 0.959/0.904/0.871/0.879 for batch1/2/4/8. At batch8,
+grouped EE reached 420.55 token/s against full execution's 478.70 token/s, with
+81.0% group-capacity utilization. The historical per-request pilot's batch8
+ratio was 0.542; its different GPU/run makes this a comparison of within-run
+ratios. Grouping improves that relative result at larger batches, while cache
+repair and grouping overhead still leave EE slower than full execution.
 
 ## Execution and provenance
 

@@ -189,8 +189,15 @@ forms one no-skip batch and one common-width skip batch. Each group uses its
 smallest capacity 1/2/4/8, with original request/cache ownership restored before
 the shared suffix. The [split-group GPU smoke](references/sglang-split-smoke-report.md)
 passed full/no-skip and serial/async mixed bitwise logits/cache checks for
-batch 1/2/3/4/8, device partition/capacity checks and padding canaries. The new
-throughput pilot retains an independent source/run identity. See the
+batch 1/2/3/4/8, device partition/capacity checks and padding canaries. The completed
+[split-group throughput pilot](references/sglang-split-batch-pilot-report.md)
+measured fixed128 EE/full ratios of 0.959/0.904/0.871/0.879 at batch 1/2/4/8.
+At batch8, full reached 478.70 token/s and grouped EE reached 420.55 token/s;
+group-capacity utilization was 81.0%. Grouping improves the historical
+per-request ratio at larger batches, while the current path remains slower
+than full execution. Variable-length generation separately reports completed-row
+work and output-length changes. The pilot retains an independent source/run
+identity and does not replace the complete batch1 quality evaluation. See the
 [runtime contract](../../python/sglang/srt/early_exit/README.md) for device-only
 selection, cache backfill, padding stores and acceptance checks.
 

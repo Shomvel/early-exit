@@ -27,4 +27,4 @@
 - 完整summary：`/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-split-smoke-1120-r1/batch-smoke-summary.json`
 - [压缩明细](sglang-split-smoke-summary.json)省略逐tensor与部分逐步记录，保留完整原件路径与指纹；[终态回执](sglang-split-smoke-verified.json)绑定原始summary。
 
-同卡full/EE throughput pilot使用source`b3b8a0dde386992eb9294d3ef6e1f0644dfb0ded`。runtime、split、masked writer、batch helpers、smoke/probe与上述通过版本逐字相同，仅冻结更新后的批量评测入口。每任务16题、数学任务各8个fixed128轨迹、batch1/2/4/8；完整质量成绩见独立[batch1正式报告](sglang-full-benchmark-report.md)。
+同卡full/EE throughput pilot使用source`b3b8a0dde386992eb9294d3ef6e1f0644dfb0ded`。runtime、split、masked writer、batch helpers、smoke/probe与上述通过版本逐字相同，仅冻结更新后的批量评测入口。每任务16题、数学任务各8个fixed128轨迹、batch1/2/4/8；该运行已完成验收，固定回放EE/full吞吐比为0.959/0.904/0.871/0.879，见[分组吞吐报告](sglang-split-batch-pilot-report.md)。完整质量成绩见独立[batch1正式报告](sglang-full-benchmark-report.md)。

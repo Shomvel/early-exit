@@ -345,7 +345,7 @@
       "uuid": "baf8f059-d7e7-475d-82d6-e33fb5a30686",
       "manifest_sha256": "2ca6fcfaef7e01d4cd500d0d333d3f8e6cf539fe5d3b83b644e927f883b2f294",
       "source": "b3b8a0dde386992eb9294d3ef6e1f0644dfb0ded",
-      "phase": "Running",
+      "phase": "Succeeded",
       "routing": "split_skip",
       "gpus": 1,
       "batch_sizes": [
@@ -362,9 +362,19 @@
       "replay_examples_per_math_task": 8,
       "matched_tokens": 128,
       "complete_benchmark_results": false,
-      "scope": "New split-group throughput and selected quality pilot. Runtime/helpers match passing split smoke; outputs pending.",
+      "scope": "Completed selected split-group throughput pilot; all240 microbatches, paired GPU/trajectory/source identities, minimal group capacities and execution/token accounting verified. Complete benchmark quality is reported separately.",
       "controller_job_id": "j-1795155549-140165",
-      "job_id": "j-1795155556-263454"
+      "job_id": "j-1795155556-263454",
+      "state": "verified",
+      "status": "complete",
+      "summary_sha256": "26dc683bcdcd78dbb1f1c9209d69f72ba80054f79283940360145481f6c00f34",
+      "fixed128_pooled_ee_full_throughput_ratio": {
+        "1": 0.958805976967565,
+        "2": 0.9044455280938273,
+        "4": 0.8714279158468367,
+        "8": 0.8785205065875512
+      },
+      "paired_gpu_uuid": "d78a2a3a-8d03-d815-3068-eae65f2587a4"
     }
   ]
 }
