@@ -261,6 +261,7 @@ def main(args):
             env.update(
                 SGLANG_EARLY_EXIT_CHECKPOINT=str(args.classifier),
                 SGLANG_EARLY_EXIT_CACHE="lazy",
+                SGLANG_EARLY_EXIT_ROUTING="split_skip",
                 SGLANG_EARLY_EXIT_CHUNK=str(args.chunk),
             )
         subprocess.run(

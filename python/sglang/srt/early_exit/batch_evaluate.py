@@ -1221,6 +1221,7 @@ def main(args):
             environment.update(
                 SGLANG_EARLY_EXIT_CHECKPOINT=str(args.classifier),
                 SGLANG_EARLY_EXIT_CACHE=args.cache_policy,
+                SGLANG_EARLY_EXIT_ROUTING="split_skip",
                 SGLANG_EARLY_EXIT_FORCE="-1",
             )
         subprocess.run(
