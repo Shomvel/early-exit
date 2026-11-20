@@ -15,7 +15,7 @@ action width is a control for differential testing. These variables are
 experimental runtime controls rather than public serving API parameters.
 
 `four_width_bce_mlp_v1` checkpoints load the recall sweep's single-token,
-one-hidden-layer BCE head (1024 ReLU units, FP32). Its four sigmoid outputs
+linear or one-hidden-layer BCE head (`depth=0` or 1024 ReLU units, FP32). Its four sigmoid outputs
 predict safety independently at widths 5/6/7/11. The policy selects the longest
 width meeting the checkpoint's calibration threshold; scores are not summed.
 The original `five_class_shared_mlp_v1` format retains argmax selection.

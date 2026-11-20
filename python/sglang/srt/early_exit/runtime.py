@@ -15,11 +15,15 @@ from contextlib import contextmanager
 from pathlib import Path
 
 import torch
-from torch import nn
 
 from sglang.srt.early_exit.batch import repair_backend, validate_positions
 from sglang.srt.early_exit.conditional import ConditionalRegions
-from sglang.srt.early_exit.policy import FIVE_CLASS, FOUR_WIDTH_BCE, select_action
+from sglang.srt.early_exit.policy import (
+    FIVE_CLASS,
+    FOUR_WIDTH_BCE,
+    load_classifier,
+    select_action,
+)
 from sglang.srt.early_exit.split import (
     branch_actions,
     bucket_backend,
@@ -57,24 +61,7 @@ class EarlyExitRuntime:
             raise ValueError("early exit expects actions0/5/6/7/11 in width order")
         if config.num_hidden_layers != 64 or config.hidden_size != 5120:
             raise ValueError("early exit expects the calibrated 64-layer 27B model")
-        self.net = (
-            nn.Sequential(
-                nn.Linear(config.hidden_size, saved["width"], dtype=torch.float32),
-                nn.ReLU(),
-                nn.Dropout(0.1),
-                nn.Linear(
-                    saved["width"],
-                    4 if self.checkpoint_format == FOUR_WIDTH_BCE else 5,
-                    dtype=torch.float32,
-                ),
-            )
-            .cuda()
-            .eval()
-            .requires_grad_(False)
-        )
-        self.net.load_state_dict(
-            {k.removeprefix("net."): v for k, v in saved["state_dict"].items()}
-        )
+        self.net = load_classifier(saved, config.hidden_size).cuda()
         assert all(
             parameter.dtype == torch.float32 for parameter in self.net.parameters()
         )

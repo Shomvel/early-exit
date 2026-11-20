@@ -8,6 +8,26 @@ from experiments.perfectblend.tests.test_batch_positions import RUNTIME, runtime
 
 
 class ClassifierPolicyTest(unittest.TestCase):
+    def test_linear_and_mlp_checkpoint_loading_preserves_logits(self):
+        for depth, checkpoint_format, outputs in (
+            (0, RUNTIME.FOUR_WIDTH_BCE, 4),
+            (1, RUNTIME.FOUR_WIDTH_BCE, 4),
+            (1, RUNTIME.FIVE_CLASS, 5),
+        ):
+            layers = [] if depth == 0 else [
+                torch.nn.Linear(8, 3), torch.nn.ReLU(), torch.nn.Dropout(0.1)
+            ]
+            layers.append(torch.nn.Linear(3 if depth else 8, outputs))
+            original = torch.nn.Sequential(*layers).eval()
+            saved = dict(
+                format=checkpoint_format, depth=depth, width=3 if depth else 0,
+                state_dict={"net." + k: v for k, v in original.state_dict().items()},
+            )
+            restored = RUNTIME.load_classifier(saved, 8)
+            inputs = torch.randn(7, 8)
+            self.assertTrue(torch.equal(original(inputs), restored(inputs)))
+            self.assertTrue(all(p.dtype == torch.float32 and not p.requires_grad for p in restored.parameters()))
+
     def test_bce_matches_independent_width_decisions(self):
         generator = torch.Generator().manual_seed(27)
         logits = torch.randn(1000, 4, generator=generator) * 4
