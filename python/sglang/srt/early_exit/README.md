@@ -3,8 +3,9 @@
 The experimental path targets the calibrated Qwen3.5-family 27B checkpoint:
 64 layers, width 5120, a source after layer32, actions `[0,5,6,7,11]`. The
 classifier stays FP32 and the frozen language model stays BF16. Currently
-the runtime requires a Hopper GPU, CUDA12.9, PyTorch2.11, TP1/PP1, batch1,
-the Triton attention/GDN backends, and a decode CUDA graph for bs1.
+the runtime requires a Hopper GPU, CUDA12.9, PyTorch2.11, TP1/PP1,
+the Triton attention/GDN backends, and a decode CUDA graph. The experimental
+batch path supports ordinary decode with one to eight requests.
 
 `SGLANG_EARLY_EXIT_CHECKPOINT=/shared/classifier-multiclass.pt` enables the
 path. `SGLANG_EARLY_EXIT_CACHE=async` overlaps cache repair with the suffix;
@@ -20,6 +21,27 @@ repair branch starts at the saved boundary and evaluates the skipped prefix,
 updating its full-attention KV and GDN convolution/recurrent state. Main and
 repair predicates are complementary for four fixed layer segments. This
 executes each middle layer exactly once across the two branches.
+
+Each request has its own GPU action and eight CUDA IF regions. Layers1–32
+and layers44–64 stay batched; the middle layers execute as static single-row
+bodies, with row views of the request's KV/GDN indices and private attention
+scratch for each row and stream. KV index pointers retain global offsets
+into the shared flat index array; GDN query offsets are rebased for the
+one-token body. A graph-padding row has action `-1`, so both its main and
+repair middle bodies stay inactive. Changing batch size selects another
+captured graph; decisions never return to Python during replay.
+
+The batch-eight graph has one additional batched middle region. The GPU enables
+it only when all eight rows select action0; it disables the per-row regions for
+that replay. This preserves the full model's GEMM shapes for the common all-no-skip
+case. Mixed actions or any padding row retain the individual conditional bodies.
+The raw classifier actions and their histograms remain separate from these
+execution predicates.
+
+The individual middle regions replace batched GEMMs with per-row GEMVs and
+create eight conditional regions per captured row. They establish independent
+routing for small batches; batching efficiency and graph conversion cost
+require measurement before reporting serving acceleration.
 
 CUDA conditional graph nodes read the device action directly. Capture-time
 markers delimit the regions; the CUDA helper clones the captured graph,
@@ -61,3 +83,23 @@ and Triton kernels in isolated processes. `--diagnose` runs these operators
 and a one-token model replay under Compute Sanitizer for fault localization.
 Small CUDA probes establish graph behavior; complete benchmark claims require
 the evaluator's full question counts and successful managed-run receipts.
+
+For small-batch correctness, run:
+
+```sh
+RUN_DIR=/shared/batch-smoke python -m sglang.srt.early_exit.batch_smoke \
+  --model /shared/model --classifier /shared/classifier-multiclass.pt \
+  --batch-sizes 1 2 3 4 8 --max-batch-size 8 --steps 16
+```
+
+This entrypoint first checks four independent vector actions and inactive
+padding in a synthetic CUDA graph, then starts full/serial/async ModelRunner
+processes on the same GPU. Each row rotates through actions0/5/6/7/11 while
+following the full model's input trajectory. It verifies exact per-row
+histograms and segment counts, serial/async bitwise cache/logit equality,
+and graph padding isolation (batch3 uses graph4). Full-batched execution
+and single-row middle operations may round BF16 GEMM/GEMV values differently.
+The report preserves each KV/GDN tensor's absolute and relative errors and
+uses a fixed absolute tolerance0.02 with relative tolerance0 for this parity
+control, plus exact generated tokens. A failed control writes its report and
+exits with an error. These smoke timings are correctness diagnostics.

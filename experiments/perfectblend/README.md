@@ -155,6 +155,24 @@ The 32-GPU SGLang evaluation is running with batch one and the validated runtime
 startup attempt. Multi-request runtime and throughput experiments have separate
 sources and results; their development does not change the active evaluation.
 
+The separate small-batch request evaluator uses real, different-length prompts:
+
+```sh
+PYTHONPATH=python RUN_DIR=/shared/batch-pilot python -m sglang.srt.early_exit.batch_evaluate \
+  --model /shared/model --classifier /shared/classifier-multiclass.pt \
+  --data /shared/data --batch-sizes 1 2 4 8 \
+  --examples-per-task 16 --replay-examples-per-task 8 --matched-tokens 128
+```
+
+Run `sglang.srt.early_exit.batch_smoke` first to verify the runtime. The request
+evaluator runs full and early exit in separate processes on the same GPU. It
+handles per-request EOS and generation limits, scores MMLU choices, and records
+each microbatch's elapsed time once. Effective tokens, finished-row work and
+CUDA graph padding are separate counters. All batch sizes and modes replay the
+same full batch-one 128-token trajectories for fixed-input timing. This entrypoint
+is a throughput pilot and always reports `complete_benchmarks=false`. The full
+20,361-question evaluation remains a separate run.
+
 After a successful completed native run, collect small receipts and render the comparison:
 
 ```bash

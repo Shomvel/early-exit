@@ -1,0 +1,186 @@
+{
+  "observed_at": "2026-11-20T04:42:27.730276+00:00",
+  "run_uuid": "aa231bfe-365a-455a-aa65-9ce662ff1d4e",
+  "job_id": "j-1795149369-211384",
+  "controller_job_id": "j-1795149364-3313",
+  "source_commit": "059c6500c6428f183b58102c8ad513bb409c3e0b",
+  "skill_commit": "b7aa8f6be408706b9a98b96c0de4060520d2e19c",
+  "phase": "Succeeded",
+  "replica_exit_code": 0,
+  "summary_passed": true,
+  "complete_benchmarks": false,
+  "summary_sha256": "ca7201865a4ea320dd4d585470b47df8a6e5915d4c83d4bd5df0e646d40ea42f",
+  "gpu_uuid": "8bef12ea-bc7c-4145-d1f2-9c055bd4f11e",
+  "paired_identity_equal": true,
+  "paired_trajectory_sha256_equal": true,
+  "metrics": {
+    "1": {
+      "gsm8k": {
+        "count": 2,
+        "correct": {
+          "full": 2,
+          "early_exit": 2
+        },
+        "effective_decode_tokens_s": {
+          "full": 65.21411199821866,
+          "early_exit": 65.57008394861225
+        },
+        "throughput_vs_batch1": {
+          "full": 1.0,
+          "early_exit": 1.0
+        },
+        "e2e_speedup": 0.8754615290613459,
+        "output_tokens": {
+          "full": 582,
+          "early_exit": 674
+        },
+        "completed_row_waste_tokens": {
+          "full": 0,
+          "early_exit": 0
+        }
+      },
+      "math": {
+        "count": 2,
+        "correct": {
+          "full": 2,
+          "early_exit": 2
+        },
+        "effective_decode_tokens_s": {
+          "full": 64.92776819349356,
+          "early_exit": 65.62365479927166
+        },
+        "throughput_vs_batch1": {
+          "full": 1.0,
+          "early_exit": 1.0
+        },
+        "e2e_speedup": 0.9257703250432396,
+        "output_tokens": {
+          "full": 1135,
+          "early_exit": 1244
+        },
+        "completed_row_waste_tokens": {
+          "full": 0,
+          "early_exit": 0
+        }
+      },
+      "mmlu": {
+        "count": 2,
+        "correct": {
+          "full": 2,
+          "early_exit": 2
+        },
+        "effective_decode_tokens_s": {
+          "full": 63.52788074286801,
+          "early_exit": 62.808396635515024
+        },
+        "throughput_vs_batch1": {
+          "full": 1.0,
+          "early_exit": 1.0
+        },
+        "e2e_speedup": 1.8391071001294146,
+        "output_tokens": {
+          "full": 2,
+          "early_exit": 2
+        },
+        "completed_row_waste_tokens": {
+          "full": 0,
+          "early_exit": 0
+        }
+      }
+    },
+    "2": {
+      "gsm8k": {
+        "count": 2,
+        "correct": {
+          "full": 2,
+          "early_exit": 2
+        },
+        "effective_decode_tokens_s": {
+          "full": 103.474367644572,
+          "early_exit": 105.09694042903989
+        },
+        "throughput_vs_batch1": {
+          "full": 1.58668675343457,
+          "early_exit": 1.6028184516494615
+        },
+        "e2e_speedup": 0.8885930364974772,
+        "output_tokens": {
+          "full": 582,
+          "early_exit": 674
+        },
+        "completed_row_waste_tokens": {
+          "full": 132,
+          "early_exit": 42
+        }
+      },
+      "math": {
+        "count": 2,
+        "correct": {
+          "full": 2,
+          "early_exit": 2
+        },
+        "effective_decode_tokens_s": {
+          "full": 102.90026514369721,
+          "early_exit": 85.9069426868377
+        },
+        "throughput_vs_batch1": {
+          "full": 1.5848421716428085,
+          "early_exit": 1.3090850082886751
+        },
+        "e2e_speedup": 0.7678592803276629,
+        "output_tokens": {
+          "full": 1135,
+          "early_exit": 1243
+        },
+        "completed_row_waste_tokens": {
+          "full": 259,
+          "early_exit": 377
+        }
+      },
+      "mmlu": {
+        "count": 2,
+        "correct": {
+          "full": 2,
+          "early_exit": 2
+        },
+        "effective_decode_tokens_s": {
+          "full": 122.81476121711928,
+          "early_exit": 105.59428512985123
+        },
+        "throughput_vs_batch1": {
+          "full": 1.933241905459079,
+          "early_exit": 1.681212875766087
+        },
+        "e2e_speedup": 3.2383841952310344,
+        "output_tokens": {
+          "full": 2,
+          "early_exit": 2
+        },
+        "completed_row_waste_tokens": {
+          "full": 0,
+          "early_exit": 0
+        }
+      }
+    }
+  },
+  "limitations": [
+    "This true-request E2E validates sizes1/2 only, independently of failed bs8 smoke.",
+    "Two questions per benchmark, fixed full-before-early-exit order, not final accuracy or speed results.",
+    "Replay has one request per task even under nominal batch2.",
+    "Static microbatch retains completed rows and counts their extra work."
+  ],
+  "resource_mutations": false,
+  "artifact_sha256": {
+    "pb-sglang-batch-eval-smoke-1120-r1-batch-evaluation-summary.json": "ca7201865a4ea320dd4d585470b47df8a6e5915d4c83d4bd5df0e646d40ea42f",
+    "pb-sglang-batch-eval-smoke-1120-r1-prepare-job.json": "266a2bed59ced5e6d77bafdfec03278c419e1b4f2fb4f34edcecfbdcdb7edea0",
+    "pb-sglang-batch-eval-smoke-1120-r1-prepare-replicas.json": "f80e9217af6acb4c2b74f6b77ba3ad6b7af68090d974d2e70af7b131fc473329",
+    "pb-sglang-batch-eval-smoke-1120-r1-submit-job.json": "0221bc10ca4f9ac802230162e1e8ba3aba992039fc18703a74b4234247c9bd41",
+    "pb-sglang-batch-eval-smoke-1120-r1-submit-replicas.json": "bde7e6aee5c3806f3fd97066fa0f93a53af2bda42cc647933ce73a89c34e09bb",
+    "pb-sglang-batch-eval-smoke-1120-r1-submit-logs.json": "2fbe6ee30f96a633822c6ce735af01f28beb7b7bed651a753b72b41a7349d05c",
+    "pb-sglang-batch-eval-smoke-1120-r1-gpu-job.json": "ffcb499cc11f8c52e9c162e88c6f84fe5f1a25c1e21f7259a636566fec98a4e6",
+    "pb-sglang-batch-eval-smoke-1120-r1-gpu-replicas.json": "1a2c7693c62b5700cc4fbb99581e8165f9f313feeb0e9fbe96d2fde1420dc8a3",
+    "pb-sglang-batch-eval-smoke-1120-r1-gpu-logs.json": "011a6866da0899a207d95581b503b3517b3038567e48a9ebd3a655c1794605f9",
+    "pb-sglang-batch-eval-smoke-1120-r1-verified.json": "04a4d4b861df5d557d9e4c3feb0661a0af3962a877b8e67a731b4329f459bf8b",
+    "pb-sglang-batch-eval-smoke-1120-r1-final.json": "58e8e6e228f407aed7e372f88fd9fb068839f4f146d7f2245255afef2467f88b"
+  }
+}

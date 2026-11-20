@@ -1,0 +1,57 @@
+{
+  "observed_at": "2026-11-20T04:32:44.615370+00:00",
+  "run_uuid": "aad2a13f-23e9-4997-a028-a5c6ed3a4dff",
+  "job_id": "j-1795148853-738012",
+  "controller_job_id": "j-1795148847-299086",
+  "source_commit": "059c6500c6428f183b58102c8ad513bb409c3e0b",
+  "skill_commit": "b7aa8f6be408706b9a98b96c0de4060520d2e19c",
+  "gpu_phase": "Failed",
+  "replica_phase": "Failed",
+  "controller_phase": "Failed",
+  "node": "lg-cmc-gpu-1200.host.lg.shzhisuan.com",
+  "failure_marker_local": "2026-11-20T12:31:15+08:00",
+  "failure_marker_timestamp_ns": "1795149075612795591",
+  "failure": "No-skip numerical parity at batch 8 exceeds unchanged atol0.02 / rtol0: full vs no-skip logits max_abs0.125; cache max_abs0.0625. Both serial and async share the discrepancy.",
+  "failed_checks": {
+    "8": {
+      "serial_no_skip_logits": {
+        "passed": false,
+        "exact": false,
+        "max_abs": 0.125
+      },
+      "serial_no_skip_cache": {
+        "passed": false,
+        "exact": false,
+        "max_abs": 0.0625
+      },
+      "async_no_skip_logits": {
+        "passed": false,
+        "exact": false,
+        "max_abs": 0.125
+      },
+      "async_no_skip_cache": {
+        "passed": false,
+        "exact": false,
+        "max_abs": 0.0625
+      }
+    }
+  },
+  "passed_checks_summary": [
+    "All full,serial,async workers completed sizes1,2,3,4,8 after successful graph capture.",
+    "Sizes1,2,3,4: full/no-skip logits and cache bitwise equal.",
+    "All sizes1,2,3,4,8: serial/async mixed logits and KV/GDN caches bitwise equal.",
+    "All sizes and modes: no-skip tokens, reference/mixed/learned per-row routes and padding checks passed."
+  ],
+  "success_claim": false,
+  "actions": "Read only; no resubmission or resource mutation; no changes to atol/rtol or source.",
+  "artifact_sha256": {
+    "pb-sglang-batch-smoke-1120-r2-gpu-job.json": "3d230c2fd90e27c78e450c25ef5d891bcb07185e8f243d48fa4c15343781dcb0",
+    "pb-sglang-batch-smoke-1120-r2-gpu-replicas.json": "70ff9fa6fde2bbb784883045c1296d857d296fdb7d9a1450b03b0a03161d9535",
+    "pb-sglang-batch-smoke-1120-r2-gpu-logs.json": "895923113cbf8a1dc71d8f42f95bcb1353a3f62e00c0cfa5b404d5acdaf84819",
+    "pb-sglang-batch-smoke-1120-r2-submit-job.json": "13513346007fc00f8b130f219d37fb00ef1c9ce6223b8a29744ec96ca246e504",
+    "pb-sglang-batch-smoke-1120-r2-submit-replicas.json": "cba3cfbb1e5ae39a57f7f69781e16d4ef006620d1800727c797f9fb92f9d167c",
+    "pb-sglang-batch-smoke-1120-r2-submit-logs.json": "05612d1efaeaa75bc816559c3828c9a39177e1858d97817ea9a16e04060e7bc0",
+    "pb-sglang-batch-smoke-1120-r2-final.json": "cac56f091b02ae7a9c3b685ecca03fe258227f7c1d12ebc006b99686ad6a0375",
+    "pb-sglang-batch-smoke-1120-r2-failed-checks-from-log.json": "a8129b92dd9c6c2b79f1073df6d65337f2ec69c9d6bb43534d6b053ea03f1bff"
+  }
+}

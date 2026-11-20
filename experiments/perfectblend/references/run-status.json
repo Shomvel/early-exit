@@ -214,9 +214,9 @@
       "resume_manifest_sha256": "12b056a8dbfb300eecdf008d0fe9a2f35a4806a1ee1a554d19786f2f77939ed1",
       "complete_benchmark_results": false,
       "last_observation": {
-        "observed_at": "2026-11-20T04:17:41.490669+00:00",
-        "full_at_least": 8280,
-        "early_exit_at_least": 0,
+        "observed_at": "2026-11-20T04:54:27.850695+00:00",
+        "full_at_least": 20090,
+        "early_exit_at_least": 480,
         "new_full_ranks_seen": [
           0,
           1,
@@ -253,6 +253,65 @@
         ],
         "first_error": null
       }
+    },
+    {
+      "stage": "sglang-batch-smoke-r2",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-batch-smoke-1120-r2",
+      "uuid": "aad2a13f-23e9-4997-a028-a5c6ed3a4dff",
+      "job_id": "j-1795148853-738012",
+      "phase": "Failed",
+      "source": "059c6500c6428f183b58102c8ad513bb409c3e0b",
+      "complete_benchmark_results": false,
+      "passed_subcases": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "failure": "Batch8 no-skip logits max_abs0.125 and cache0.0625 exceed fixed atol0.02; all serial/async mixed-route and padding checks were bitwise exact. A batched-middle repair is being validated separately from the 32-GPU benchmark."
+    },
+    {
+      "stage": "sglang-batch-eval-e2e",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-batch-eval-smoke-1120-r1",
+      "uuid": "aa231bfe-365a-455a-aa65-9ce662ff1d4e",
+      "job_id": "j-1795149369-211384",
+      "controller_job_id": "j-1795149364-3313",
+      "phase": "Succeeded",
+      "state": "verified",
+      "source": "059c6500c6428f183b58102c8ad513bb409c3e0b",
+      "batch_sizes": [
+        1,
+        2
+      ],
+      "selected_counts": {
+        "gsm8k": 2,
+        "math": 2,
+        "mmlu": 2
+      },
+      "summary_sha256": "ca7201865a4ea320dd4d585470b47df8a6e5915d4c83d4bd5df0e646d40ea42f",
+      "complete_benchmark_results": false,
+      "scope": "Real-request entrypoint E2E; fixed replay selects one request per task and cannot establish batch2 replay throughput."
+    },
+    {
+      "stage": "sglang-batch-runtime",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-batch-smoke-1120-r3",
+      "uuid": "86aadba5-14c4-4398-b939-cf443e8d042c",
+      "job_id": "j-1795150007-691586",
+      "controller_job_id": "j-1795150000-390014",
+      "phase": "Succeeded",
+      "state": "verified",
+      "source": "4adba5efe68d04426bad125f0e1c1a8a57f8557c",
+      "batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        8
+      ],
+      "steps": 16,
+      "summary_sha256": "2ad2ec6ebe1f3050578d44a84bcaa5d6c688559bf7780f43a6365f3d747d67ea",
+      "complete_benchmark_results": false,
+      "scope": "Full/no-skip logits and all KV/GDN states bitwise; serial/async mixed routes bitwise; exact route, padding and exclusive batch8 no-skip branch counters."
     }
   ]
 }
