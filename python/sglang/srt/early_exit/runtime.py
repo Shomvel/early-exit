@@ -19,6 +19,7 @@ from torch import nn
 
 from sglang.srt.early_exit.batch import repair_backend, validate_positions
 from sglang.srt.early_exit.conditional import ConditionalRegions
+from sglang.srt.early_exit.policy import FIVE_CLASS, FOUR_WIDTH_BCE, select_action
 from sglang.srt.early_exit.split import (
     branch_actions,
     bucket_backend,
@@ -43,14 +44,17 @@ class EarlyExitRuntime:
     def __init__(self, checkpoint, config):
         path = Path(checkpoint)
         saved = torch.load(path, map_location="cpu", weights_only=True)
-        if saved.get("format") != "five_class_shared_mlp_v1":
+        self.checkpoint_format = saved.get("format")
+        if self.checkpoint_format not in (FIVE_CLASS, FOUR_WIDTH_BCE):
             raise ValueError(
-                "early exit requires a five_class_shared_mlp_v1 checkpoint"
+                "early exit requires a five_class_shared_mlp_v1 or four_width_bce_mlp_v1 checkpoint"
             )
         self.source = saved["source"]  # Count of executed layers, one-based.
         self.widths = tuple(saved["skips"])
         if self.source != 32 or self.widths != (5, 6, 7, 11):
             raise ValueError("this runtime supports source32 and widths5/6/7/11")
+        if tuple(saved["actions"]) != (0, *self.widths):
+            raise ValueError("early exit expects actions0/5/6/7/11 in width order")
         if config.num_hidden_layers != 64 or config.hidden_size != 5120:
             raise ValueError("early exit expects the calibrated 64-layer 27B model")
         self.net = (
@@ -58,7 +62,11 @@ class EarlyExitRuntime:
                 nn.Linear(config.hidden_size, saved["width"], dtype=torch.float32),
                 nn.ReLU(),
                 nn.Dropout(0.1),
-                nn.Linear(saved["width"], 5, dtype=torch.float32),
+                nn.Linear(
+                    saved["width"],
+                    4 if self.checkpoint_format == FOUR_WIDTH_BCE else 5,
+                    dtype=torch.float32,
+                ),
             )
             .cuda()
             .eval()
@@ -151,9 +159,9 @@ class EarlyExitRuntime:
         value = value * torch.rsqrt(
             value.square().mean(-1, keepdim=True).clamp_min(1e-12)
         )
-        probabilities = self.net(value).softmax(-1)
-        confidence, index = probabilities.max(-1)
-        selected = torch.where(confidence >= self.threshold, self.actions[index], 0)
+        selected = select_action(
+            self.net(value), self.actions, self.threshold, self.checkpoint_format
+        )
         size = hidden.shape[0]
         chosen = torch.where(self.force[:size] >= 0, self.force[:size], selected)
         self.proposed_action[:size].copy_(torch.where(valid, chosen, -1))

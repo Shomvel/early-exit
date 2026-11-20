@@ -43,6 +43,7 @@ def batch(size, mrope=None):
 def runtime():
     result = RUNTIME.EarlyExitRuntime.__new__(RUNTIME.EarlyExitRuntime)
     result.source, result.widths = 32, (5, 6, 7, 11)
+    result.checkpoint_format = RUNTIME.FIVE_CLASS
     result.max_batch_size, result.building_graph, result.mode = 8, True, "serial"
     result.states, result.scratch = {}, {}
     result.lazy, result.oracle = None, False

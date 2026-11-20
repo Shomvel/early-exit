@@ -14,6 +14,13 @@ path. `SGLANG_EARLY_EXIT_CACHE=async` overlaps cache repair with the suffix;
 action width is a control for differential testing. These variables are
 experimental runtime controls rather than public serving API parameters.
 
+`four_width_bce_mlp_v1` checkpoints load the recall sweep's single-token,
+one-hidden-layer BCE head (1024 ReLU units, FP32). Its four sigmoid outputs
+predict safety independently at widths 5/6/7/11. The policy selects the longest
+width meeting the checkpoint's calibration threshold; scores are not summed.
+The original `five_class_shared_mlp_v1` format retains argmax selection.
+Worker receipts record the classifier format, threshold and checkpoint hash.
+
 At the source boundary the GPU computes the action and saves the hidden
 and residual tensors. The main branch bypasses the selected prefix of
 layers33–43 and runs the remaining middle layers and layers 44–64. The

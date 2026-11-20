@@ -784,6 +784,7 @@ def worker(args):
         cache_policy=runtime.mode if runtime else None,
         graph_execution=graph_counts,
         threshold=runtime.threshold if runtime else None,
+        classifier_format=runtime.checkpoint_format if runtime else None,
         converted_regions=runtime.converted if runtime else None,
         server_args={
             key: getattr(raw.server_args, key)
