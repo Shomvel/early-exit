@@ -33,7 +33,8 @@ class Plan:
                 raise AssertionError("conditional marker is not paired")
             self.open = None
 
-    def convert(self, graph, action, widths, action_indices=None):
+    def convert(self, graph, action, widths, action_indices=None, kinds=None):
+        assert not any(kinds or [])
         if set(self.layers) != set(range(len(widths))):
             raise AssertionError("IF predicates do not match captured markers")
         self.selected = []

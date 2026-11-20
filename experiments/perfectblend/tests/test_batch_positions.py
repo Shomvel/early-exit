@@ -45,6 +45,7 @@ def runtime():
     result.source, result.widths = 32, (5, 6, 7, 11)
     result.max_batch_size, result.building_graph, result.mode = 8, True, "serial"
     result.states, result.scratch = {}, {}
+    result.lazy, result.oracle = None, False
     result.repair_stream = Stream()
     result.regions = types.SimpleNamespace(marker=lambda _: None)
     result.executed = torch.zeros(8, dtype=torch.int64)

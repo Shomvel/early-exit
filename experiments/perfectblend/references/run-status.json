@@ -375,6 +375,22 @@
         "8": 0.8785205065875512
       },
       "paired_gpu_uuid": "d78a2a3a-8d03-d815-3068-eae65f2587a4"
+    },
+    {
+      "stage": "sglang-lazy-prefill-smoke-preflight",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-lazy-smoke-1120-r1",
+      "uuid": "960db3b5-4a2d-41ae-ad14-8d7e797e9bf2",
+      "source": "ad010463dcdfe2c538264ba97f7b38cbb725d9e2",
+      "job_id": null,
+      "prepare_controller_job_id": "j-1795160533-497519",
+      "submit_controller_job_id": "j-1795161090-227680",
+      "state": "blocked_before_gpu_submit",
+      "phase": null,
+      "complete_benchmark_results": false,
+      "gpu_numeric_validation": false,
+      "failure": "GetJob scanstatus permission denied with local and existing remote credentials; submit controller read preflight exit1 before training submit",
+      "report": "lazy-prefill-status.md",
+      "evidence": "lazy-prefill-preflight-failed.json"
     }
   ]
 }

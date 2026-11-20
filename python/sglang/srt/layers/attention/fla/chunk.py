@@ -77,6 +77,7 @@ def chunk_gated_delta_rule_fwd(
         g=g,
         scale=scale,
         cu_seqlens=cu_seqlens,
+        chunk_indices=chunk_indices,
     )
     if SUPPRESS_LEVEL < 3:
         return g, o, A, None, h, None

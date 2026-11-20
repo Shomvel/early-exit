@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// Turn marked, captured PyTorch layer regions into CUDA IF body graphs.
+// Turn marked, captured PyTorch layer regions into CUDA IF/WHILE body graphs.
 #include <algorithm>
 #include <cstdint>
 #include <cuda.h>
@@ -106,7 +106,7 @@ struct OwnedGraph {
 
 extern "C" int ee_convert(uint64_t graph_ptr, uint64_t action_ptr,
                           const int *widths, const int *action_indices,
-                          int groups, int *moved) {
+                          const int *kinds, int groups, int *moved) {
   try {
     auto graph = reinterpret_cast<cudaGraph_t>(graph_ptr);
     const int *action = reinterpret_cast<const int *>(action_ptr);
@@ -202,7 +202,7 @@ extern "C" int ee_convert(uint64_t graph_ptr, uint64_t action_ptr,
       cudaGraphNodeParams cp{};
       cp.type = cudaGraphNodeTypeConditional;
       cp.conditional.handle = handle;
-      cp.conditional.type = cudaGraphCondTypeIf;
+      cp.conditional.type = kinds[group] ? cudaGraphCondTypeWhile : cudaGraphCondTypeIf;
       cp.conditional.size = 1;
       Node conditional;
       check(cudaGraphAddNode(&conditional, graph, &setter, 1, &cp));
@@ -210,6 +210,12 @@ extern "C" int ee_convert(uint64_t graph_ptr, uint64_t action_ptr,
       Node child;
       check(cudaGraphAddChildGraphNode(&child, body, nullptr, 0,
                                        copies[group]->graph));
+      if (kinds[group]) {
+        // The captured body updates its predicate on device. Refresh the
+        // conditional handle after each iteration, including the last one.
+        Node loop_setter;
+        check(cudaGraphAddKernelNode(&loop_setter, body, &child, 1, &kp));
+      }
       for (Node n : region)
         check(cudaGraphDestroyNode(n));
       // The closing marker rejoins the parent only after the selected body.

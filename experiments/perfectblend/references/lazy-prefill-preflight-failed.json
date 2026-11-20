@@ -1,0 +1,29 @@
+{
+  "observed_at": "2026-11-20T07:53:43.388633+00:00",
+  "run_uuid": "960db3b5-4a2d-41ae-ad14-8d7e797e9bf2",
+  "source_commit": "ad010463dcdfe2c538264ba97f7b38cbb725d9e2",
+  "prepare_controller": "j-1795160533-497519",
+  "prepare_replica_phase": "Succeeded",
+  "submit_controller": "j-1795161090-227680",
+  "submit_replica_phase": "Failed",
+  "submit_runner_exit_code": 1,
+  "failure_stage": "GetJob read permission preflight before training submit",
+  "platform_code": 101,
+  "platform_permission": "scanstatus",
+  "read_preflight_pass_marker_present": false,
+  "training_submitted_marker_present": false,
+  "gpu_job_id": null,
+  "gpu_create_reached": false,
+  "preflight_check_line": 73,
+  "preflight_pass_marker_line": 74,
+  "training_submit_line": 75,
+  "controller_script_sha256": "81b14b92807ad5aae733e95b6f1413e2af903a5e45c417e1de31d0e1c4f71beb",
+  "resource_mutations": false,
+  "evidence": {
+    "lazy-smoke-r1-watch-prepare-job.json": "07fae8e93b246eaa1098a6d9afb09f243ffda5178befa1f5d2694aca79d3d0e4",
+    "lazy-smoke-r1-watch-prepare-logs.json": "3122c7818a32ae11a71927f4d8c54511d0365ac0c5cff9dc1de8dd4f25086f49",
+    "lazy-smoke-r1-watch-prepare-replicas.json": "9fbc4f3394d4eee0141e356c3edae81e4b701a242f52f6475aed2911633aa8f1",
+    "lazy-smoke-r1-watch-submit-logs.json": "427c72ea1e415166ad37de4a23c158c6d9129e9234212a3c2a2e76b6d3d6922b",
+    "lazy-smoke-r1-watch-submit-replicas.json": "800d863df83e968c6028027f1ae09130a9069fcfc8860b3c4ce71423e1412a16"
+  }
+}

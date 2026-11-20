@@ -74,8 +74,8 @@ class EarlyExitRuntime:
             p["threshold"] for p in saved["policies"] if p["goal"] == 0.99
         )
         self.mode = os.environ.get("SGLANG_EARLY_EXIT_CACHE", "async")
-        if self.mode not in ("async", "serial"):
-            raise ValueError("SGLANG_EARLY_EXIT_CACHE must be async or serial")
+        if self.mode not in ("async", "serial", "lazy"):
+            raise ValueError("SGLANG_EARLY_EXIT_CACHE must be async, serial or lazy")
         self.regions = ConditionalRegions()
         self.routing = "split_skip"
         self.max_batch_size = 8
@@ -88,7 +88,7 @@ class EarlyExitRuntime:
             (2, self.max_batch_size), -1, dtype=torch.int64, device="cuda"
         )
         self.branch_actions = torch.full(
-            (12 * len(capacities(self.max_batch_size)),),
+            (12 * len(capacities(self.max_batch_size)) + 4 * self.max_batch_size,),
             -1,
             dtype=torch.int32,
             device="cuda",
@@ -124,7 +124,15 @@ class EarlyExitRuntime:
         self.capture_batch_size = None
         self.converted = []
         self.building_graph = False
+        self.oracle = False  # Test-only eager scheduling; never used for timing.
         self.checkpoint_sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
+        self.lazy = None
+        if self.mode == "lazy":
+            from sglang.srt.early_exit.lazy import DeferredCache
+
+            self.lazy = DeferredCache(
+                self, int(os.environ.get("SGLANG_EARLY_EXIT_CHUNK", "16"))
+            )
 
     @classmethod
     def from_environment(cls, config, pp_group):
@@ -179,7 +187,7 @@ class EarlyExitRuntime:
         )
 
     def validate_decode(self, batch, num_tokens, positions):
-        if not self.building_graph:
+        if not self.building_graph and not self.oracle:
             raise RuntimeError(
                 "early exit decode requires a captured CUDA graph; eager fallback is unsupported"
             )
@@ -208,6 +216,8 @@ class EarlyExitRuntime:
         )
         self.select(hidden, residual, valid)
         self.capture_batch_size = size
+        if self.lazy is not None:
+            self.lazy.prepare(model, hidden, residual, positions, batch, backend)
         if size not in self.states:
             self.states[size] = [
                 (torch.empty_like(hidden), torch.empty_like(residual)) for _ in range(3)
@@ -225,7 +235,7 @@ class EarlyExitRuntime:
                 subbatch = bucket_batch(packed, capacity)
                 subscratch = self.scratch.setdefault((size, group, "splits"), {})
                 subbackend = bucket_backend(grouped_backend, subbatch, subscratch)
-                if group == 1:
+                if group == 1 and self.lazy is None:
                     repair_scratch = self.scratch.setdefault(
                         (size, capacity, "repair"), {}
                     )
@@ -236,30 +246,33 @@ class EarlyExitRuntime:
                 group_backends.append((subbackend, repair))
             batches.append(group_batches)
             backends.append(group_backends)
-            for state in (
-                (no_skip_state,) if group == 0 else (skip_state, repair_state)
-            ):
+            group_states = (no_skip_state,) if group == 0 else (skip_state,)
+            if group == 1 and self.lazy is None:
+                group_states += (repair_state,)
+            for state in group_states:
                 state[0].copy_(gather_rows(hidden, indices))
                 state[1].copy_(gather_rows(residual, indices))
         current = torch.cuda.current_stream()
-        self.repair_stream.wait_stream(current)
+        if self.lazy is None:
+            self.repair_stream.wait_stream(current)
         asynchronous = self.mode == "async" and torch.cuda.is_current_stream_capturing()
-        with torch.cuda.stream(self.repair_stream):
-            for bucket_index, (subbatch, subpositions) in enumerate(batches[1]):
-                with forward_context(
-                    ForwardContext(attn_backend=backends[1][bucket_index][1])
-                ):
-                    self._segments(
-                        model,
-                        repair_state,
-                        subpositions,
-                        subbatch,
-                        group=1,
-                        bucket_index=bucket_index,
-                        repair=True,
-                    )
-        if not asynchronous:
-            current.wait_stream(self.repair_stream)
+        if self.lazy is None:
+            with torch.cuda.stream(self.repair_stream):
+                for bucket_index, (subbatch, subpositions) in enumerate(batches[1]):
+                    with forward_context(
+                        ForwardContext(attn_backend=backends[1][bucket_index][1])
+                    ):
+                        self._segments(
+                            model,
+                            repair_state,
+                            subpositions,
+                            subbatch,
+                            group=1,
+                            bucket_index=bucket_index,
+                            repair=True,
+                        )
+            if not asynchronous:
+                current.wait_stream(self.repair_stream)
         for group, state in enumerate((no_skip_state, skip_state)):
             for bucket_index, (subbatch, subpositions) in enumerate(batches[group]):
                 with forward_context(
@@ -289,7 +302,8 @@ class EarlyExitRuntime:
                 residual=residual,
                 forward_batch=batch,
             )
-        current.wait_stream(self.repair_stream)
+        if self.lazy is None:
+            current.wait_stream(self.repair_stream)
         return hidden, residual
 
     def _segments(self, model, state, positions, batch, *, group, bucket_index, repair):
@@ -305,6 +319,13 @@ class EarlyExitRuntime:
         for segment, width in enumerate(self.widths):
             region = segment + (4 if repair else 0)
             marker = (pass_index * bucket_count + bucket_index) * 4 + segment
+            if (
+                self.oracle
+                and not self.building_graph
+                and int(self.branch_actions[marker]) != 0
+            ):
+                begin = self.source + width
+                continue
             self.regions.marker(2 * marker)
             hidden, residual = (value[: batch.batch_size] for value in state)
             for layer_idx in range(begin, self.source + width):
@@ -329,11 +350,21 @@ class EarlyExitRuntime:
             begin = self.source + width
 
     def convert(self, graph):
+        count = (8 if self.lazy is not None else 12) * len(
+            capacities(self.capture_batch_size)
+        )
+        indices = list(range(count))
+        kinds = [0] * count
+        if self.lazy is not None:
+            indices += list(
+                range(
+                    self.lazy.PREDICATE_OFFSET,
+                    self.lazy.PREDICATE_OFFSET + 4 * self.capture_batch_size,
+                )
+            )
+            kinds += [1] * (4 * self.capture_batch_size)
         moved = self.regions.convert(
-            graph,
-            self.branch_actions,
-            [1] * (12 * len(capacities(self.capture_batch_size))),
-            list(range(12 * len(capacities(self.capture_batch_size)))),
+            graph, self.branch_actions, [1] * len(indices), indices, kinds
         )
         self.converted.append(moved)
         logger.info(

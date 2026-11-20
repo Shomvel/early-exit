@@ -343,6 +343,8 @@ def generate_batch(
     prefill_end.synchronize()
     prefill = time.perf_counter() - tick
     if runtime:
+        if runtime.lazy is not None:
+            runtime.lazy.reset()
         for name in (
             "histogram",
             "executed",
@@ -399,58 +401,67 @@ def generate_batch(
         sum(row) != accounting.steps for row in row_histograms
     ):
         raise ValueError("Routing counters omit real decode slots")
-    if executions is not None and any(
-        any(row[index] + row[index + 4] != accounting.steps for index in range(4))
-        for row in executions
+    if (
+        executions is not None
+        and runtime.lazy is None
+        and any(
+            any(row[index] + row[index + 4] != accounting.steps for index in range(4))
+            for row in executions
+        )
     ):
         raise ValueError("Main and repair bodies do not cover every real decode row")
     capture_size = min(
         value for value in raw.server_args.cuda_graph_bs if value >= size
     )
     routing_metrics = (
-        batch_routing_metrics(
-            dict(
-                routing=runtime.routing,
-                histogram=histogram,
-                executed=runtime.executed.cpu().tolist(),
-                row_histogram=runtime.row_histogram.cpu().tolist(),
-                row_executed=runtime.row_executed.cpu().tolist(),
-                batch_executed=runtime.batch_executed.cpu().tolist(),
-                batched_main_replays=int(runtime.batched_main_executed.cpu()),
-                last_proposed_actions=runtime.proposed_action[:capture_size]
-                .cpu()
-                .tolist(),
-                last_applied_actions=runtime.action[:capture_size].cpu().tolist(),
-                group_executed=runtime.group_executed.cpu().tolist(),
-                group_action_histogram=runtime.group_action_histogram.cpu().tolist(),
-                group_size_histogram=runtime.group_size_histogram.cpu().tolist(),
-                bucket_histogram=runtime.bucket_histogram.cpu().tolist(),
-                last_group_actions=runtime.group_actions.cpu().tolist(),
-                last_group_counts=runtime.group_counts.cpu().tolist(),
-                last_group_indices=runtime.group_indices[:, :capture_size]
-                .cpu()
-                .tolist(),
-                last_group_capacities=runtime.group_capacities.cpu().tolist(),
-            ),
-            size,
-            accounting.steps,
-        )
-        if runtime
-        else dict(
-            routing="full",
-            group_action_histogram={
-                name: dict.fromkeys(map(str, WIDTHS), 0) for name in ("no_skip", "skip")
-            },
-            group_size_histogram=[[0] * 9 for _ in range(2)],
-            group_bucket_histogram=[[0] * 9 for _ in range(2)],
-            group_middle_region_launches=[[0] * 8 for _ in range(2)],
-            batch_middle_region_launches=[0] * 8,
-            conditional_middle_region_launches=0,
-            nonempty_group_replays=0,
-            conditional_group_real_row_slots=0,
-            conditional_group_capacity_slots=0,
-            conditional_group_padding_slots=0,
-            batched_no_skip_replays=0,
+        dict(routing=runtime.routing, lazy_cache=runtime.lazy.metrics(batch))
+        if runtime is not None and runtime.lazy is not None
+        else (
+            batch_routing_metrics(
+                dict(
+                    routing=runtime.routing,
+                    histogram=histogram,
+                    executed=runtime.executed.cpu().tolist(),
+                    row_histogram=runtime.row_histogram.cpu().tolist(),
+                    row_executed=runtime.row_executed.cpu().tolist(),
+                    batch_executed=runtime.batch_executed.cpu().tolist(),
+                    batched_main_replays=int(runtime.batched_main_executed.cpu()),
+                    last_proposed_actions=runtime.proposed_action[:capture_size]
+                    .cpu()
+                    .tolist(),
+                    last_applied_actions=runtime.action[:capture_size].cpu().tolist(),
+                    group_executed=runtime.group_executed.cpu().tolist(),
+                    group_action_histogram=runtime.group_action_histogram.cpu().tolist(),
+                    group_size_histogram=runtime.group_size_histogram.cpu().tolist(),
+                    bucket_histogram=runtime.bucket_histogram.cpu().tolist(),
+                    last_group_actions=runtime.group_actions.cpu().tolist(),
+                    last_group_counts=runtime.group_counts.cpu().tolist(),
+                    last_group_indices=runtime.group_indices[:, :capture_size]
+                    .cpu()
+                    .tolist(),
+                    last_group_capacities=runtime.group_capacities.cpu().tolist(),
+                ),
+                size,
+                accounting.steps,
+            )
+            if runtime
+            else dict(
+                routing="full",
+                group_action_histogram={
+                    name: dict.fromkeys(map(str, WIDTHS), 0)
+                    for name in ("no_skip", "skip")
+                },
+                group_size_histogram=[[0] * 9 for _ in range(2)],
+                group_bucket_histogram=[[0] * 9 for _ in range(2)],
+                group_middle_region_launches=[[0] * 8 for _ in range(2)],
+                batch_middle_region_launches=[0] * 8,
+                conditional_middle_region_launches=0,
+                nonempty_group_replays=0,
+                conditional_group_real_row_slots=0,
+                conditional_group_capacity_slots=0,
+                conditional_group_padding_slots=0,
+                batched_no_skip_replays=0,
+            )
         )
     )
     records = []

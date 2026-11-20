@@ -55,6 +55,7 @@ class ConditionalRegions:
             ctypes.c_uint64,
             ctypes.POINTER(ctypes.c_int),
             ctypes.POINTER(ctypes.c_int),
+            ctypes.POINTER(ctypes.c_int),
             ctypes.c_int,
             ctypes.POINTER(ctypes.c_int),
         ]
@@ -75,7 +76,8 @@ class ConditionalRegions:
             )
         )
 
-    def convert(self, graph, action, widths, action_indices=None):
+    def convert(self, graph, action, widths, action_indices=None, kinds=None):
+        """Move regions into IF (kind0) or device-repeated WHILE (kind1) bodies."""
         assert (
             action.is_cuda
             and action.dtype == torch.int32
@@ -87,8 +89,11 @@ class ConditionalRegions:
             action_indices = [0] * len(widths)
         assert len(action_indices) == len(widths)
         assert all(0 <= index < action.numel() for index in action_indices)
+        kinds = kinds or [0] * len(widths)
+        assert len(kinds) == len(widths) and all(kind in (0, 1) for kind in kinds)
         limits = (ctypes.c_int * len(widths))(*widths)
         indices = (ctypes.c_int * len(widths))(*action_indices)
+        types = (ctypes.c_int * len(widths))(*kinds)
         moved = (ctypes.c_int * len(widths))()
         self._check(
             self.library.ee_convert(
@@ -96,6 +101,7 @@ class ConditionalRegions:
                 action.data_ptr(),
                 limits,
                 indices,
+                types,
                 len(widths),
                 moved,
             )
