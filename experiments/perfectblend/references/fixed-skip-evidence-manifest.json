@@ -1,0 +1,130 @@
+{
+  "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-fixed-skip-1120-r2",
+  "files": {
+    "config.yaml": {
+      "sha256": "d959046798bdfb7a537884dd2e481fbf39726fcec68a1c3c97a9d910937ace01",
+      "bytes": 488
+    },
+    "fixed0/control.json": {
+      "sha256": "b55bcf6701834037275808a5ce586fbf6eb7a42ef299f55f3f38ac1676341770",
+      "bytes": 3665
+    },
+    "fixed0/receipt.json": {
+      "sha256": "d63734b7d75d2d3202731138ffa8c5b051b9ab026f1e90d9e10b8728fba1b2ac",
+      "bytes": 165
+    },
+    "fixed11/control.json": {
+      "sha256": "ed45832ffeb5d485f54bbe1b065f29d817bea2b687c253936ded3a2e8ee4e8f1",
+      "bytes": 3670
+    },
+    "fixed11/quality-timing.jsonl": {
+      "sha256": "6a5f1bb407b78deb3d1ce65b7a0be3d5b365e02a5cb09913eb9ece84990c4681",
+      "bytes": 53417
+    },
+    "fixed11/quality.jsonl": {
+      "sha256": "ed4c9985dd5557797b44cea06f45236ebed1884d77f2830bca69d8ba4adfb8c7",
+      "bytes": 2810823
+    },
+    "fixed11/receipt.json": {
+      "sha256": "0e17706d98fc12a5f751f9062ba9e95e89e04899a89d768646a2fd889a935044",
+      "bytes": 2799
+    },
+    "fixed11/timing.jsonl": {
+      "sha256": "ecce1cdcd375151bce5f96f29611a6ab269899b2f768a59ddece45d4cdfa159d",
+      "bytes": 178601
+    },
+    "fixed11/trajectories.json": {
+      "sha256": "fe286799df2d09ce7cfca4dfbe685044b93ea101162079a689e5cefd13c2cfe6",
+      "bytes": 38095
+    },
+    "fixed5/control.json": {
+      "sha256": "21938ab19ce3e439aa5d8284e28a8afb4709637356a8c9c6ecddfaf48d75cd68",
+      "bytes": 3672
+    },
+    "fixed5/quality-timing.jsonl": {
+      "sha256": "d72ae9ca59a074c8c809a43253435b04abac26d296d921b28134da443898d272",
+      "bytes": 53591
+    },
+    "fixed5/quality.jsonl": {
+      "sha256": "f542722a8d25bdc6f23704a58244d35a4d226bdc9e96e5c53d05cff9b2017079",
+      "bytes": 1667068
+    },
+    "fixed5/receipt.json": {
+      "sha256": "c43617eb22fa88d793c174a6c1e76a62522d297c2cfd7f2e969c3d858d475e4f",
+      "bytes": 2796
+    },
+    "fixed5/timing.jsonl": {
+      "sha256": "554c4a9f282f7d69415e4dd95d5cf19d27bf3fda184b2a3b410df5d4776eb39f",
+      "bytes": 179949
+    },
+    "fixed5/trajectories.json": {
+      "sha256": "fe286799df2d09ce7cfca4dfbe685044b93ea101162079a689e5cefd13c2cfe6",
+      "bytes": 38095
+    },
+    "fixed7/control.json": {
+      "sha256": "e8f38b9107ffbf50521e48c01b51df22862d6d706d57be481de717d57f08326a",
+      "bytes": 3668
+    },
+    "fixed7/quality-timing.jsonl": {
+      "sha256": "78188080a69ec1b69b3f587999cb7296395323050c6044a7f1c6c62199ce628a",
+      "bytes": 53393
+    },
+    "fixed7/quality.jsonl": {
+      "sha256": "31dacca6148b20e46d5277566813f6240c59896068b637d75dc2c7ede7161aa3",
+      "bytes": 1692320
+    },
+    "fixed7/receipt.json": {
+      "sha256": "45cda82ef3967554b462f749d236a25e053259adc289623677fbaeac95968194",
+      "bytes": 2796
+    },
+    "fixed7/timing.jsonl": {
+      "sha256": "dfe66c646b6fc622646c158c1854d6cf0fe588a6648130ef29f60b24b0e4b18f",
+      "bytes": 179366
+    },
+    "fixed7/trajectories.json": {
+      "sha256": "fe286799df2d09ce7cfca4dfbe685044b93ea101162079a689e5cefd13c2cfe6",
+      "bytes": 38095
+    },
+    "full/control.json": {
+      "sha256": "da12c00463dc66b07692b62a0b0911e8ddc2e300563537aa4735bd2966116e6a",
+      "bytes": 3647
+    },
+    "full/quality-timing.jsonl": {
+      "sha256": "d5d3653bf6105f5885e1ae919924a5813f5a30485649a28a6aff622ff48e8bd1",
+      "bytes": 67022
+    },
+    "full/quality.jsonl": {
+      "sha256": "44a24d4b0350e753b728f08e607007753d5fd62a7941aa3b199c794504f93c74",
+      "bytes": 1556131
+    },
+    "full/receipt.json": {
+      "sha256": "6d12fd809c78362a7793ff8ea68bfa9b0cfa8e1a6da1a3f6c36a811b47b3dbe3",
+      "bytes": 2794
+    },
+    "full/timing.jsonl": {
+      "sha256": "22c5c855cc804b877e45655552054328206360fbd2054cd0ea95798e32a366c8",
+      "bytes": 218695
+    },
+    "full/trajectories.json": {
+      "sha256": "fe286799df2d09ce7cfca4dfbe685044b93ea101162079a689e5cefd13c2cfe6",
+      "bytes": 38095
+    },
+    "logs/runtime-finished-replica-0.json": {
+      "sha256": "de84b7ac4c280088fcdb5745c77d992dc356e93a9ec7d4997c76ef3f946de093",
+      "bytes": 39
+    },
+    "run.json": {
+      "sha256": "da39ec686440ec8acfac1c7fd75efd017f3fea873cde19d09edfed487286858f",
+      "bytes": 5312
+    },
+    "summary.json": {
+      "sha256": "3a3460eaef410a563148cbe6835c217b99299b96de5718c309fe75c0eeb2cd16",
+      "bytes": 31455
+    }
+  },
+  "run_uuid": "fb73bdb2-013a-4517-b7f9-4c9f52456146",
+  "job_id": "j-1795178291-540076",
+  "state": "verified",
+  "terminal_phase": "Succeeded",
+  "passed": true
+}

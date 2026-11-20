@@ -1,0 +1,6 @@
+{
+  "mode": "fixed0",
+  "passed": true,
+  "exact_full_logits_parity": true,
+  "control_sha256": "b55bcf6701834037275808a5ce586fbf6eb7a42ef299f55f3f38ac1676341770"
+}
