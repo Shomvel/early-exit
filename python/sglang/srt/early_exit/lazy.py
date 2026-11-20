@@ -109,6 +109,10 @@ class GraphPrefillKernel:
         from sglang.srt.layers.attention.fla.chunk import chunk_gated_delta_rule_fwd
         from sglang.srt.layers.attention.fla.l2norm import l2norm_fwd
 
+        # The normal chunk wrapper applies input_guard before these low-level
+        # kernels. Replay bypasses it to keep ragged lengths on the GPU, so
+        # restore its packed layout contract for projection slices and gates.
+        q, k, v, g, beta = (value.contiguous() for value in (q, k, v, g, beta))
         _, output, _, _, states, _ = chunk_gated_delta_rule_fwd(
             q=l2norm_fwd(q),
             k=l2norm_fwd(k),
