@@ -1,14 +1,17 @@
 """Fixed decode never enters removed layers, even across repeated tokens."""
 
 import importlib
+import json
 from pathlib import Path
 import sys
+import tempfile
 import types
 import unittest
 from unittest.mock import patch
 
 import torch
 
+from experiments.perfectblend import fixed_skip_run
 from experiments.perfectblend.tests.test_batch_positions import batch
 
 package = types.ModuleType('sglang')
@@ -18,6 +21,14 @@ with patch.dict(sys.modules, {'sglang': package}):
 
 
 class FixedSkipTest(unittest.TestCase):
+    def test_jsonl_preserves_unicode_separators_in_generated_answers(self):
+        answers = [dict(text='answer\u2028math\u0085next\u2029line', correct=True),
+                   dict(text='second answer', correct=False)]
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'quality.jsonl'
+            path.write_text(''.join(json.dumps(row, ensure_ascii=False) + '\n' for row in answers))
+            self.assertEqual(fixed_skip_run.read_rows(path), answers)
+
     def test_decode_call_order_padding_and_repeated_tokens(self):
         for width in (0, 5, 7, 11):
             runtime = FIXED.FixedSkipRuntime.__new__(FIXED.FixedSkipRuntime)

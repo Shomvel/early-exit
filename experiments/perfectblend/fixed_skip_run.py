@@ -30,7 +30,8 @@ def sha(path):
 
 
 def read_rows(path):
-    return [json.loads(line) for line in path.read_text().splitlines()]
+    with path.open() as handle:
+        return [json.loads(line) for line in handle]
 
 
 def worker(mode):
