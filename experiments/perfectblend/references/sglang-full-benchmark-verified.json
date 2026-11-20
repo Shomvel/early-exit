@@ -1,0 +1,26 @@
+{
+  "markers": [
+    {
+      "replica": "0",
+      "exit_code": 0
+    },
+    {
+      "replica": "2",
+      "exit_code": 0
+    },
+    {
+      "replica": "1",
+      "exit_code": 0
+    },
+    {
+      "replica": "3",
+      "exit_code": 0
+    }
+  ],
+  "files": {
+    "evaluation-summary.json": {
+      "sha256": "3b1cdd7c8663dbeca1dbb41ffa5351d1371609324d55c295f3957232a019a03a",
+      "bytes": 207643
+    }
+  }
+}

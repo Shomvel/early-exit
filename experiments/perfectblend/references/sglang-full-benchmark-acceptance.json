@@ -1,0 +1,102 @@
+{
+  "verified_at": "2026-11-20T06:14:03.635810+00:00",
+  "observed_at": "2026-11-20T06:13:43.741507+00:00",
+  "run_uuid": "d3a6c646-00f4-463f-8c64-14eaf4922647",
+  "source_commit": "e678f0b3c6a32e6c305afb8525e1ffab934d6877",
+  "job_id": "j-1795147691-511706",
+  "controller_id": "j-1795147685-389717",
+  "gpu_phase": "Succeeded",
+  "controller_phase": "Succeeded",
+  "replica_count": 4,
+  "replica_phases": [
+    "Succeeded",
+    "Succeeded",
+    "Succeeded",
+    "Succeeded"
+  ],
+  "runtime_exit_codes": [
+    0,
+    0,
+    0,
+    0
+  ],
+  "worker_receipts": 64,
+  "mode_counts": {
+    "full": 20361,
+    "early_exit": 20361
+  },
+  "benchmark_counts": {
+    "gsm8k": 1319,
+    "math": 5000,
+    "mmlu": 14042
+  },
+  "mmlu_subject_count": 57,
+  "summary_sha256": "3b1cdd7c8663dbeca1dbb41ffa5351d1371609324d55c295f3957232a019a03a",
+  "summary_bytes": 207643,
+  "imported_full_predictions": 6111,
+  "same_gpu_generation_pairs": 14250,
+  "metrics": {
+    "gsm8k": {
+      "count": 1319,
+      "full_accuracy": 0.9673995451099318,
+      "early_exit_accuracy": 0.959059893858984,
+      "comparison": {
+        "accuracy_delta": -0.00833965125094771,
+        "same_gpu_generation_count": 934,
+        "imported_quality_only_count": 385,
+        "end_to_end_speedup": 0.9990760512058381,
+        "decode_throughput_speedup": 1.0102192062054838,
+        "decode_cuda_throughput_speedup": 1.0102192636134324,
+        "lost_correct": 16,
+        "gained_correct": 5
+      },
+      "matched_token_decode": {
+        "examples": 8,
+        "tokens": 1024,
+        "full_seconds": 15.565988214686513,
+        "early_exit_seconds": 15.468141172081232,
+        "speedup": 1.0063257143516304,
+        "cuda_speedup": 1.006325855734073
+      }
+    },
+    "math": {
+      "count": 5000,
+      "full_accuracy": 0.893,
+      "early_exit_accuracy": 0.8474,
+      "comparison": {
+        "accuracy_delta": -0.045599999999999974,
+        "same_gpu_generation_count": 3474,
+        "imported_quality_only_count": 1526,
+        "end_to_end_speedup": 0.8861595991866347,
+        "decode_throughput_speedup": 1.0057557694995043,
+        "decode_cuda_throughput_speedup": 1.005755617427464,
+        "lost_correct": 330,
+        "gained_correct": 102
+      },
+      "matched_token_decode": {
+        "examples": 8,
+        "tokens": 1024,
+        "full_seconds": 15.57438125088811,
+        "early_exit_seconds": 15.423100149258971,
+        "speedup": 1.0098087349602283,
+        "cuda_speedup": 1.0098091692356044
+      }
+    },
+    "mmlu": {
+      "count": 14042,
+      "full_accuracy": 0.8079333428286569,
+      "early_exit_accuracy": 0.8081469876086028,
+      "comparison": {
+        "accuracy_delta": 0.00021364477994589848,
+        "same_gpu_generation_count": 9842,
+        "imported_quality_only_count": 4200,
+        "end_to_end_speedup": 1.2621942116345204,
+        "decode_throughput_speedup": 0.9969242093600407,
+        "decode_cuda_throughput_speedup": 0.996887386090615,
+        "lost_correct": 4,
+        "gained_correct": 7
+      },
+      "matched_token_decode": null
+    }
+  }
+}
