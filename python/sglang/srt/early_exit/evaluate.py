@@ -20,6 +20,7 @@ SEED = 20261120
 RUNTIME_FILES = (
     "runtime.py",
     "policy.py",
+    "common.py",
     "batch.py",
     "split.py",
     "masked_kv.py",

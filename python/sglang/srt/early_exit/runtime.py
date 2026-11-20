@@ -138,6 +138,13 @@ class EarlyExitRuntime:
 
         if pp_group.world_size != 1 or get_attention_tp_size() != 1:
             raise ValueError("GPU early exit currently requires TP1/PP1")
+        routing = os.environ.get("SGLANG_EARLY_EXIT_ROUTING", "batch_min")
+        if routing == "batch_min":
+            from sglang.srt.early_exit.common import BatchWideRuntime
+
+            return BatchWideRuntime(path, config)
+        if routing != "split_skip":
+            raise ValueError("early-exit routing must be batch_min or split_skip")
         return cls(path, config)
 
     def select(self, hidden, residual, valid):

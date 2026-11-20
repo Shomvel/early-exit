@@ -140,6 +140,8 @@ def batch_routing_metrics(snapshot, size, steps):
     """Validate applied row routes, group launches and minimal capacity use."""
     if not 1 <= size <= 8 or steps < 1:
         raise ValueError("Batch route metrics require real rows and decode steps")
+    if snapshot["routing"] == "batch_min":
+        return common_routing_metrics(snapshot, size, steps)
     if snapshot["routing"] != "split_skip":
         raise ValueError("Batch pilot requires split_skip routing")
     rows, executions = snapshot["row_histogram"], snapshot["row_executed"]
@@ -277,6 +279,43 @@ def batch_routing_metrics(snapshot, size, steps):
     )
 
 
+def common_routing_metrics(snapshot, size, steps):
+    if not {"common_step_histogram", "proposal_histogram"}.issubset(snapshot):
+        raise ValueError("Common-batch receipt omits action counters")
+    histogram = snapshot["histogram"]
+    rows = snapshot["row_histogram"]
+    common = snapshot["common_step_histogram"]
+    if (
+        sum(common) != steps
+        or sum(snapshot["proposal_histogram"]) != size * steps
+        or histogram != [count * size for count in common]
+        or any(row != (common if index < size else [0] * 5) for index, row in enumerate(rows))
+    ):
+        raise ValueError("Common-batch actions differ across rows or decode steps")
+    expected = [
+        sum(count for count, action in zip(common, WIDTHS) if action < width)
+        for width in WIDTHS[1:]
+    ]
+    expected += [steps - count for count in expected]
+    if snapshot["batch_executed"] != expected or snapshot["executed"] != [n * size for n in expected]:
+        raise ValueError("Common-batch main/repair regions do not complement each other")
+    if any(row != (expected if index < size else [0] * 8) for index, row in enumerate(snapshot["row_executed"])):
+        raise ValueError("Common-batch row executions differ")
+    proposed = snapshot["last_proposed_actions"]
+    real = [value for value in proposed if value >= 0]
+    action = min(real) if real else -1
+    applied = [action if value >= 0 else -1 for value in proposed]
+    if len(real) != size or snapshot["last_applied_actions"] != applied:
+        raise ValueError("Common-batch action must be the minimum valid proposal")
+    return dict(
+        routing="batch_min", common_step_histogram=dict(zip(map(str, WIDTHS), common)),
+        proposal_histogram=dict(zip(map(str, WIDTHS), snapshot["proposal_histogram"])),
+        batch_middle_region_launches=expected,
+        conditional_middle_region_launches=sum(expected),
+        last_proposed_actions=proposed, last_applied_actions=applied,
+    )
+
+
 def generate_batch(
     runner,
     tokenizer,
@@ -358,6 +397,9 @@ def generate_batch(
             "batched_main_executed",
         ):
             getattr(runtime, name).zero_()
+        if runtime.routing == "batch_min":
+            runtime.common_step_histogram.zero_()
+            runtime.proposal_histogram.zero_()
         runtime.force.fill_(-1)
     accounting = DecodeAccounting(
         limits, eos, ignore_eos=ignore_eos or forced is not None, choice_ids=choice_ids
@@ -440,6 +482,8 @@ def generate_batch(
                     .cpu()
                     .tolist(),
                     last_group_capacities=runtime.group_capacities.cpu().tolist(),
+                    common_step_histogram=(runtime.common_step_histogram.cpu().tolist() if runtime.routing == "batch_min" else None),
+                    proposal_histogram=(runtime.proposal_histogram.cpu().tolist() if runtime.routing == "batch_min" else None),
                 ),
                 size,
                 accounting.steps,

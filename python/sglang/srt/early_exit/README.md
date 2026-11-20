@@ -14,6 +14,16 @@ path. `SGLANG_EARLY_EXIT_CACHE=async` overlaps cache repair with the suffix;
 action width is a control for differential testing. These variables are
 experimental runtime controls rather than public serving API parameters.
 
+The default routing is `batch_min`: all real rows share the minimum proposed
+width, including zero. Any no-skip proposal therefore keeps the entire batch
+on the full path. Padding proposals are -1 and do not affect the minimum.
+The original batch stays intact through every layer, with eight conditional
+main/repair regions and no gather, grouping, capacity buckets or merge.
+`SGLANG_EARLY_EXIT_ROUTING=split_skip` selects the previous split prototype;
+the deferred `lazy` cache prototype requires that explicit routing selection.
+Validate the whole-batch path with `python -m sglang.srt.early_exit.common_smoke`
+using the same model/classifier arguments as the batch smoke below.
+
 `four_width_bce_mlp_v1` checkpoints load the recall sweep's single-token,
 linear or one-hidden-layer BCE head (`depth=0` or 1024 ReLU units, FP32). Its four sigmoid outputs
 predict safety independently at widths 5/6/7/11. The policy selects the longest
