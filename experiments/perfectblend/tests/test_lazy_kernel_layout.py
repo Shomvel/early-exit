@@ -45,8 +45,11 @@ class LazyKernelLayoutTest(unittest.TestCase):
                 l2norm_fwd=normalize
             ),
         }
-        for capacity in (1, 16, 32, 64):
-            inputs = [torch.randn(1, capacity, 6, 4)[:, :, ::2, :] for _ in range(3)]
+        for capacity in (16, 1, 32, 64):
+            # causal_conv1d returns [channels, tokens]; GDN transposes it,
+            # splits Q/K/V along channels, then views each as [1,T,H,D].
+            packed = torch.randn(36, capacity).transpose(0, 1)
+            inputs = [part.view(1, capacity, 3, 4) for part in packed.split(12, -1)]
             inputs += [torch.randn(1, capacity, 6)[:, :, ::2] for _ in range(2)]
             state = torch.randn(2, 3, 4, 4)
             lengths = torch.tensor([0, capacity], dtype=torch.int32)
