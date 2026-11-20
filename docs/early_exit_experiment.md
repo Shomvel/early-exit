@@ -39,8 +39,39 @@ The original native full benchmark run was intentionally stopped before completi
 
 The inspected official Qwen3.8-27B card revision `37561816e66b5b9153b1b64c10968c18c1e6f4a0` omits these three original benchmark scores. The experiment therefore compares against its own full checkpoint execution. The official model card evidence is retained in `references/official-card.json`.
 
+The completed [SGLang batch-one report](../experiments/perfectblend/references/sglang-full-benchmark-report.md)
+covers all 20,361 test questions in both modes, with all 64 workers and four
+replicas verified. GSM8K accuracy changed 96.74%→95.91%, MATH 89.30%→84.74% and
+MMLU 80.79%→80.81%. Fixed128-token replay improved decode by 0.63%/0.98% on the two
+math tasks; MATH's longer generated outputs increased same-GPU end-to-end time
+by 12.85%. One-step action precision therefore did not preserve full-generation
+quality in this serving cache policy.
+
+The current `split_skip` runtime forms no-skip and skip groups on the GPU after
+source 32. The skip group takes the shortest positive proposal, and each group
+selects a minimal captured capacity 1/2/4/8. Hidden state, positions, ragged KV
+indices and GDN indices are packed together; outputs merge back before the
+common suffix. Cache repair overlaps within the token and joins before the
+next decode step. A packed BF16/NHD KV writer suppresses padding stores into
+slot 0 so concurrent groups retain disjoint cache writes. The
+[runtime contract](../python/sglang/srt/early_exit/README.md) and
+[split-group GPU verification](../experiments/perfectblend/references/sglang-split-smoke-report.md)
+record its behavior and numerical controls. The completed
+[split-group throughput pilot](../experiments/perfectblend/references/sglang-split-batch-pilot-report.md)
+has a separate source and run from the batch-one benchmark. Same-input fixed128
+EE/full throughput ratios were 0.959/0.904/0.871/0.879 for batch1/2/4/8. At batch8,
+grouped EE reached 420.55 token/s against full execution's 478.70 token/s, with
+81.0% group-capacity utilization. The historical per-request pilot's batch8
+ratio was 0.542; its different GPU/run makes this a comparison of within-run
+ratios. Grouping improves that relative result at larger batches, while cache
+repair and grouping overhead still leave EE slower than full execution.
+
 ## Execution and provenance
 
 The [README](../experiments/perfectblend/README.md) gives data, fingerprint, managed launch and collection commands. GPU runs require a clean immutable shared checkout, exact image digest, precise argv, a new run UUID and final reconciliation of Job and every expected replica. `managed.py` delegates this lifecycle to the separately installed YiCloud `training_run.py`; it does not create GPU jobs itself or carry credentials.
 
 The repository starts from SGLang `v0.5.13.post1`, commit `85fd90072d1a9f2432842b03588f63b745e524e4`, matching the verified `v0.5.13.post1-cu129` runtime image. The native validated experiment source and five-class source commits and original checksums are in [`references/source-provenance.json`](../experiments/perfectblend/references/source-provenance.json). Packaging adds configurable paths, explicit inventories and reusable entrypoints. The historical result files refer to their historical validated sources; packaged runs record a new commit.
+
+## Deferred cache prefill prototype
+
+The opt-in lazy policy saves skipped source32 history and prefills missing KV/GDN state when the applied width decreases. GPU IF/WHILE nodes keep decisions and replay cursors on device. The static-batch correctness controls and same-GPU full/async/lazy pilot are implemented;25 CPU checks pass. GPU validation is pending because YiCloud GetJob/ListJobs now return scanstatus authorization errors. No new lazy-policy speed or benchmark score is available. See [status and independent preflight evidence](../experiments/perfectblend/references/lazy-prefill-status.md).

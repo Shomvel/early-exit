@@ -169,6 +169,228 @@
         "mmlu": 2
       },
       "scope": "Same-GPU paired full/async evaluation smoke, five-shot MMLU, greedy nonthinking math generation, one fixed128 replay per math task. No complete task score claim."
+    },
+    {
+      "stage": "sglang-eval-8gpu",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-evaluate-1120-r1",
+      "uuid": "8273319d-8232-492c-a92d-9dbf64fd6913",
+      "job_id": "j-1795143762-282789",
+      "phase": "Stopped",
+      "status": "migrated_to_32gpu",
+      "complete_benchmark_results": false,
+      "completed_full_predictions": 6111,
+      "active_replicas": 0
+    },
+    {
+      "stage": "sglang-eval-32gpu-attempt",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-evaluate32-1120-r1",
+      "uuid": "75e41d20-98eb-48c8-850a-27d86a8205cb",
+      "job_id": "j-1795147248-679958",
+      "phase": "Failed",
+      "status": "startup_failed_stop_requested_all_replicas_terminal",
+      "failure": "Shared overlay copytree raced across replicas; fixed with per-replica runtime directories.",
+      "source": "0af369f5294ce08c33b064fc463fc7d67c81bb74",
+      "complete_benchmark_results": false,
+      "active_replicas": 0,
+      "terminal_replica_phases": {
+        "Failed": 3,
+        "Stopped": 1
+      }
+    },
+    {
+      "stage": "sglang-eval-32gpu",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-evaluate32-1120-r2",
+      "uuid": "d3a6c646-00f4-463f-8c64-14eaf4922647",
+      "job_id": "j-1795147691-511706",
+      "controller_job_id": "j-1795147685-389717",
+      "phase": "Succeeded",
+      "status": "complete",
+      "gpus": 32,
+      "replicas": 4,
+      "local_workers": 8,
+      "batch_size": 1,
+      "source": "e678f0b3c6a32e6c305afb8525e1ffab934d6877",
+      "imported_full_predictions": 6111,
+      "resume_manifest_sha256": "12b056a8dbfb300eecdf008d0fe9a2f35a4806a1ee1a554d19786f2f77939ed1",
+      "complete_benchmark_results": true,
+      "last_observation": {
+        "observed_at": "2026-11-20T06:13:43.741507+00:00",
+        "full_at_least": 20361,
+        "early_exit_at_least": 20361,
+        "first_error": null,
+        "worker_receipts_seen": 64
+      },
+      "state": "verified",
+      "summary_sha256": "3b1cdd7c8663dbeca1dbb41ffa5351d1371609324d55c295f3957232a019a03a",
+      "counts": {
+        "math": 5000,
+        "gsm8k": 1319,
+        "mmlu": 14042
+      },
+      "same_gpu_generation_pairs": 14250
+    },
+    {
+      "stage": "sglang-batch-smoke-r2",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-batch-smoke-1120-r2",
+      "uuid": "aad2a13f-23e9-4997-a028-a5c6ed3a4dff",
+      "job_id": "j-1795148853-738012",
+      "phase": "Failed",
+      "source": "059c6500c6428f183b58102c8ad513bb409c3e0b",
+      "complete_benchmark_results": false,
+      "passed_subcases": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "failure": "Batch8 no-skip logits max_abs0.125 and cache0.0625 exceed fixed atol0.02; all serial/async mixed-route and padding checks were bitwise exact. A batched-middle repair is being validated separately from the 32-GPU benchmark."
+    },
+    {
+      "stage": "sglang-batch-eval-e2e",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-batch-eval-smoke-1120-r1",
+      "uuid": "aa231bfe-365a-455a-aa65-9ce662ff1d4e",
+      "job_id": "j-1795149369-211384",
+      "controller_job_id": "j-1795149364-3313",
+      "phase": "Succeeded",
+      "state": "verified",
+      "source": "059c6500c6428f183b58102c8ad513bb409c3e0b",
+      "batch_sizes": [
+        1,
+        2
+      ],
+      "selected_counts": {
+        "gsm8k": 2,
+        "math": 2,
+        "mmlu": 2
+      },
+      "summary_sha256": "ca7201865a4ea320dd4d585470b47df8a6e5915d4c83d4bd5df0e646d40ea42f",
+      "complete_benchmark_results": false,
+      "scope": "Real-request entrypoint E2E; fixed replay selects one request per task and cannot establish batch2 replay throughput."
+    },
+    {
+      "stage": "sglang-batch-runtime",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-batch-smoke-1120-r3",
+      "uuid": "86aadba5-14c4-4398-b939-cf443e8d042c",
+      "job_id": "j-1795150007-691586",
+      "controller_job_id": "j-1795150000-390014",
+      "phase": "Succeeded",
+      "state": "verified",
+      "source": "4adba5efe68d04426bad125f0e1c1a8a57f8557c",
+      "batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        8
+      ],
+      "steps": 16,
+      "summary_sha256": "2ad2ec6ebe1f3050578d44a84bcaa5d6c688559bf7780f43a6365f3d747d67ea",
+      "complete_benchmark_results": false,
+      "scope": "Full/no-skip logits and all KV/GDN states bitwise; serial/async mixed routes bitwise; exact route, padding and exclusive batch8 no-skip branch counters."
+    },
+    {
+      "stage": "sglang-batch-throughput-pilot",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-batch-evaluate-1120-r1",
+      "uuid": "4d46df45-2661-4a81-b8fa-b75475178754",
+      "job_id": "j-1795150409-791357",
+      "controller_job_id": "j-1795150399-256642",
+      "phase": "Succeeded",
+      "source": "4adba5efe68d04426bad125f0e1c1a8a57f8557c",
+      "batch_sizes": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "selected_counts": {
+        "gsm8k": 16,
+        "math": 16,
+        "mmlu": 16
+      },
+      "replay_examples_per_math_task": 8,
+      "matched_tokens": 128,
+      "complete_benchmark_results": false,
+      "state": "verified",
+      "summary_sha256": "e68b842e03ace1cc1670b952d45f90d0b314b5488048e2fecb30096e0693b500",
+      "routing": "per_request",
+      "scope": "Completed historical per-request pilot. User requested common batch action afterwards; new runtime evaluation uses an independent source and run."
+    },
+    {
+      "stage": "sglang-split-skip-smoke",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-split-smoke-1120-r1",
+      "uuid": "62ffa9ed-8521-42c2-8a4d-58cb4e4fb1b0",
+      "manifest_sha256": "de7ece07264cc5df8b1d9e40c275f89f148446c2848bd028f68b287924e2e2c3",
+      "source": "94bfec7df86c8cb63d30657a3f61c750cb38ca79",
+      "controller_job_id": "j-1795155150-113938",
+      "phase": "Succeeded",
+      "routing": "split_skip",
+      "gpus": 1,
+      "batch_sizes": [
+        1,
+        2,
+        3,
+        4,
+        8
+      ],
+      "steps": 16,
+      "complete_benchmark_results": false,
+      "scope": "Full/no-skip logits and KV/GDN bitwise; serial/async mixed logits and caches bitwise; GPU partition/capacity/PDL, physical/group/row counters and resident canary passed. No throughput claim.",
+      "job_id": "j-1795155158-558246",
+      "state": "verified",
+      "summary_sha256": "101414b178be44e12fe2839fdc9d53ecd3bfbfa6747b7160cc3e7fd1c8a1f3ff"
+    },
+    {
+      "stage": "sglang-split-skip-throughput-pilot",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-split-evaluate-1120-r1",
+      "uuid": "baf8f059-d7e7-475d-82d6-e33fb5a30686",
+      "manifest_sha256": "2ca6fcfaef7e01d4cd500d0d333d3f8e6cf539fe5d3b83b644e927f883b2f294",
+      "source": "b3b8a0dde386992eb9294d3ef6e1f0644dfb0ded",
+      "phase": "Succeeded",
+      "routing": "split_skip",
+      "gpus": 1,
+      "batch_sizes": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "selected_counts": {
+        "gsm8k": 16,
+        "math": 16,
+        "mmlu": 16
+      },
+      "replay_examples_per_math_task": 8,
+      "matched_tokens": 128,
+      "complete_benchmark_results": false,
+      "scope": "Completed selected split-group throughput pilot; all240 microbatches, paired GPU/trajectory/source identities, minimal group capacities and execution/token accounting verified. Complete benchmark quality is reported separately.",
+      "controller_job_id": "j-1795155549-140165",
+      "job_id": "j-1795155556-263454",
+      "state": "verified",
+      "status": "complete",
+      "summary_sha256": "26dc683bcdcd78dbb1f1c9209d69f72ba80054f79283940360145481f6c00f34",
+      "fixed128_pooled_ee_full_throughput_ratio": {
+        "1": 0.958805976967565,
+        "2": 0.9044455280938273,
+        "4": 0.8714279158468367,
+        "8": 0.8785205065875512
+      },
+      "paired_gpu_uuid": "d78a2a3a-8d03-d815-3068-eae65f2587a4"
+    },
+    {
+      "stage": "sglang-lazy-prefill-smoke-preflight",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-lazy-smoke-1120-r1",
+      "uuid": "960db3b5-4a2d-41ae-ad14-8d7e797e9bf2",
+      "source": "ad010463dcdfe2c538264ba97f7b38cbb725d9e2",
+      "job_id": null,
+      "prepare_controller_job_id": "j-1795160533-497519",
+      "submit_controller_job_id": "j-1795161090-227680",
+      "state": "blocked_before_gpu_submit",
+      "phase": null,
+      "complete_benchmark_results": false,
+      "gpu_numeric_validation": false,
+      "failure": "GetJob scanstatus permission denied with local and existing remote credentials; submit controller read preflight exit1 before training submit",
+      "report": "lazy-prefill-status.md",
+      "evidence": "lazy-prefill-preflight-failed.json"
     }
   ]
 }

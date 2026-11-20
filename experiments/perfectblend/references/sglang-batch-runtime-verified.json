@@ -1,0 +1,224 @@
+{
+  "observed_at": "2026-11-20T04:52:06.409406+00:00",
+  "run_uuid": "86aadba5-14c4-4398-b939-cf443e8d042c",
+  "job_id": "j-1795150007-691586",
+  "controller_job_id": "j-1795150000-390014",
+  "source_commit": "4adba5efe68d04426bad125f0e1c1a8a57f8557c",
+  "skill_commit": "b7aa8f6be408706b9a98b96c0de4060520d2e19c",
+  "phase": "Succeeded",
+  "replica_exit_code": 0,
+  "summary_passed": true,
+  "summary_sha256": "2ad2ec6ebe1f3050578d44a84bcaa5d6c688559bf7780f43a6365f3d747d67ea",
+  "batch_sizes": [
+    1,
+    2,
+    3,
+    4,
+    8
+  ],
+  "steps": 16,
+  "atol": 0.02,
+  "rtol": 0,
+  "full_no_skip_all_logits_and_KV_GDN_bitwise_equal": true,
+  "serial_async_mixed_all_logits_and_KV_GDN_bitwise_equal": true,
+  "all_route_checks_no_errors": true,
+  "all_padded_row_histograms_and_executions_zero": true,
+  "batched_main_replays": {
+    "serial": {
+      "1": {
+        "reference": 0,
+        "mixed": 0,
+        "learned": 0
+      },
+      "2": {
+        "reference": 0,
+        "mixed": 0,
+        "learned": 0
+      },
+      "3": {
+        "reference": 0,
+        "mixed": 0,
+        "learned": 0
+      },
+      "4": {
+        "reference": 0,
+        "mixed": 0,
+        "learned": 0
+      },
+      "8": {
+        "reference": 16,
+        "mixed": 0,
+        "learned": 4
+      }
+    },
+    "async": {
+      "1": {
+        "reference": 0,
+        "mixed": 0,
+        "learned": 0
+      },
+      "2": {
+        "reference": 0,
+        "mixed": 0,
+        "learned": 0
+      },
+      "3": {
+        "reference": 0,
+        "mixed": 0,
+        "learned": 0
+      },
+      "4": {
+        "reference": 0,
+        "mixed": 0,
+        "learned": 0
+      },
+      "8": {
+        "reference": 16,
+        "mixed": 0,
+        "learned": 4
+      }
+    }
+  },
+  "conditional_probe": {
+    "passed": true,
+    "pdl_verified": true,
+    "padded_rows_verified": true,
+    "exclusive_batched_no_skip_verified": true,
+    "cases": [
+      {
+        "actions": [
+          0,
+          11,
+          5,
+          -1,
+          -1,
+          6,
+          0,
+          7
+        ],
+        "batched_main": 0,
+        "row_launches": [
+          14,
+          10
+        ]
+      },
+      {
+        "actions": [
+          11,
+          5,
+          -1,
+          0,
+          6,
+          -1,
+          7,
+          11
+        ],
+        "batched_main": 0,
+        "row_launches": [
+          10,
+          14
+        ]
+      },
+      {
+        "actions": [
+          7,
+          0,
+          6,
+          5,
+          0,
+          11,
+          5,
+          6
+        ],
+        "batched_main": 0,
+        "row_launches": [
+          19,
+          13
+        ]
+      },
+      {
+        "actions": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "batched_main": 1,
+        "row_launches": [
+          0,
+          0
+        ]
+      },
+      {
+        "actions": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          -1
+        ],
+        "batched_main": 0,
+        "row_launches": [
+          28,
+          0
+        ]
+      },
+      {
+        "actions": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "batched_main": 0,
+        "row_launches": [
+          0,
+          0
+        ]
+      },
+      {
+        "actions": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "batched_main": 1,
+        "row_launches": [
+          0,
+          0
+        ]
+      }
+    ]
+  },
+  "scope": "Batch correctness, heterogeneous actions and padded-row isolation; throughput requires a separate paired benchmark.",
+  "resource_mutations": false,
+  "artifact_sha256": {
+    "pb-sglang-batch-smoke-1120-r3-batch-smoke-summary.json": "2ad2ec6ebe1f3050578d44a84bcaa5d6c688559bf7780f43a6365f3d747d67ea",
+    "pb-sglang-batch-smoke-1120-r3-prepare-job.json": "798fcca51d15863f17e9a6e369608cf08c1bdec5bb653d1f557358c6219e1e55",
+    "pb-sglang-batch-smoke-1120-r3-prepare-replicas.json": "5fe1b39fb5094c63ccbf29ce49e95f1f099bee9680b7248ff44b9547c84c8ce5",
+    "pb-sglang-batch-smoke-1120-r3-submit-job.json": "8e1010073ac4974f0e6f37d81e99ac7e34d7533d2899a5b714d685433942a26f",
+    "pb-sglang-batch-smoke-1120-r3-submit-replicas.json": "2f461e2c9584cbbce03bce03061b80fbdd88225d319dc094c05f9f9ddfd30026",
+    "pb-sglang-batch-smoke-1120-r3-submit-logs.json": "b2fbf834d59facc3d2038ee075812df68375ea1621667736a9540e1da17f0a47",
+    "pb-sglang-batch-smoke-1120-r3-gpu-job.json": "78e71d5744a387400d2b3a286abc380d6be780ad7f2dfd8412f565f9ec1a6a62",
+    "pb-sglang-batch-smoke-1120-r3-gpu-replicas.json": "6602963629a0e91383b7578133231964cb6fde86a5e2b4394b4642c8c5b4dabc",
+    "pb-sglang-batch-smoke-1120-r3-gpu-logs.json": "d7760bb7321a504ff7e2aa26442fe26aec6e66d349ed5078855f3c4acf62b411",
+    "pb-sglang-batch-smoke-1120-r3-verified.json": "20789eb86a014a432f51f2b4806dd3a39fec8b6e15ad575071452d410820b11e",
+    "pb-sglang-batch-smoke-1120-r3-final.json": "49c07cf6eb974e17bdf32d4fdd444d9619ccecc8b68ff8fc45d703918cef7129"
+  }
+}

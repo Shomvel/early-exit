@@ -11,6 +11,7 @@ This directory contains the data preparation, geometry selection, frozen-model f
 | `fingerprint_model.py` | Hash all indexed safetensors shards and stamp their shared-storage metadata |
 | `native/pipeline.py` | Smoke, training-data pilot scan, cached counterfactual feature capture, binary head fitting and calibration |
 | `train_multiclass.py` | Fit the five-action shared MLP from the same already captured features |
+| `recall_sweep.py` | Compare gate objectives, depth, context, ensembles and action policies for recall at high precision on the same captured features; [report](references/recall-sweep-report.md) |
 | `native/evaluate.py` | Native Transformers full/early-exit paired benchmark evaluator |
 | `sglang_run.py`, `sglang_eval.py` | SGLang server orchestration and benchmark evaluation; see each script's `--help` |
 | `managed.py` | Build raw specs and delegate prepare, submit, reconcile and status to an external `training_run.py` |
@@ -116,6 +117,28 @@ RUN_DIR=/shared/eval-smoke python3 experiments/perfectblend/sglang_eval.py \
 
 Omit `--smoke` for all 20,361 test questions. The evaluator requires the pinned benchmark SHA and model inventory; pass `--weight-inventory /shared/inventory.json` when using another inventory path. It checks graph execution and complementary repair counters at every request, preserves original predictions, and reports generation lengths, accuracy, latency and separate 128-token matched replay. `complete_benchmarks` is true only when all three full question counts are present. A successful smoke has `complete_benchmarks=false`.
 
+The evaluator also supports four nodes with eight independent GPUs each: pass
+`--workers 32 --local-workers 8` in a four-replica managed Job. Replica identity
+comes from `KUBEBRAIN_REPLICA` and `KUBEBRAIN_REPLICA_TOTAL`. Each replica runs its
+eight full-model workers before the corresponding early-exit workers; replica
+zero waits for all 64 worker receipts and four completion markers before
+aggregating. Runtime overlays and their receipts use separate
+`runtime-replica-N` directories under the shared run. The concurrent real-launcher
+regression is `python3 -m unittest discover -s experiments/perfectblend/tests -p test_launch_overlay.py`.
+
+For this experiment's 8-to-32-GPU migration, `--resume-from /shared/snapshot`
+accepts an immutable `early_exit_evaluation_resume_v1` snapshot bound to the
+original run UUID. It checks every file's SHA256, configuration, model,
+classifier, benchmark, tokenizer, runtime and evaluator protocol, then verifies
+each imported question and prompt. Imported full predictions contribute to
+accuracy and generation-length statistics. Free-generation speed comparisons
+use newly computed same-GPU pairs; all fixed-token replays are measured again
+on the new paired GPU. A snapshot contains the original run/config, five source
+files, complete JSONL lines from all eight original full workers, and its
+`resume-manifest.json`. See `evaluation_resume.py` for the schema. The recorded
+migration retained 6,111 full predictions; it does not resume the user-stopped
+native Transformers run.
+
 The optional `launch_overlay.py --module sglang.srt.early_exit.smoke ...` launcher accepts an immutable source overlay with `overlay-manifest.json`. It checks the base source hashes against the pinned image, copies its package into `RUN_DIR`, and applies only hash-verified modifications. Standard full checkouts can use the direct entrypoints above.
 
 The native scripts can also run directly in the verified image with explicit `RUN_DIR` and identical argv, but managed GPU execution should retain UUID, source/image and terminal replica receipts. Scripts write nonempty resolved `config.yaml` files at runtime; all 27B model weights stay frozen.
@@ -127,6 +150,57 @@ At the recorded cal99 threshold, the original sigmoid gate achieved heldout one-
 The original native smoke/evaluation smoke succeeded. The native full benchmark run was stopped at the user's request and has no complete benchmark summary. Its partial predictions remain in the original shared run. `references/run-status.json` records the status; this package does not resume that stopped run.
 
 The [verified SGLang runtime smoke](references/sglang-runtime-report.md) passed exact full/no-skip and serial/async cache/logit controls, and recorded actual GPU stream overlap. Its short control timings are separate from complete benchmark scores and speed estimates.
+
+The [32-GPU batch-one evaluation](references/sglang-full-benchmark-report.md)
+completed all 20,361 questions in each mode. GSM8K accuracy was 96.74%/95.91%,
+MATH 89.30%/84.74% and MMLU 80.79%/80.81% for full/early exit. Fixed128 replay
+speedups were 1.0063×/1.0098× for GSM8K/MATH; MATH end-to-end speedup was 0.8862×.
+All 64 worker receipts and four runtime exits passed. `references/run-status.json`
+records the immutable identities. Multi-request runtime and throughput
+experiments retain independent sources and results.
+
+The separate small-batch request evaluator uses real, different-length prompts:
+
+```sh
+PYTHONPATH=python RUN_DIR=/shared/batch-pilot python -m sglang.srt.early_exit.batch_evaluate \
+  --model /shared/model --classifier /shared/classifier-multiclass.pt \
+  --data /shared/data --batch-sizes 1 2 4 8 \
+  --examples-per-task 16 --replay-examples-per-task 8 --matched-tokens 128
+```
+
+Run `sglang.srt.early_exit.batch_smoke` first to verify the runtime. The request
+evaluator runs full and early exit in separate processes on the same GPU. It
+handles per-request EOS and generation limits, scores MMLU choices, and records
+each microbatch's elapsed time once. Effective tokens, finished-row work and
+CUDA graph padding are separate counters. All batch sizes and modes replay the
+same full batch-one 128-token trajectories for fixed-input timing. This entrypoint
+is a throughput pilot and always reports `complete_benchmarks=false`. The full
+20,361-question evaluation remains a separate run.
+
+The historical [small-batch GPU verification](references/sglang-batch-runtime-report.md)
+passed full/no-skip and serial/async mixed-route bitwise logits/cache controls at
+batch1/2/3/4/8, with exact route, padding and exclusive batch-eight branch counts.
+The real-request batch1/2 entrypoint E2E also succeeded. The completed
+[per-request throughput pilot](references/sglang-per-request-batch-pilot-report.md)
+records its independent source and all batch sizes. Its fixed128 EE/full
+throughput ratios were 1.011/0.885/0.708/0.542 at batch 1/2/4/8.
+
+The current runtime implements `split_skip`: after source 32, GPU partitioning
+forms one no-skip batch and one common-width skip batch. Each group uses its
+smallest capacity 1/2/4/8, with original request/cache ownership restored before
+the shared suffix. The [split-group GPU smoke](references/sglang-split-smoke-report.md)
+passed full/no-skip and serial/async mixed bitwise logits/cache checks for
+batch 1/2/3/4/8, device partition/capacity checks and padding canaries. The completed
+[split-group throughput pilot](references/sglang-split-batch-pilot-report.md)
+measured fixed128 EE/full ratios of 0.959/0.904/0.871/0.879 at batch 1/2/4/8.
+At batch8, full reached 478.70 token/s and grouped EE reached 420.55 token/s;
+group-capacity utilization was 81.0%. Grouping improves the historical
+per-request ratio at larger batches, while the current path remains slower
+than full execution. Variable-length generation separately reports completed-row
+work and output-length changes. The pilot retains an independent source/run
+identity and does not replace the complete batch1 quality evaluation. See the
+[runtime contract](../../python/sglang/srt/early_exit/README.md) for device-only
+selection, cache backfill, padding stores and acceptance checks.
 
 After a successful completed native run, collect small receipts and render the comparison:
 
@@ -147,3 +221,9 @@ Collect pilot and capture receipts in the same directory first. Collection requi
 The primary baseline is the **full execution of the same SFT checkpoint 1479**. The inspected official Qwen3.8-27B model card revision `37561816e66b5b9153b1b64c10968c18c1e6f4a0` does not list GSM8K, original MATH or original MMLU scores. Official figures for other suites are not substituted into this comparison.
 
 Historical validated sources are recorded in `references/source-provenance.json`. Packaging adds explicit path/inventory configuration and the portable control wrapper; a new packaged run must record its new commit rather than claim the original byte-identical source. `native/math_equivalence.py` preserves the [Hendrycks MATH normalization](https://github.com/hendrycks/math/blob/main/modeling/math_equivalence.py) used in the original experiment, with source attribution and string-literal cleanup.
+
+## Experimental deferred prefill on re-entry
+
+`SGLANG_EARLY_EXIT_CACHE=lazy` defers skipped KV/GDN work until a request's applied skip width decreases. Saved layer32 hidden/residual history is replayed with causal chunk prefill under GPU CUDA WHILE control. The experimental runner supports static request batches and resets pending state when clearing the pools. [Implementation and launch status](references/lazy-prefill-status.md) records the controls and current platform block; GPU correctness and performance are still unverified.
+
+Use the managed `custom` stage with `--entrypoint experiments/perfectblend/sglang_lazy.py`, `--workload-kind training`, one GPU, and an external arguments-file containing the model, classifier and inventory paths. Its `--stage smoke` runs the full/no-skip, eager-oracle, long-hole and padding controls. After a passing smoke, `--stage evaluate --data /shared/data` runs the same-GPU full/async/lazy pilot at batch1/2/4/8 and writes `lazy-evaluation-summary.json`. Both accept `--chunk 16`; smoke writes `lazy-smoke-summary.json`. The existing completed benchmark scores belong to their recorded async runtimes.

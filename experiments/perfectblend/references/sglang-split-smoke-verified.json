@@ -1,0 +1,14 @@
+{
+  "markers": [
+    {
+      "replica": "0",
+      "exit_code": 0
+    }
+  ],
+  "files": {
+    "batch-smoke-summary.json": {
+      "sha256": "101414b178be44e12fe2839fdc9d53ecd3bfbfa6747b7160cc3e7fd1c8a1f3ff",
+      "bytes": 1350480
+    }
+  }
+}

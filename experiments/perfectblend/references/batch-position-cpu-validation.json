@@ -1,0 +1,66 @@
+{
+  "status": "cpu_and_gpu_verified",
+  "observed_at": "2026-11-20T04:25:18.666331+00:00",
+  "failed_gpu_run": "pb-sglang-batch-smoke-1120-r1",
+  "gpu_job": "j-1795147768-745175",
+  "initial_failure": "serial worker bs8 warmup before conditional graph conversion: CUBLAS_STATUS_EXECUTION_FAILED in main _segments MLP down projection",
+  "confirmed_contract_bug": "Qwen3-VL replaces decode positions with MRoPE [3, batch]; both main and repair sliced the axis dimension instead of the final token dimension; row_batch omitted mrope_positions slicing.",
+  "kernel_contract": "triton_mrope_fused reads position base + axis * positions.stride(0) + token; row views preserve the axis stride and require unit token stride.",
+  "reproduced_before_fix": {
+    "test": "test_mrope_middle_positions",
+    "sizes": [
+      1,
+      2,
+      3,
+      4,
+      8
+    ],
+    "result": "all five subtests failed in the real forward_middle -> _segments -> decoder dispatch; got [1, batch] instead of [3, 1]"
+  },
+  "post_fix": {
+    "argv": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "-m",
+      "unittest",
+      "experiments.perfectblend.tests.test_batch_positions"
+    ],
+    "exit_code": 0,
+    "output": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.014s\n\nOK\n",
+    "sizes": [
+      1,
+      2,
+      3,
+      4,
+      8
+    ],
+    "covers": [
+      "ordinary RoPE and MRoPE main/repair middle dispatch",
+      "nontrivial graph input axis stride and t/h/w pointer addressing",
+      "live graph input alias after backing-buffer updates",
+      "malformed positions and metadata rejected by entrypoint validation"
+    ]
+  },
+  "runtime_changes_frozen": true,
+  "gpu_verified": true,
+  "sha256": {
+    "python/sglang/srt/early_exit/batch.py": "f9e6947c1be26425b51ca659df980b0706cb1a5504292d646fcb20b439a44c89",
+    "python/sglang/srt/early_exit/runtime.py": "a7def9396e3ff61a5ce7f7701d296b662c38f954f2a57999e53e98fad40f3ed5",
+    "python/sglang/srt/early_exit/conditional.py": "d7ef7da5c78cd52f30071ec6723c6ebff9e8cd7d286bdf36f239eaf28019a503",
+    "python/sglang/srt/early_exit/conditional.cu": "8acb9b5abddad822d552db2b44dcf04c95bd136dfee4da6007cae3cd7a985fa8",
+    "python/sglang/srt/early_exit/probe.py": "35a4d9972e3cf7ce908195f255e9e4608b609a3367d9b776d27d3f2de6dedfa0",
+    "python/sglang/srt/early_exit/smoke.py": "77b8428fb997211eecdcba49e36aaa114e5a6f290c4054f03f389781528dc3fc",
+    "python/sglang/srt/early_exit/batch_smoke.py": "6f7204cce9a3ed688b2d13e95c6939cd1c34180388c7199fb09a86ba07138d37",
+    "python/sglang/srt/early_exit/batch_evaluate.py": "0b8cd5be010ba177c09170ddc82130f57ba15f92604e8ee6dd24bf16d63c408f",
+    "python/sglang/srt/models/qwen3_5.py": "e135f2445f684c0784e2cc3edf5e2bdfe0c59e68008c97b8892c90fc9cbc5e55",
+    "experiments/perfectblend/tests/test_batch_positions.py": "ccac104b7d2b641762b5f5949f3fc028fc8f9277a44fc31a8d5cfa8277a8ce16"
+  },
+  "gpu_validation": {
+    "run_uuid": "86aadba5-14c4-4398-b939-cf443e8d042c",
+    "job_id": "j-1795150007-691586",
+    "source": "4adba5efe68d04426bad125f0e1c1a8a57f8557c",
+    "summary_sha256": "2ad2ec6ebe1f3050578d44a84bcaa5d6c688559bf7780f43a6365f3d747d67ea",
+    "passed": true,
+    "full_no_skip_bitwise": true,
+    "serial_async_mixed_bitwise": true
+  }
+}

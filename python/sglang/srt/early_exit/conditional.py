@@ -54,6 +54,8 @@ class ConditionalRegions:
             ctypes.c_uint64,
             ctypes.c_uint64,
             ctypes.POINTER(ctypes.c_int),
+            ctypes.POINTER(ctypes.c_int),
+            ctypes.POINTER(ctypes.c_int),
             ctypes.c_int,
             ctypes.POINTER(ctypes.c_int),
         ]
@@ -74,13 +76,34 @@ class ConditionalRegions:
             )
         )
 
-    def convert(self, graph, action, widths):
-        assert action.is_cuda and action.dtype == torch.int32 and action.numel() == 1
+    def convert(self, graph, action, widths, action_indices=None, kinds=None):
+        """Move regions into IF (kind0) or device-repeated WHILE (kind1) bodies."""
+        assert (
+            action.is_cuda
+            and action.dtype == torch.int32
+            and action.ndim == 1
+            and action.is_contiguous()
+        )
+        if action_indices is None:
+            assert action.numel() == 1
+            action_indices = [0] * len(widths)
+        assert len(action_indices) == len(widths)
+        assert all(0 <= index < action.numel() for index in action_indices)
+        kinds = kinds or [0] * len(widths)
+        assert len(kinds) == len(widths) and all(kind in (0, 1) for kind in kinds)
         limits = (ctypes.c_int * len(widths))(*widths)
+        indices = (ctypes.c_int * len(widths))(*action_indices)
+        types = (ctypes.c_int * len(widths))(*kinds)
         moved = (ctypes.c_int * len(widths))()
         self._check(
             self.library.ee_convert(
-                graph.raw_cuda_graph(), action.data_ptr(), limits, len(widths), moved
+                graph.raw_cuda_graph(),
+                action.data_ptr(),
+                limits,
+                indices,
+                types,
+                len(widths),
+                moved,
             )
         )
         if path := os.environ.get("SGLANG_EARLY_EXIT_DEBUG_DOT"):

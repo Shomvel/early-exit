@@ -1,0 +1,41 @@
+{
+  "passed": true,
+  "routing": "batch_min",
+  "cases": [
+    {
+      "batch_size": 1,
+      "full_no_skip": true,
+      "serial_async_exact": true,
+      "zero_veto": true,
+      "padding_canary": true
+    },
+    {
+      "batch_size": 2,
+      "full_no_skip": true,
+      "serial_async_exact": true,
+      "zero_veto": true,
+      "padding_canary": true
+    },
+    {
+      "batch_size": 3,
+      "full_no_skip": true,
+      "serial_async_exact": true,
+      "zero_veto": true,
+      "padding_canary": true
+    },
+    {
+      "batch_size": 4,
+      "full_no_skip": true,
+      "serial_async_exact": true,
+      "zero_veto": true,
+      "padding_canary": true
+    },
+    {
+      "batch_size": 8,
+      "full_no_skip": true,
+      "serial_async_exact": true,
+      "zero_veto": true,
+      "padding_canary": true
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: Apache-2.0
-// Turn marked, captured PyTorch layer regions into CUDA IF body graphs.
+// Turn marked, captured PyTorch layer regions into CUDA IF/WHILE body graphs.
 #include <algorithm>
 #include <cstdint>
 #include <cuda.h>
@@ -52,9 +52,11 @@ extern "C" int ee_pdl_increment(uint64_t stream, uint64_t counter) {
   }
 }
 __global__ void set_condition(cudaGraphConditionalHandle h, const int *action,
-                              int width) {
-  cudaGraphSetConditional(h,
-                          width > 0 ? action[0] < width : action[0] >= -width);
+                              int index, int width) {
+  const int selected = action[index];
+  // -1 marks a padded request. Neither main nor repair executes its body.
+  cudaGraphSetConditional(
+      h, selected >= 0 && (width > 0 ? selected < width : selected >= -width));
 }
 extern "C" const char *ee_error() { return last_error.c_str(); }
 extern "C" int ee_dump(uint64_t graph, const char *path) {
@@ -103,7 +105,8 @@ struct OwnedGraph {
 };
 
 extern "C" int ee_convert(uint64_t graph_ptr, uint64_t action_ptr,
-                          const int *widths, int groups, int *moved) {
+                          const int *widths, const int *action_indices,
+                          const int *kinds, int groups, int *moved) {
   try {
     auto graph = reinterpret_cast<cudaGraph_t>(graph_ptr);
     const int *action = reinterpret_cast<const int *>(action_ptr);
@@ -191,14 +194,15 @@ extern "C" int ee_convert(uint64_t graph_ptr, uint64_t action_ptr,
       kp.gridDim = dim3(1);
       kp.blockDim = dim3(1);
       int width = widths[group];
-      void *args[] = {&handle, &action, &width};
+      int action_index = action_indices[group];
+      void *args[] = {&handle, &action, &action_index, &width};
       kp.kernelParams = args;
       Node setter;
       check(cudaGraphAddKernelNode(&setter, graph, &begin, 1, &kp));
       cudaGraphNodeParams cp{};
       cp.type = cudaGraphNodeTypeConditional;
       cp.conditional.handle = handle;
-      cp.conditional.type = cudaGraphCondTypeIf;
+      cp.conditional.type = kinds[group] ? cudaGraphCondTypeWhile : cudaGraphCondTypeIf;
       cp.conditional.size = 1;
       Node conditional;
       check(cudaGraphAddNode(&conditional, graph, &setter, 1, &cp));
@@ -206,6 +210,12 @@ extern "C" int ee_convert(uint64_t graph_ptr, uint64_t action_ptr,
       Node child;
       check(cudaGraphAddChildGraphNode(&child, body, nullptr, 0,
                                        copies[group]->graph));
+      if (kinds[group]) {
+        // The captured body updates its predicate on device. Refresh the
+        // conditional handle after each iteration, including the last one.
+        Node loop_setter;
+        check(cudaGraphAddKernelNode(&loop_setter, body, &child, 1, &kp));
+      }
       for (Node n : region)
         check(cudaGraphDestroyNode(n));
       // The closing marker rejoins the parent only after the selected body.

@@ -1,0 +1,5833 @@
+{
+  "passed": true,
+  "batch_sizes": [
+    1,
+    2,
+    3,
+    4,
+    8
+  ],
+  "conditional_probe": {
+    "passed": true,
+    "routing": "split_skip",
+    "pdl_verified": true,
+    "padded_rows_verified": true,
+    "all_padding_skips_all_bodies": true,
+    "capacities": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "moved_nodes": [
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10,
+      10
+    ],
+    "cases": [
+      {
+        "proposed": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "applied": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "group_actions": [
+          0,
+          -1
+        ],
+        "group_counts": [
+          8,
+          0
+        ],
+        "group_indices": [
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        ],
+        "group_capacities": [
+          8,
+          0
+        ],
+        "selected_bodies": 4,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          5,
+          6,
+          7,
+          11,
+          5,
+          6,
+          7,
+          11
+        ],
+        "applied": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5
+        ],
+        "group_actions": [
+          -1,
+          5
+        ],
+        "group_counts": [
+          0,
+          8
+        ],
+        "group_indices": [
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        ],
+        "group_capacities": [
+          0,
+          8
+        ],
+        "selected_bodies": 4,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          6,
+          7,
+          11,
+          6,
+          7,
+          11,
+          6,
+          7
+        ],
+        "applied": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          6
+        ],
+        "group_actions": [
+          -1,
+          6
+        ],
+        "group_counts": [
+          0,
+          8
+        ],
+        "group_indices": [
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        ],
+        "group_capacities": [
+          0,
+          8
+        ],
+        "selected_bodies": 4,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          7,
+          11,
+          7,
+          11,
+          7,
+          11,
+          7,
+          11
+        ],
+        "applied": [
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7,
+          7
+        ],
+        "group_actions": [
+          -1,
+          7
+        ],
+        "group_counts": [
+          0,
+          8
+        ],
+        "group_indices": [
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        ],
+        "group_capacities": [
+          0,
+          8
+        ],
+        "selected_bodies": 4,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        "applied": [
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11,
+          11
+        ],
+        "group_actions": [
+          -1,
+          11
+        ],
+        "group_counts": [
+          0,
+          8
+        ],
+        "group_indices": [
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ]
+        ],
+        "group_capacities": [
+          0,
+          8
+        ],
+        "selected_bodies": 4,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ]
+      },
+      {
+        "proposed": [
+          5,
+          6,
+          7,
+          11,
+          5,
+          6,
+          7,
+          0
+        ],
+        "applied": [
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          5,
+          0
+        ],
+        "group_actions": [
+          0,
+          5
+        ],
+        "group_counts": [
+          1,
+          7
+        ],
+        "group_indices": [
+          [
+            7,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            -1
+          ]
+        ],
+        "group_capacities": [
+          1,
+          8
+        ],
+        "selected_bodies": 8,
+        "launched": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          6,
+          7,
+          11,
+          6,
+          7,
+          11,
+          0,
+          0
+        ],
+        "applied": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          6,
+          0,
+          0
+        ],
+        "group_actions": [
+          0,
+          6
+        ],
+        "group_counts": [
+          2,
+          6
+        ],
+        "group_indices": [
+          [
+            6,
+            7,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            -1,
+            -1
+          ]
+        ],
+        "group_capacities": [
+          2,
+          8
+        ],
+        "selected_bodies": 8,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          7,
+          11,
+          7,
+          11,
+          7,
+          0,
+          0,
+          0
+        ],
+        "applied": [
+          7,
+          7,
+          7,
+          7,
+          7,
+          0,
+          0,
+          0
+        ],
+        "group_actions": [
+          0,
+          7
+        ],
+        "group_counts": [
+          3,
+          5
+        ],
+        "group_indices": [
+          [
+            5,
+            6,
+            7,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            -1,
+            -1,
+            -1
+          ]
+        ],
+        "group_capacities": [
+          4,
+          8
+        ],
+        "selected_bodies": 8,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          11,
+          11,
+          11,
+          11,
+          0,
+          0,
+          0,
+          0
+        ],
+        "applied": [
+          11,
+          11,
+          11,
+          11,
+          0,
+          0,
+          0,
+          0
+        ],
+        "group_actions": [
+          0,
+          11
+        ],
+        "group_counts": [
+          4,
+          4
+        ],
+        "group_indices": [
+          [
+            4,
+            5,
+            6,
+            7,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        ],
+        "group_capacities": [
+          4,
+          4
+        ],
+        "selected_bodies": 8,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          5,
+          6,
+          7,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "applied": [
+          5,
+          5,
+          5,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "group_actions": [
+          0,
+          5
+        ],
+        "group_counts": [
+          5,
+          3
+        ],
+        "group_indices": [
+          [
+            3,
+            4,
+            5,
+            6,
+            7,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            0,
+            1,
+            2,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        ],
+        "group_capacities": [
+          8,
+          4
+        ],
+        "selected_bodies": 8,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          6,
+          7,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "applied": [
+          6,
+          6,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "group_actions": [
+          0,
+          6
+        ],
+        "group_counts": [
+          6,
+          2
+        ],
+        "group_indices": [
+          [
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            -1,
+            -1
+          ],
+          [
+            0,
+            1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        ],
+        "group_capacities": [
+          8,
+          2
+        ],
+        "selected_bodies": 8,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          7,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "applied": [
+          7,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "group_actions": [
+          0,
+          7
+        ],
+        "group_counts": [
+          7,
+          1
+        ],
+        "group_indices": [
+          [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            -1
+          ],
+          [
+            0,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        ],
+        "group_capacities": [
+          8,
+          1
+        ],
+        "selected_bodies": 8,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          0,
+          11,
+          5,
+          -1,
+          -1,
+          6,
+          0,
+          7
+        ],
+        "applied": [
+          0,
+          5,
+          5,
+          -1,
+          -1,
+          5,
+          0,
+          5
+        ],
+        "group_actions": [
+          0,
+          5
+        ],
+        "group_counts": [
+          2,
+          4
+        ],
+        "group_indices": [
+          [
+            0,
+            6,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            1,
+            2,
+            5,
+            7,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        ],
+        "group_capacities": [
+          2,
+          4
+        ],
+        "selected_bodies": 8,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          7,
+          6,
+          11,
+          7,
+          11,
+          -1,
+          -1,
+          -1
+        ],
+        "applied": [
+          6,
+          6,
+          6,
+          6,
+          6,
+          -1,
+          -1,
+          -1
+        ],
+        "group_actions": [
+          -1,
+          6
+        ],
+        "group_counts": [
+          0,
+          5
+        ],
+        "group_indices": [
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            -1,
+            -1,
+            -1
+          ]
+        ],
+        "group_capacities": [
+          0,
+          8
+        ],
+        "selected_bodies": 4,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          0,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          11,
+          7,
+          11,
+          7,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "applied": [
+          7,
+          7,
+          7,
+          7,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "group_actions": [
+          -1,
+          7
+        ],
+        "group_counts": [
+          0,
+          4
+        ],
+        "group_indices": [
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            0,
+            1,
+            2,
+            3,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        ],
+        "group_capacities": [
+          0,
+          4
+        ],
+        "selected_bodies": 4,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          -1
+        ],
+        "applied": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          -1
+        ],
+        "group_actions": [
+          0,
+          -1
+        ],
+        "group_counts": [
+          7,
+          0
+        ],
+        "group_indices": [
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        ],
+        "group_capacities": [
+          8,
+          0
+        ],
+        "selected_bodies": 4,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "applied": [
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "group_actions": [
+          -1,
+          -1
+        ],
+        "group_counts": [
+          0,
+          0
+        ],
+        "group_indices": [
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        ],
+        "group_capacities": [
+          0,
+          0
+        ],
+        "selected_bodies": 0,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          5,
+          7,
+          11,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "applied": [
+          5,
+          5,
+          5,
+          -1,
+          -1,
+          -1,
+          -1,
+          -1
+        ],
+        "group_actions": [
+          -1,
+          5
+        ],
+        "group_counts": [
+          0,
+          3
+        ],
+        "group_indices": [
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ],
+          [
+            0,
+            1,
+            2,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        ],
+        "group_capacities": [
+          0,
+          4
+        ],
+        "selected_bodies": 4,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "proposed": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "applied": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "group_actions": [
+          0,
+          -1
+        ],
+        "group_counts": [
+          8,
+          0
+        ],
+        "group_indices": [
+          [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          [
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1,
+            -1
+          ]
+        ],
+        "group_capacities": [
+          8,
+          0
+        ],
+        "selected_bodies": 4,
+        "launched": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "masked_kv_store": {
+      "passed": true,
+      "native_pool": "MHATokenToKVPool",
+      "dtype": "bfloat16",
+      "layout": "nhd",
+      "key_head_dim": 96,
+      "value_head_dim": 128,
+      "concurrent_streams": 2,
+      "cases": [
+        {
+          "locations": [
+            [
+              0,
+              1,
+              0,
+              4
+            ],
+            [
+              2,
+              0,
+              7,
+              0
+            ]
+          ],
+          "real_slots": [
+            1,
+            4,
+            2,
+            7
+          ],
+          "padding_slot_unchanged": true,
+          "exact": true
+        },
+        {
+          "locations": [
+            [
+              0,
+              0,
+              0,
+              0
+            ],
+            [
+              0,
+              0,
+              0,
+              0
+            ]
+          ],
+          "real_slots": [],
+          "padding_slot_unchanged": true,
+          "exact": true
+        },
+        {
+          "locations": [
+            [
+              3,
+              5,
+              8,
+              9
+            ],
+            [
+              10,
+              12,
+              0,
+              14
+            ]
+          ],
+          "real_slots": [
+            3,
+            5,
+            8,
+            9,
+            10,
+            12,
+            14
+          ],
+          "padding_slot_unchanged": true,
+          "exact": true
+        },
+        {
+          "locations": [
+            [
+              0,
+              1,
+              0,
+              4
+            ],
+            [
+              2,
+              0,
+              7,
+              0
+            ]
+          ],
+          "real_slots": [
+            1,
+            4,
+            2,
+            7
+          ],
+          "padding_slot_unchanged": true,
+          "exact": true
+        }
+      ]
+    }
+  },
+  "classifier_sha256": "47b94a7b12155ad1a58a773fb2326cc2c28bc2129d25a72752a2a10374b46596",
+  "routing": "split_skip",
+  "scope": "Compact copy removes per-tensor and full per-step record detail; original immutable summary retained at run path with stated SHA256.",
+  "checks": {
+    "1": {
+      "serial_no_skip_logits": {
+        "passed": true,
+        "exact": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "relative_l2": 0.0,
+        "shape": [
+          16,
+          1,
+          248320
+        ],
+        "atol": 0.02,
+        "rtol": 0
+      },
+      "serial_no_skip_cache": {
+        "passed": true,
+        "exact": true,
+        "max_abs": 0.0
+      },
+      "serial_no_skip_tokens": {
+        "passed": true
+      },
+      "serial_reference_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            16,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "proposed_diversity_steps": 0,
+        "split_steps": 0,
+        "positive_skip_steps": 0
+      },
+      "serial_reference_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "serial_mixed_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            3,
+            3,
+            3,
+            3
+          ]
+        ],
+        "proposed_diversity_steps": 0,
+        "split_steps": 0,
+        "positive_skip_steps": 12
+      },
+      "serial_mixed_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "serial_learned_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            11,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            5
+          ]
+        ],
+        "proposed_diversity_steps": 0,
+        "split_steps": 0,
+        "positive_skip_steps": 5
+      },
+      "serial_learned_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "async_no_skip_logits": {
+        "passed": true,
+        "exact": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "relative_l2": 0.0,
+        "shape": [
+          16,
+          1,
+          248320
+        ],
+        "atol": 0.02,
+        "rtol": 0
+      },
+      "async_no_skip_cache": {
+        "passed": true,
+        "exact": true,
+        "max_abs": 0.0
+      },
+      "async_no_skip_tokens": {
+        "passed": true
+      },
+      "async_reference_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            16,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "proposed_diversity_steps": 0,
+        "split_steps": 0,
+        "positive_skip_steps": 0
+      },
+      "async_reference_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "async_mixed_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            4,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            3,
+            3,
+            3,
+            3
+          ]
+        ],
+        "proposed_diversity_steps": 0,
+        "split_steps": 0,
+        "positive_skip_steps": 12
+      },
+      "async_mixed_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "async_learned_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            11,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            5
+          ]
+        ],
+        "proposed_diversity_steps": 0,
+        "split_steps": 0,
+        "positive_skip_steps": 5
+      },
+      "async_learned_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "full_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "serial_async_logits": {
+        "passed": true,
+        "exact": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "relative_l2": 0.0,
+        "shape": [
+          16,
+          1,
+          248320
+        ],
+        "atol": 0,
+        "rtol": 0
+      },
+      "serial_async_cache": {
+        "passed": true,
+        "exact": true,
+        "max_abs": 0.0
+      }
+    },
+    "2": {
+      "serial_no_skip_logits": {
+        "passed": true,
+        "exact": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "relative_l2": 0.0,
+        "shape": [
+          16,
+          2,
+          248320
+        ],
+        "atol": 0.02,
+        "rtol": 0
+      },
+      "serial_no_skip_cache": {
+        "passed": true,
+        "exact": true,
+        "max_abs": 0.0
+      },
+      "serial_no_skip_tokens": {
+        "passed": true
+      },
+      "serial_reference_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            16,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "proposed_diversity_steps": 0,
+        "split_steps": 0,
+        "positive_skip_steps": 0
+      },
+      "serial_reference_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "serial_mixed_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            5,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            5,
+            3,
+            3,
+            2
+          ]
+        ],
+        "proposed_diversity_steps": 11,
+        "split_steps": 2,
+        "positive_skip_steps": 13
+      },
+      "serial_mixed_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "serial_learned_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            12,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            8
+          ]
+        ],
+        "proposed_diversity_steps": 4,
+        "split_steps": 4,
+        "positive_skip_steps": 8
+      },
+      "serial_learned_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "async_no_skip_logits": {
+        "passed": true,
+        "exact": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "relative_l2": 0.0,
+        "shape": [
+          16,
+          2,
+          248320
+        ],
+        "atol": 0.02,
+        "rtol": 0
+      },
+      "async_no_skip_cache": {
+        "passed": true,
+        "exact": true,
+        "max_abs": 0.0
+      },
+      "async_no_skip_tokens": {
+        "passed": true
+      },
+      "async_reference_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            16,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "proposed_diversity_steps": 0,
+        "split_steps": 0,
+        "positive_skip_steps": 0
+      },
+      "async_reference_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "async_mixed_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            5,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            5,
+            3,
+            3,
+            2
+          ]
+        ],
+        "proposed_diversity_steps": 11,
+        "split_steps": 2,
+        "positive_skip_steps": 13
+      },
+      "async_mixed_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "async_learned_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            12,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            8
+          ]
+        ],
+        "proposed_diversity_steps": 4,
+        "split_steps": 4,
+        "positive_skip_steps": 8
+      },
+      "async_learned_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "full_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "serial_async_logits": {
+        "passed": true,
+        "exact": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "relative_l2": 0.0,
+        "shape": [
+          16,
+          2,
+          248320
+        ],
+        "atol": 0,
+        "rtol": 0
+      },
+      "serial_async_cache": {
+        "passed": true,
+        "exact": true,
+        "max_abs": 0.0
+      }
+    },
+    "3": {
+      "serial_no_skip_logits": {
+        "passed": true,
+        "exact": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "relative_l2": 0.0,
+        "shape": [
+          16,
+          3,
+          248320
+        ],
+        "atol": 0.02,
+        "rtol": 0
+      },
+      "serial_no_skip_cache": {
+        "passed": true,
+        "exact": true,
+        "max_abs": 0.0
+      },
+      "serial_no_skip_tokens": {
+        "passed": true
+      },
+      "serial_reference_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            16,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "proposed_diversity_steps": 0,
+        "split_steps": 0,
+        "positive_skip_steps": 0
+      },
+      "serial_reference_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 1,
+        "canary": {
+          "passed": true,
+          "exact": true,
+          "max_abs": 0.0,
+          "tensors": {
+            "conv32": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm32": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv33": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm33": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv34": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm34": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "k35": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "v35": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv36": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm36": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv37": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm37": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv38": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm38": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "k39": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "v39": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv40": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm40": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv41": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm41": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv42": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm42": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            }
+          }
+        }
+      },
+      "serial_mixed_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            7,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            5,
+            4,
+            2,
+            2
+          ]
+        ],
+        "proposed_diversity_steps": 11,
+        "split_steps": 4,
+        "positive_skip_steps": 13
+      },
+      "serial_mixed_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 1,
+        "canary": {
+          "passed": true,
+          "exact": true,
+          "max_abs": 0.0,
+          "tensors": {
+            "conv32": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm32": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv33": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm33": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv34": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm34": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "k35": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "v35": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv36": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm36": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv37": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm37": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv38": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm38": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "k39": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "v39": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv40": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm40": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv41": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm41": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv42": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm42": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            }
+          }
+        }
+      },
+      "serial_learned_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            13,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            10
+          ]
+        ],
+        "proposed_diversity_steps": 7,
+        "split_steps": 7,
+        "positive_skip_steps": 10
+      },
+      "serial_learned_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 1,
+        "canary": {
+          "passed": true,
+          "exact": true,
+          "max_abs": 0.0,
+          "tensors": {
+            "conv32": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm32": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv33": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm33": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv34": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm34": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "k35": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "v35": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv36": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm36": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv37": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm37": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv38": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm38": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "k39": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "v39": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv40": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm40": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv41": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm41": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv42": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm42": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            }
+          }
+        }
+      },
+      "async_no_skip_logits": {
+        "passed": true,
+        "exact": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "relative_l2": 0.0,
+        "shape": [
+          16,
+          3,
+          248320
+        ],
+        "atol": 0.02,
+        "rtol": 0
+      },
+      "async_no_skip_cache": {
+        "passed": true,
+        "exact": true,
+        "max_abs": 0.0
+      },
+      "async_no_skip_tokens": {
+        "passed": true
+      },
+      "async_reference_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            16,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "proposed_diversity_steps": 0,
+        "split_steps": 0,
+        "positive_skip_steps": 0
+      },
+      "async_reference_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 1,
+        "canary": {
+          "passed": true,
+          "exact": true,
+          "max_abs": 0.0,
+          "tensors": {
+            "conv32": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm32": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv33": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm33": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv34": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm34": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "k35": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "v35": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv36": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm36": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv37": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm37": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv38": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm38": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "k39": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "v39": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv40": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm40": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv41": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm41": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv42": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm42": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            }
+          }
+        }
+      },
+      "async_mixed_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            7,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            5,
+            4,
+            2,
+            2
+          ]
+        ],
+        "proposed_diversity_steps": 11,
+        "split_steps": 4,
+        "positive_skip_steps": 13
+      },
+      "async_mixed_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 1,
+        "canary": {
+          "passed": true,
+          "exact": true,
+          "max_abs": 0.0,
+          "tensors": {
+            "conv32": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm32": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv33": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm33": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv34": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm34": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "k35": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "v35": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv36": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm36": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv37": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm37": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv38": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm38": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "k39": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "v39": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv40": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm40": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv41": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm41": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv42": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm42": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            }
+          }
+        }
+      },
+      "async_learned_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            13,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            10
+          ]
+        ],
+        "proposed_diversity_steps": 7,
+        "split_steps": 7,
+        "positive_skip_steps": 10
+      },
+      "async_learned_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 1,
+        "canary": {
+          "passed": true,
+          "exact": true,
+          "max_abs": 0.0,
+          "tensors": {
+            "conv32": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm32": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv33": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm33": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv34": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm34": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "k35": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "v35": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv36": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm36": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv37": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm37": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv38": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm38": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "k39": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "v39": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv40": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm40": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv41": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm41": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv42": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm42": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            }
+          }
+        }
+      },
+      "full_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 1,
+        "canary": {
+          "passed": true,
+          "exact": true,
+          "max_abs": 0.0,
+          "tensors": {
+            "conv32": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm32": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv33": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm33": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv34": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm34": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "k35": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "v35": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv36": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm36": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv37": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm37": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv38": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm38": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "k39": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "v39": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                34,
+                4,
+                256
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv40": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm40": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv41": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm41": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "conv42": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                10240,
+                3
+              ],
+              "atol": 0,
+              "rtol": 0
+            },
+            "ssm42": {
+              "passed": true,
+              "exact": true,
+              "finite": true,
+              "max_abs": 0.0,
+              "mean_abs": 0.0,
+              "relative_l2": 0.0,
+              "shape": [
+                48,
+                128,
+                128
+              ],
+              "atol": 0,
+              "rtol": 0
+            }
+          }
+        }
+      },
+      "serial_async_logits": {
+        "passed": true,
+        "exact": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "relative_l2": 0.0,
+        "shape": [
+          16,
+          3,
+          248320
+        ],
+        "atol": 0,
+        "rtol": 0
+      },
+      "serial_async_cache": {
+        "passed": true,
+        "exact": true,
+        "max_abs": 0.0
+      }
+    },
+    "4": {
+      "serial_no_skip_logits": {
+        "passed": true,
+        "exact": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "relative_l2": 0.0,
+        "shape": [
+          16,
+          4,
+          248320
+        ],
+        "atol": 0.02,
+        "rtol": 0
+      },
+      "serial_no_skip_cache": {
+        "passed": true,
+        "exact": true,
+        "max_abs": 0.0
+      },
+      "serial_no_skip_tokens": {
+        "passed": true
+      },
+      "serial_reference_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            16,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "proposed_diversity_steps": 0,
+        "split_steps": 0,
+        "positive_skip_steps": 0
+      },
+      "serial_reference_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "serial_mixed_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            8,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            4,
+            4,
+            4,
+            2
+          ]
+        ],
+        "proposed_diversity_steps": 12,
+        "split_steps": 6,
+        "positive_skip_steps": 14
+      },
+      "serial_mixed_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "serial_learned_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            14,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            10
+          ]
+        ],
+        "proposed_diversity_steps": 8,
+        "split_steps": 8,
+        "positive_skip_steps": 10
+      },
+      "serial_learned_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "async_no_skip_logits": {
+        "passed": true,
+        "exact": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "relative_l2": 0.0,
+        "shape": [
+          16,
+          4,
+          248320
+        ],
+        "atol": 0.02,
+        "rtol": 0
+      },
+      "async_no_skip_cache": {
+        "passed": true,
+        "exact": true,
+        "max_abs": 0.0
+      },
+      "async_no_skip_tokens": {
+        "passed": true
+      },
+      "async_reference_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            16,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "proposed_diversity_steps": 0,
+        "split_steps": 0,
+        "positive_skip_steps": 0
+      },
+      "async_reference_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "async_mixed_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            8,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            4,
+            4,
+            4,
+            2
+          ]
+        ],
+        "proposed_diversity_steps": 12,
+        "split_steps": 6,
+        "positive_skip_steps": 14
+      },
+      "async_mixed_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "async_learned_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            14,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            10
+          ]
+        ],
+        "proposed_diversity_steps": 8,
+        "split_steps": 8,
+        "positive_skip_steps": 10
+      },
+      "async_learned_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "full_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "serial_async_logits": {
+        "passed": true,
+        "exact": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "relative_l2": 0.0,
+        "shape": [
+          16,
+          4,
+          248320
+        ],
+        "atol": 0,
+        "rtol": 0
+      },
+      "serial_async_cache": {
+        "passed": true,
+        "exact": true,
+        "max_abs": 0.0
+      }
+    },
+    "8": {
+      "serial_no_skip_logits": {
+        "passed": true,
+        "exact": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "relative_l2": 0.0,
+        "shape": [
+          16,
+          8,
+          248320
+        ],
+        "atol": 0.02,
+        "rtol": 0
+      },
+      "serial_no_skip_cache": {
+        "passed": true,
+        "exact": true,
+        "max_abs": 0.0
+      },
+      "serial_no_skip_tokens": {
+        "passed": true
+      },
+      "serial_reference_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            16,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "proposed_diversity_steps": 0,
+        "split_steps": 0,
+        "positive_skip_steps": 0
+      },
+      "serial_reference_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "serial_mixed_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            9,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            4,
+            4,
+            4,
+            2
+          ]
+        ],
+        "proposed_diversity_steps": 13,
+        "split_steps": 7,
+        "positive_skip_steps": 14
+      },
+      "serial_mixed_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "serial_learned_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            14,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            12
+          ]
+        ],
+        "proposed_diversity_steps": 10,
+        "split_steps": 10,
+        "positive_skip_steps": 12
+      },
+      "serial_learned_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "async_no_skip_logits": {
+        "passed": true,
+        "exact": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "relative_l2": 0.0,
+        "shape": [
+          16,
+          8,
+          248320
+        ],
+        "atol": 0.02,
+        "rtol": 0
+      },
+      "async_no_skip_cache": {
+        "passed": true,
+        "exact": true,
+        "max_abs": 0.0
+      },
+      "async_no_skip_tokens": {
+        "passed": true
+      },
+      "async_reference_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            16,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "proposed_diversity_steps": 0,
+        "split_steps": 0,
+        "positive_skip_steps": 0
+      },
+      "async_reference_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "async_mixed_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            9,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            4,
+            4,
+            4,
+            2
+          ]
+        ],
+        "proposed_diversity_steps": 13,
+        "split_steps": 7,
+        "positive_skip_steps": 14
+      },
+      "async_mixed_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "async_learned_routes": {
+        "passed": true,
+        "errors": [],
+        "group_action_counts": [
+          [
+            14,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            0,
+            0,
+            0,
+            12
+          ]
+        ],
+        "proposed_diversity_steps": 10,
+        "split_steps": 10,
+        "positive_skip_steps": 12
+      },
+      "async_learned_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "full_padding": {
+        "passed": true,
+        "errors": [],
+        "padded_rows": 0,
+        "canary": {
+          "passed": true,
+          "exercised": false
+        }
+      },
+      "serial_async_logits": {
+        "passed": true,
+        "exact": true,
+        "finite": true,
+        "max_abs": 0.0,
+        "mean_abs": 0.0,
+        "relative_l2": 0.0,
+        "shape": [
+          16,
+          8,
+          248320
+        ],
+        "atol": 0,
+        "rtol": 0
+      },
+      "serial_async_cache": {
+        "passed": true,
+        "exact": true,
+        "max_abs": 0.0
+      }
+    }
+  },
+  "original_summary_sha256": "101414b178be44e12fe2839fdc9d53ecd3bfbfa6747b7160cc3e7fd1c8a1f3ff",
+  "original_summary_path": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-split-smoke-1120-r1/batch-smoke-summary.json"
+}

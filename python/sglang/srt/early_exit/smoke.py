@@ -20,7 +20,7 @@ def save(path, value):
     Path(path).write_text(json.dumps(value, indent=2, allow_nan=False) + "\n")
 
 
-def load_runner(model):
+def load_runner(model, max_batch_size=1, max_total_tokens=18000):
     from sglang.bench_one_batch import load_model
     from sglang.srt.entrypoints.engine import _set_envs_and_config
     from sglang.srt.layers.moe import initialize_moe_config
@@ -37,13 +37,13 @@ def load_runner(model):
         linear_attn_prefill_backend="triton",
         disable_radix_cache=True,
         disable_overlap_schedule=True,
-        max_running_requests=1,
-        cuda_graph_bs=[1],
-        cuda_graph_max_bs=1,
+        max_running_requests=max_batch_size,
+        cuda_graph_bs=[size for size in (1, 2, 4, 8) if size <= max_batch_size],
+        cuda_graph_max_bs=max_batch_size,
         context_length=16384,
         mem_fraction_static=0.75,
-        max_total_tokens=18000,
-        max_mamba_cache_size=4,
+        max_total_tokens=max_total_tokens,
+        max_mamba_cache_size=max(4, max_batch_size + 2),
         chunked_prefill_size=-1,
         log_level="info",
     )

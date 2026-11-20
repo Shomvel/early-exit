@@ -1157,6 +1157,14 @@ class Qwen3_5ForCausalLM(nn.Module):
         pp_proxy_tensors: Optional[PPProxyTensors] = None,
         input_deepstack_embeds: Optional[torch.Tensor] = None,
     ) -> Union[torch.Tensor, PPProxyTensors]:
+        if self.early_exit is not None and forward_batch.forward_mode.is_decode():
+            # Reject unsupported eager/batch shapes before prefix cache writes.
+            num_tokens = (
+                input_embeds.shape[0]
+                if input_embeds is not None
+                else input_ids.shape[0]
+            )
+            self.early_exit.validate_decode(forward_batch, num_tokens, positions)
         # Initialize hidden states
         if self.pp_group.is_first_rank:
             if input_embeds is None:

@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "checks": {
+    "global_shards_exact_questions": 20361,
+    "wrong_topology_rejected": true,
+    "generation_grading_protocol_functions_unchanged": 10,
+    "verified_import_count": 8,
+    "wrong_source_uuid_rejected": true,
+    "wrong_model_identity_rejected": true,
+    "wrong_jsonl_count_rejected": true,
+    "corrupt_jsonl_rejected": true,
+    "imported_timing_excluded_from_speed_ratios": true,
+    "real_launcher_four_concurrent_replicas": true,
+    "real_launcher_single_replica_compatibility": true,
+    "active_evaluator_ast_matches_committed_source": true
+  }
+}

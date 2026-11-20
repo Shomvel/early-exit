@@ -1,0 +1,219 @@
+{
+  "status": "cpu_and_gpu_verified",
+  "observed_at": "2026-11-20T04:45:08.979171+00:00",
+  "failed_gpu_source": "059c6500c6428f183b58102c8ad513bb409c3e0b",
+  "failed_gpu_run": "pb-sglang-batch-smoke-1120-r2",
+  "gpu_summary_sha256": "942d976c9e10b859ca50bd14b33b63621df30db568d5157168517b2c6c2f10bb",
+  "failure": {
+    "size": 8,
+    "unchanged_atol": 0.02,
+    "rtol": 0,
+    "logits_max_abs": 0.125,
+    "cache_max_abs": 0.0625,
+    "tokens_equal": true,
+    "small_sizes_full_no_skip_bitwise": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "all_sizes_serial_async_bitwise": [
+      1,
+      2,
+      3,
+      4,
+      8
+    ]
+  },
+  "first_nonexact_cache_tensors_by_row": {
+    "0": [
+      [
+        38,
+        "conv38",
+        0.0625
+      ],
+      [
+        38,
+        "ssm38",
+        0.0019245445728302002
+      ],
+      [
+        39,
+        "k39",
+        0.0625
+      ]
+    ],
+    "1": [
+      [
+        39,
+        "k39",
+        0.03125
+      ],
+      [
+        39,
+        "v39",
+        0.015625
+      ],
+      [
+        40,
+        "conv40",
+        0.0625
+      ]
+    ],
+    "2": [
+      [
+        35,
+        "k35",
+        0.0625
+      ],
+      [
+        35,
+        "v35",
+        0.015625
+      ],
+      [
+        36,
+        "conv36",
+        0.0625
+      ]
+    ],
+    "3": [
+      [
+        38,
+        "ssm38",
+        0.00027969107031822205
+      ],
+      [
+        39,
+        "k39",
+        0.0625
+      ],
+      [
+        39,
+        "v39",
+        0.03125
+      ]
+    ],
+    "4": [
+      [
+        34,
+        "ssm34",
+        0.00030146539211273193
+      ],
+      [
+        35,
+        "k35",
+        0.0625
+      ],
+      [
+        35,
+        "v35",
+        0.03125
+      ]
+    ],
+    "5": [],
+    "6": [],
+    "7": [
+      [
+        37,
+        "ssm37",
+        0.0007087588310241699
+      ],
+      [
+        38,
+        "conv38",
+        0.0625
+      ],
+      [
+        38,
+        "ssm38",
+        0.001572251319885254
+      ]
+    ]
+  },
+  "static_findings": [
+    "Full execution uses M=8 while per-request middle bodies use M=1 in F.linear BF16 cuBLAS GEMMs; prefix and tail use the same batched shapes in both modes.",
+    "Row Triton KV metadata preserves num_kv_splits and flat index offsets; GDN decode arithmetic is per request/head, elementwise activations have no cross-request reductions.",
+    "The observed shape-dependent rounding hypothesis is consistent with the GPU differences; no cuBLAS algorithm ID was measured, so a particular CUDA algorithm is not claimed as a confirmed cause."
+  ],
+  "linear_shapes_N_K": {
+    "gdn_in_proj_qkvz": [
+      16384,
+      5120
+    ],
+    "gdn_in_proj_ba": [
+      96,
+      5120
+    ],
+    "gdn_out_proj": [
+      5120,
+      6144
+    ],
+    "full_qkv_with_gate": [
+      14336,
+      5120
+    ],
+    "full_o_proj": [
+      5120,
+      6144
+    ],
+    "mlp_gate_up": [
+      34816,
+      5120
+    ],
+    "mlp_down": [
+      5120,
+      17408
+    ]
+  },
+  "fix": {
+    "scope": "Only capture batch size 8 gains one exclusive batched no-skip body for layers32..42 zero-based. Sizes1/2/4 retain their verified row paths.",
+    "predicate": "All eight source actions must equal zero; any padding action -1 or any positive jump disables the batched body.",
+    "gpu_action_mapping": "Source action[8] remains policy truth for histograms. execution_actions[9] has rows=-1 and last_slot=0 iff all eight actions are zero; otherwise rows retain actions and last_slot=-1. No GPU action is read by Python.",
+    "graph": "Existing set_condition/convert API unchanged. Row markers0..63 retain original widths; new marker64 has width1 and action_index8. Both main/repair row bodies are disabled in the batched case.",
+    "counters": "Batched middle contributes one execution to each of four main segments for each real row and eight to each aggregate segment. batched_main_replays is reset per request batch and checked against forced schedules.",
+    "gpu_probe": "Eight-row PDL probe now checks all-zero fast path, heterogeneous actions, zero rows plus padding, all padding, and repeated transitions. Verifies exact states/counters, row launches zero on fast path, fast path absent with padding."
+  },
+  "cpu_validation": {
+    "before_fix": "Actual forward_middle/select/convert plan selected 32 M=1 main regions for an all-zero batch8, failing the one M=8 body assertion.",
+    "after_fix": "9 tests passed; ordinary and multi-axis positions, real dispatch layer shapes, exact marker/predicate mapping, mixed/learned raw-action histograms, padding exclusion and small capture preservation.",
+    "argv": [
+      "python3",
+      "-m",
+      "unittest",
+      "experiments.perfectblend.tests.test_batch_positions",
+      "experiments.perfectblend.tests.test_batch_routing"
+    ],
+    "checks": [
+      "unit tests",
+      "compileall",
+      "git diff --check",
+      "Black --check",
+      "isort --check-only --profile black"
+    ]
+  },
+  "gpu_executed_for_this_fix": true,
+  "runtime_changes_frozen": true,
+  "sha256": {
+    "python/sglang/srt/early_exit/batch.py": "f9e6947c1be26425b51ca659df980b0706cb1a5504292d646fcb20b439a44c89",
+    "python/sglang/srt/early_exit/runtime.py": "a7def9396e3ff61a5ce7f7701d296b662c38f954f2a57999e53e98fad40f3ed5",
+    "python/sglang/srt/early_exit/conditional.py": "d7ef7da5c78cd52f30071ec6723c6ebff9e8cd7d286bdf36f239eaf28019a503",
+    "python/sglang/srt/early_exit/conditional.cu": "8acb9b5abddad822d552db2b44dcf04c95bd136dfee4da6007cae3cd7a985fa8",
+    "python/sglang/srt/early_exit/probe.py": "35a4d9972e3cf7ce908195f255e9e4608b609a3367d9b776d27d3f2de6dedfa0",
+    "python/sglang/srt/early_exit/smoke.py": "77b8428fb997211eecdcba49e36aaa114e5a6f290c4054f03f389781528dc3fc",
+    "python/sglang/srt/early_exit/batch_smoke.py": "6f7204cce9a3ed688b2d13e95c6939cd1c34180388c7199fb09a86ba07138d37",
+    "python/sglang/srt/early_exit/batch_evaluate.py": "0b8cd5be010ba177c09170ddc82130f57ba15f92604e8ee6dd24bf16d63c408f",
+    "python/sglang/srt/models/qwen3_5.py": "e135f2445f684c0784e2cc3edf5e2bdfe0c59e68008c97b8892c90fc9cbc5e55",
+    "experiments/perfectblend/tests/test_batch_positions.py": "ccac104b7d2b641762b5f5949f3fc028fc8f9277a44fc31a8d5cfa8277a8ce16",
+    "experiments/perfectblend/tests/test_batch_routing.py": "5e4cbbd4af41422e54f393060f0f8ad75a2d3e7e5098732c7539148bc4aa8082"
+  },
+  "gpu_validation": {
+    "run_uuid": "86aadba5-14c4-4398-b939-cf443e8d042c",
+    "job_id": "j-1795150007-691586",
+    "source": "4adba5efe68d04426bad125f0e1c1a8a57f8557c",
+    "summary_sha256": "2ad2ec6ebe1f3050578d44a84bcaa5d6c688559bf7780f43a6365f3d747d67ea",
+    "passed": true,
+    "full_no_skip_bitwise": true,
+    "serial_async_mixed_bitwise": true
+  }
+}
