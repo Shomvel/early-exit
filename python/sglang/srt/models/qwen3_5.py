@@ -1127,6 +1127,9 @@ class Qwen3_5ForCausalLM(nn.Module):
             self.norm = PPMissingLayer()
 
         self.layers_to_capture = []
+        from sglang.srt.early_exit.runtime import EarlyExitRuntime
+
+        self.early_exit = EarlyExitRuntime.from_environment(config, self.pp_group)
 
     def get_input_embeddings(self):
         return self.embed_tokens
@@ -1169,6 +1172,15 @@ class Qwen3_5ForCausalLM(nn.Module):
         aux_hidden_states = []
         # Pass through decoder layers
         for layer_idx in range(self.start_layer, self.end_layer):
+            if (
+                self.early_exit is not None
+                and forward_batch.forward_mode.is_decode()
+                and layer_idx == self.early_exit.source
+            ):
+                hidden_states, residual = self.early_exit.forward_middle(
+                    self, hidden_states, residual, positions, forward_batch
+                )
+                break
             layer = self.layers[layer_idx]
             with get_global_expert_distribution_recorder().with_current_layer(
                 layer_idx

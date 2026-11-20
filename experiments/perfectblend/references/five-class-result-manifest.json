@@ -1,0 +1,243 @@
+{
+  "run": {
+    "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-multiclass-1120-r1",
+    "uuid": "880d9145-031b-446d-87ac-2fff509918c1",
+    "job_id": "j-1795138496-291034",
+    "state": "verified",
+    "phase": "Succeeded"
+  },
+  "source_commit": "ed9aeac6bd191ec8eff191100045a88588404ce4",
+  "image": "registry.gate.yicloud.com.cn/fdj-infra/weaver-trainer:v1.14.35@sha256:d00e4d298a979f055e5eef9d5449d59e10d22b88c287d99d79ee9256e151fb12",
+  "runtime_markers": [
+    {
+      "replica": "0",
+      "exit_code": 0
+    }
+  ],
+  "gpu_replica": "j-1795138496-291034-6kwrl",
+  "summary": {
+    "path": "five-class-summary.json",
+    "sha256": "a06509656d5cae022c948de7aeb91f314a1fb4d657d00bec459f798b6c55b067"
+  },
+  "checkpoint": {
+    "path": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-multiclass-1120-r1/classifier-multiclass.pt",
+    "sha256": "47b94a7b12155ad1a58a773fb2326cc2c28bc2129d25a72752a2a10374b46596",
+    "format": "five_class_shared_mlp_v1"
+  },
+  "checkpoint_schema": {
+    "source": 32,
+    "skips": [
+      5,
+      6,
+      7,
+      11
+    ],
+    "actions": [
+      0,
+      5,
+      6,
+      7,
+      11
+    ],
+    "width": 1024,
+    "input_hidden_size": 5120,
+    "state_dict_shapes": {
+      "net.0.weight": [
+        1024,
+        5120
+      ],
+      "net.0.bias": [
+        1024
+      ],
+      "net.3.weight": [
+        5,
+        1024
+      ],
+      "net.3.bias": [
+        5
+      ]
+    },
+    "normalization": "hidden.float()*rsqrt(hidden.float().square().mean(-1,keepdim=True).clamp_min(1e-12))",
+    "forward": "Linear(5120,1024)->ReLU->Linear(1024,5)->softmax",
+    "decision": "argmax class0 -> 0, otherwise reject if maximum softmax confidence < selected threshold; return actions[argmax]."
+  },
+  "policies": [
+    {
+      "goal": 0.95,
+      "threshold": 0.8506637706756592,
+      "calibration": {
+        "total": 7993,
+        "accepted": 6642,
+        "tp": 6310,
+        "fp": 332,
+        "precision": 0.9500150557061127,
+        "coverage": 0.830977104966846,
+        "mean_skipped_blocks": 9.132240710621794,
+        "expected_block_fraction_saved": 0.14269126110346553,
+        "action_counts": {
+          "0": 1351,
+          "5": 0,
+          "6": 0,
+          "7": 17,
+          "11": 6625
+        }
+      },
+      "heldout": {
+        "total": 7984,
+        "accepted": 6729,
+        "tp": 6421,
+        "fp": 308,
+        "precision": 0.9542279684945757,
+        "coverage": 0.842810621242485,
+        "mean_skipped_blocks": 9.262399799599198,
+        "expected_block_fraction_saved": 0.14472499686873747,
+        "action_counts": {
+          "0": 1255,
+          "5": 0,
+          "6": 0,
+          "7": 17,
+          "11": 6712
+        }
+      }
+    },
+    {
+      "goal": 0.99,
+      "threshold": 0.9885793690681457,
+      "calibration": {
+        "total": 7993,
+        "accepted": 2350,
+        "tp": 2327,
+        "fp": 23,
+        "precision": 0.9902127659574468,
+        "coverage": 0.29400725634930563,
+        "mean_skipped_blocks": 3.234079819842362,
+        "expected_block_fraction_saved": 0.050532497185036905,
+        "action_counts": {
+          "0": 5643,
+          "5": 0,
+          "6": 0,
+          "7": 0,
+          "11": 2350
+        }
+      },
+      "heldout": {
+        "total": 7984,
+        "accepted": 2524,
+        "tp": 2493,
+        "fp": 31,
+        "precision": 0.9877179080824089,
+        "coverage": 0.3161322645290581,
+        "mean_skipped_blocks": 3.4774549098196395,
+        "expected_block_fraction_saved": 0.054335232965931866,
+        "action_counts": {
+          "0": 5460,
+          "5": 0,
+          "6": 0,
+          "7": 0,
+          "11": 2524
+        }
+      }
+    }
+  ],
+  "baseline_policies": [
+    {
+      "goal": 0.95,
+      "threshold": 0.45001841866970066,
+      "calibration": {
+        "total": 7993,
+        "accepted": 6523,
+        "tp": 6197,
+        "fp": 326,
+        "precision": 0.9500229955541929,
+        "coverage": 0.8160890779432003,
+        "mean_skipped_blocks": 8.65957712998874,
+        "expected_block_fraction_saved": 0.13530589265607407,
+        "action_counts": {
+          "0": 1470,
+          "5": 0,
+          "6": 85,
+          "7": 528,
+          "11": 5910
+        }
+      },
+      "heldout": {
+        "total": 7984,
+        "accepted": 6576,
+        "tp": 6300,
+        "fp": 276,
+        "precision": 0.958029197080292,
+        "coverage": 0.8236472945891784,
+        "mean_skipped_blocks": 8.787324649298597,
+        "expected_block_fraction_saved": 0.13730194764529058,
+        "action_counts": {
+          "0": 1408,
+          "5": 0,
+          "6": 54,
+          "7": 477,
+          "11": 6045
+        }
+      }
+    },
+    {
+      "goal": 0.99,
+      "threshold": 0.9307399958968162,
+      "calibration": {
+        "total": 7993,
+        "accepted": 2302,
+        "tp": 2279,
+        "fp": 23,
+        "precision": 0.9900086880973067,
+        "coverage": 0.28800200175153257,
+        "mean_skipped_blocks": 2.8972851244839233,
+        "expected_block_fraction_saved": 0.0452700800700613,
+        "action_counts": {
+          "0": 5691,
+          "5": 0,
+          "6": 68,
+          "7": 456,
+          "11": 1778
+        }
+      },
+      "heldout": {
+        "total": 7984,
+        "accepted": 2521,
+        "tp": 2488,
+        "fp": 33,
+        "precision": 0.9869099563665212,
+        "coverage": 0.3157565130260521,
+        "mean_skipped_blocks": 3.1851202404809618,
+        "expected_block_fraction_saved": 0.04976750375751503,
+        "action_counts": {
+          "0": 5463,
+          "5": 0,
+          "6": 65,
+          "7": 494,
+          "11": 1962
+        }
+      }
+    }
+  ],
+  "input_shards": [
+    {
+      "path": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-capture-1120-r1/capture-0.pt",
+      "bytes": 246426481,
+      "sha256": "d8ac634ea2471ead5c84271e65cfde6525871d1f6712bb10d4d46a8f6a42fdd9"
+    },
+    {
+      "path": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-capture-1120-r1/capture-1.pt",
+      "bytes": 246333873,
+      "sha256": "12573a28ae8398f70eeceed5bc0415645669240a01ae509abe226e8e369570dd"
+    },
+    {
+      "path": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-capture-1120-r1/capture-2.pt",
+      "bytes": 246549745,
+      "sha256": "7a795aba57798bd5a772b72d7e82122ce13c9eb8536cb18d1fa7574b5d7e0a77"
+    },
+    {
+      "path": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-capture-1120-r1/capture-3.pt",
+      "bytes": 246662961,
+      "sha256": "cc1749ac6cf655e78f855f24f567d95101f9efcfadab23fe9a1e28a243fd277a"
+    }
+  ],
+  "note": "Summary bytes are preserved. Its original local collection path is replaced by a relative reference in this index."
+}

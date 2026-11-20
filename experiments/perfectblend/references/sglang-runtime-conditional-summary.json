@@ -1,0 +1,233 @@
+{
+  "passed": true,
+  "moved_nodes": [
+    2,
+    2,
+    2,
+    2
+  ],
+  "cases": [
+    {
+      "action": 0,
+      "executed": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "value": 11.0
+    },
+    {
+      "action": 5,
+      "executed": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "value": 10.0
+    },
+    {
+      "action": 6,
+      "executed": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "value": 8.0
+    },
+    {
+      "action": 7,
+      "executed": [
+        0,
+        0,
+        0,
+        1
+      ],
+      "value": 5.0
+    },
+    {
+      "action": 11,
+      "executed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "value": 1.0
+    },
+    {
+      "action": 0,
+      "executed": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "value": 11.0
+    },
+    {
+      "action": 11,
+      "executed": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "value": 1.0
+    },
+    {
+      "action": 5,
+      "executed": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "value": 10.0
+    }
+  ],
+  "microseconds": {
+    "0": 54.4809455871582,
+    "11": 32.90795135498047
+  },
+  "parallel": {
+    "passed": true,
+    "pdl_verified": true,
+    "moved_nodes": [
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4,
+      4
+    ],
+    "cases": [
+      {
+        "action": 0,
+        "executed": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "values": [
+          11.0,
+          1.0
+        ]
+      },
+      {
+        "action": 11,
+        "executed": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "values": [
+          1.0,
+          11.0
+        ]
+      },
+      {
+        "action": 5,
+        "executed": [
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0
+        ],
+        "values": [
+          10.0,
+          2.0
+        ]
+      },
+      {
+        "action": 6,
+        "executed": [
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0,
+          0
+        ],
+        "values": [
+          8.0,
+          4.0
+        ]
+      },
+      {
+        "action": 7,
+        "executed": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          0
+        ],
+        "values": [
+          5.0,
+          7.0
+        ]
+      },
+      {
+        "action": 11,
+        "executed": [
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1
+        ],
+        "values": [
+          1.0,
+          11.0
+        ]
+      },
+      {
+        "action": 0,
+        "executed": [
+          1,
+          1,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0
+        ],
+        "values": [
+          11.0,
+          1.0
+        ]
+      }
+    ]
+  },
+  "gpu": "NVIDIA H200",
+  "torch": "2.11.0+cu129",
+  "cuda": "12.9"
+}

@@ -1,0 +1,14 @@
+{
+  "markers": [
+    {
+      "replica": "0",
+      "exit_code": 0
+    }
+  ],
+  "files": {
+    "summary.json": {
+      "sha256": "976134ef45a57a933b00935169dc742e1fbc87e10649e83c64eddb5eeb2a8896",
+      "bytes": 3020
+    }
+  }
+}

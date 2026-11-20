@@ -1,0 +1,572 @@
+{
+  "passed": true,
+  "complete": false,
+  "complete_benchmarks": false,
+  "counts": {
+    "math": 2,
+    "mmlu": 2,
+    "gsm8k": 2
+  },
+  "benchmarks": {
+    "gsm8k": {
+      "full": {
+        "count": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "truncated": 0,
+        "generated_tokens": 582,
+        "prefill_seconds": 0.25098031386733055,
+        "decode_seconds": 8.891932755708694,
+        "decode_cuda_ms": 8891.881103515625,
+        "total_seconds": 9.142913069576025,
+        "skipped_blocks_total": 0,
+        "decode_tokens_per_second": 65.45258674233126,
+        "decode_cuda_tokens_per_second": 65.4529669509292,
+        "mean_skipped_blocks": 0.0,
+        "percentiles": {
+          "generated_tokens": {
+            "p50": 291.0,
+            "p95": 350.4
+          },
+          "prefill_seconds": {
+            "p50": 0.12549015693366528,
+            "p95": 0.12841291148215533
+          },
+          "decode_seconds": {
+            "p50": 4.445966377854347,
+            "p95": 5.362885053269565
+          },
+          "total_seconds": {
+            "p50": 4.5714565347880125,
+            "p95": 5.491297964751721
+          },
+          "time_to_first_token_seconds": {
+            "p50": 0.14081379305571318,
+            "p95": 0.14374582720920442
+          }
+        }
+      },
+      "early_exit": {
+        "count": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "truncated": 0,
+        "generated_tokens": 674,
+        "prefill_seconds": 0.12373055703938007,
+        "decode_seconds": 10.22238290682435,
+        "decode_cuda_ms": 10222.31201171875,
+        "total_seconds": 10.34611346386373,
+        "skipped_blocks_total": 1848,
+        "decode_tokens_per_second": 65.93374618652223,
+        "decode_cuda_tokens_per_second": 65.93420345880008,
+        "mean_skipped_blocks": 2.741839762611276,
+        "percentiles": {
+          "generated_tokens": {
+            "p50": 337.0,
+            "p95": 355.9
+          },
+          "prefill_seconds": {
+            "p50": 0.06186527851969004,
+            "p95": 0.06216579908505082
+          },
+          "decode_seconds": {
+            "p50": 5.111191453412175,
+            "p95": 5.3849884763360025
+          },
+          "total_seconds": {
+            "p50": 5.173056731931865,
+            "p95": 5.446553234290332
+          },
+          "time_to_first_token_seconds": {
+            "p50": 0.07726613990962505,
+            "p95": 0.07758026011288166
+          }
+        }
+      },
+      "comparison": {
+        "accuracy_delta": 0.0,
+        "end_to_end_speedup": 0.8837050841854606,
+        "decode_throughput_speedup": 1.007351267049004,
+        "decode_cuda_throughput_speedup": 1.0073524017365274,
+        "lost_correct": 0,
+        "gained_correct": 0
+      },
+      "matched_token_decode": {
+        "examples": 1,
+        "tokens": 128,
+        "full_seconds": 1.9586774129420519,
+        "early_exit_seconds": 1.9437011610716581,
+        "speedup": 1.0077050177107147,
+        "cuda_speedup": 1.0077024027034842
+      }
+    },
+    "math": {
+      "full": {
+        "count": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "truncated": 0,
+        "generated_tokens": 1135,
+        "prefill_seconds": 0.18307235091924667,
+        "decode_seconds": 17.401520593091846,
+        "decode_cuda_ms": 17401.4716796875,
+        "total_seconds": 17.584592944011092,
+        "skipped_blocks_total": 0,
+        "decode_tokens_per_second": 65.2241850893524,
+        "decode_cuda_tokens_per_second": 65.22436842654348,
+        "mean_skipped_blocks": 0.0,
+        "percentiles": {
+          "generated_tokens": {
+            "p50": 567.5,
+            "p95": 684.05
+          },
+          "prefill_seconds": {
+            "p50": 0.09153617545962334,
+            "p95": 0.1285137442871928
+          },
+          "decode_seconds": {
+            "p50": 8.700760296545923,
+            "p95": 10.494942369777709
+          },
+          "total_seconds": {
+            "p50": 8.792296472005546,
+            "p95": 10.549500976409764
+          },
+          "time_to_first_token_seconds": {
+            "p50": 0.1069096839055419,
+            "p95": 0.14388504242524502
+          }
+        }
+      },
+      "early_exit": {
+        "count": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "truncated": 0,
+        "generated_tokens": 1244,
+        "prefill_seconds": 0.11267127841711044,
+        "decode_seconds": 18.859706290066242,
+        "decode_cuda_ms": 18859.63525390625,
+        "total_seconds": 18.972377568483353,
+        "skipped_blocks_total": 4598,
+        "decode_tokens_per_second": 65.96073029277439,
+        "decode_cuda_tokens_per_second": 65.96097873856495,
+        "mean_skipped_blocks": 3.6961414790996785,
+        "percentiles": {
+          "generated_tokens": {
+            "p50": 622.0,
+            "p95": 792.0999999999999
+          },
+          "prefill_seconds": {
+            "p50": 0.05633563920855522,
+            "p95": 0.06181939709931612
+          },
+          "decode_seconds": {
+            "p50": 9.429853145033121,
+            "p95": 12.029282975383103
+          },
+          "total_seconds": {
+            "p50": 9.486188784241676,
+            "p95": 12.080134856700898
+          },
+          "time_to_first_token_seconds": {
+            "p50": 0.07177949231117964,
+            "p95": 0.07730632731691003
+          }
+        }
+      },
+      "comparison": {
+        "accuracy_delta": 0.0,
+        "end_to_end_speedup": 0.926852361046323,
+        "decode_throughput_speedup": 1.0112925167621944,
+        "decode_cuda_throughput_speedup": 1.011293483245469,
+        "lost_correct": 0,
+        "gained_correct": 0
+      },
+      "by_subject": {
+        "Counting & Probability": {
+          "count": 1,
+          "full_accuracy": 1.0,
+          "early_exit_accuracy": 1.0
+        },
+        "Prealgebra": {
+          "count": 1,
+          "full_accuracy": 1.0,
+          "early_exit_accuracy": 1.0
+        }
+      },
+      "matched_token_decode": {
+        "examples": 1,
+        "tokens": 128,
+        "full_seconds": 1.9572478327900171,
+        "early_exit_seconds": 1.9426957108080387,
+        "speedup": 1.0074906851860632,
+        "cuda_speedup": 1.00749236976701
+      }
+    },
+    "mmlu": {
+      "full": {
+        "count": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "truncated": 0,
+        "generated_tokens": 2,
+        "prefill_seconds": 0.18189153261482716,
+        "decode_seconds": 0.031144533306360245,
+        "decode_cuda_ms": 31.090911865234375,
+        "total_seconds": 0.2130360659211874,
+        "skipped_blocks_total": 0,
+        "decode_tokens_per_second": 64.2167272287097,
+        "decode_cuda_tokens_per_second": 64.32747964000326,
+        "mean_skipped_blocks": 0.0,
+        "percentiles": {
+          "generated_tokens": {
+            "p50": 1.0,
+            "p95": 1.0
+          },
+          "prefill_seconds": {
+            "p50": 0.09094576630741358,
+            "p95": 0.12463332833722233
+          },
+          "decode_seconds": {
+            "p50": 0.015572266653180122,
+            "p95": 0.01569223515689373
+          },
+          "total_seconds": {
+            "p50": 0.1065180329605937,
+            "p95": 0.14008562648668885
+          },
+          "time_to_first_token_seconds": {
+            "p50": 0.10648295935243368,
+            "p95": 0.14005188895389437
+          }
+        }
+      },
+      "early_exit": {
+        "count": 2,
+        "correct": 2,
+        "accuracy": 1.0,
+        "truncated": 0,
+        "generated_tokens": 2,
+        "prefill_seconds": 0.11680559255182743,
+        "decode_seconds": 0.031385574489831924,
+        "decode_cuda_ms": 31.322239875793457,
+        "total_seconds": 0.14819116704165936,
+        "skipped_blocks_total": 0,
+        "decode_tokens_per_second": 63.723542822131414,
+        "decode_cuda_tokens_per_second": 63.85239395173797,
+        "mean_skipped_blocks": 0.0,
+        "percentiles": {
+          "generated_tokens": {
+            "p50": 1.0,
+            "p95": 1.0
+          },
+          "prefill_seconds": {
+            "p50": 0.058402796275913715,
+            "p95": 0.06263976702466607
+          },
+          "decode_seconds": {
+            "p50": 0.015692787244915962,
+            "p95": 0.01576846241950989
+          },
+          "total_seconds": {
+            "p50": 0.07409558352082968,
+            "p95": 0.0782568790949881
+          },
+          "time_to_first_token_seconds": {
+            "p50": 0.0740612493827939,
+            "p95": 0.07822096580639482
+          }
+        }
+      },
+      "comparison": {
+        "accuracy_delta": 0.0,
+        "end_to_end_speedup": 1.4375760051967126,
+        "decode_throughput_speedup": 0.9923200009115725,
+        "decode_cuda_throughput_speedup": 0.9926145763688549,
+        "lost_correct": 0,
+        "gained_correct": 0
+      },
+      "by_subject": {
+        "anatomy": {
+          "count": 1,
+          "full_accuracy": 1.0,
+          "early_exit_accuracy": 1.0
+        },
+        "formal_logic": {
+          "count": 1,
+          "full_accuracy": 1.0,
+          "early_exit_accuracy": 1.0
+        }
+      },
+      "macro_accuracy": {
+        "full": 1.0,
+        "early_exit": 1.0
+      },
+      "macro_subject_count": 2
+    }
+  },
+  "workers": 2,
+  "classifier_sha256": "47b94a7b12155ad1a58a773fb2326cc2c28bc2129d25a72752a2a10374b46596",
+  "worker_receipts": [
+    {
+      "mode": "full",
+      "rank": 0,
+      "count": 3,
+      "prediction_sha256": "a4f3d049d17ef01a6397ab012609b2598077879919ea80a75ea1bd677b4a5591",
+      "gpu": "NVIDIA H200",
+      "gpu_uuid": "6c4569ed-d991-c4b9-d524-86a290d5eda7",
+      "torch": "2.11.0+cu129",
+      "cuda": "12.9",
+      "source_file_sha256": "2ef53c01de950a084e9218363ac7522d1af01514486633b5cf074d456daef6d9",
+      "runtime_source_sha256": {
+        "runtime.py": "cd60cb3bf324db5eea055ba6269fd4412fb2f6e2d0fce7e8d11559336fe76fd5",
+        "conditional.py": "d5b645597ea55867d3eae4d5e416b05efd7d57dac39d6d805f585c3ec5dc5c66",
+        "conditional.cu": "dfbcacd86bf5238d8c725cd31ed639f76f00a7be4206dd645ed3024ca7622bf9",
+        "smoke.py": "ef9f393a9058d17faf5707f3595cb02d01e59d464c0880cae77ac8dd6cbd11ce"
+      },
+      "model_config_sha256": "1cdb77ac968f548b1ff8d515b1b0895fd0b018380dc0618cae2842a053c3c0e5",
+      "model_index_sha256": "7e56fbd5798006f65297d7214d7181565eafba37b6453e73d7f2ad71cbd095f2",
+      "weight_inventory_sha256": "842f9758617831835ba6a2601b3a19c5ac049b87dc58a9b359b7701e0027453f",
+      "benchmark_sha256": "a04901c438d78667d050805b26fad1d4092f6e70ed0bde2b2f666ef9aa72ddfe",
+      "classifier_sha256": "47b94a7b12155ad1a58a773fb2326cc2c28bc2129d25a72752a2a10374b46596",
+      "tokenizer_sha256": {
+        "tokenizer.json": "0997f410c57a1f4e53b09e4be8f4a172d90edd9564368fb0847030937229b9f3",
+        "tokenizer_config.json": "b11349aafa7cdc6a320767cf7ceb29ed82f7eda5d65e8e0819e76f0ce947bf27",
+        "chat_template.jinja": "c3cf9e34abf4f9e36c2d72165aa9c132d3e2a725b6c2586aaa3a8af9d7a81041"
+      },
+      "math_grader_sha256": "5737dcc06cf8981c00cc4d27defffa079015fd686356d5a90b9a7917a7521db9",
+      "runtime_present": false,
+      "cache_policy": null,
+      "threshold": null,
+      "converted_regions": null,
+      "graph_execution": {
+        "decode_steps": 955
+      },
+      "server_args": {
+        "dtype": "bfloat16",
+        "tp_size": 1,
+        "pp_size": 1,
+        "attention_backend": "triton",
+        "linear_attn_decode_backend": "triton",
+        "linear_attn_prefill_backend": "triton",
+        "context_length": 16384,
+        "cuda_graph_bs": [
+          1
+        ],
+        "disable_cuda_graph": false,
+        "mem_fraction_static": 0.75,
+        "max_total_tokens": 18000,
+        "max_mamba_cache_size": 4
+      }
+    },
+    {
+      "mode": "early_exit",
+      "rank": 0,
+      "count": 3,
+      "prediction_sha256": "5c6afd94ca04e5002342c88501ec7fd076a2fec53f313e01dfd0bcd255c6d466",
+      "gpu": "NVIDIA H200",
+      "gpu_uuid": "6c4569ed-d991-c4b9-d524-86a290d5eda7",
+      "torch": "2.11.0+cu129",
+      "cuda": "12.9",
+      "source_file_sha256": "2ef53c01de950a084e9218363ac7522d1af01514486633b5cf074d456daef6d9",
+      "runtime_source_sha256": {
+        "runtime.py": "cd60cb3bf324db5eea055ba6269fd4412fb2f6e2d0fce7e8d11559336fe76fd5",
+        "conditional.py": "d5b645597ea55867d3eae4d5e416b05efd7d57dac39d6d805f585c3ec5dc5c66",
+        "conditional.cu": "dfbcacd86bf5238d8c725cd31ed639f76f00a7be4206dd645ed3024ca7622bf9",
+        "smoke.py": "ef9f393a9058d17faf5707f3595cb02d01e59d464c0880cae77ac8dd6cbd11ce"
+      },
+      "model_config_sha256": "1cdb77ac968f548b1ff8d515b1b0895fd0b018380dc0618cae2842a053c3c0e5",
+      "model_index_sha256": "7e56fbd5798006f65297d7214d7181565eafba37b6453e73d7f2ad71cbd095f2",
+      "weight_inventory_sha256": "842f9758617831835ba6a2601b3a19c5ac049b87dc58a9b359b7701e0027453f",
+      "benchmark_sha256": "a04901c438d78667d050805b26fad1d4092f6e70ed0bde2b2f666ef9aa72ddfe",
+      "classifier_sha256": "47b94a7b12155ad1a58a773fb2326cc2c28bc2129d25a72752a2a10374b46596",
+      "tokenizer_sha256": {
+        "tokenizer.json": "0997f410c57a1f4e53b09e4be8f4a172d90edd9564368fb0847030937229b9f3",
+        "tokenizer_config.json": "b11349aafa7cdc6a320767cf7ceb29ed82f7eda5d65e8e0819e76f0ce947bf27",
+        "chat_template.jinja": "c3cf9e34abf4f9e36c2d72165aa9c132d3e2a725b6c2586aaa3a8af9d7a81041"
+      },
+      "math_grader_sha256": "5737dcc06cf8981c00cc4d27defffa079015fd686356d5a90b9a7917a7521db9",
+      "runtime_present": true,
+      "cache_policy": "async",
+      "threshold": 0.9885793690681457,
+      "converted_regions": [
+        [
+          76,
+          16,
+          16,
+          62,
+          76,
+          16,
+          16,
+          62
+        ]
+      ],
+      "graph_execution": {
+        "decode_steps": 1160
+      },
+      "server_args": {
+        "dtype": "bfloat16",
+        "tp_size": 1,
+        "pp_size": 1,
+        "attention_backend": "triton",
+        "linear_attn_decode_backend": "triton",
+        "linear_attn_prefill_backend": "triton",
+        "context_length": 16384,
+        "cuda_graph_bs": [
+          1
+        ],
+        "disable_cuda_graph": false,
+        "mem_fraction_static": 0.75,
+        "max_total_tokens": 18000,
+        "max_mamba_cache_size": 4
+      }
+    },
+    {
+      "mode": "full",
+      "rank": 1,
+      "count": 3,
+      "prediction_sha256": "a7e980fa8b616ff27eb13e08ba5c73d2c6eaae763349ebae9b282ecea2bf736c",
+      "gpu": "NVIDIA H200",
+      "gpu_uuid": "bf340f7d-3719-d4df-82f0-1f17e913fa3d",
+      "torch": "2.11.0+cu129",
+      "cuda": "12.9",
+      "source_file_sha256": "2ef53c01de950a084e9218363ac7522d1af01514486633b5cf074d456daef6d9",
+      "runtime_source_sha256": {
+        "runtime.py": "cd60cb3bf324db5eea055ba6269fd4412fb2f6e2d0fce7e8d11559336fe76fd5",
+        "conditional.py": "d5b645597ea55867d3eae4d5e416b05efd7d57dac39d6d805f585c3ec5dc5c66",
+        "conditional.cu": "dfbcacd86bf5238d8c725cd31ed639f76f00a7be4206dd645ed3024ca7622bf9",
+        "smoke.py": "ef9f393a9058d17faf5707f3595cb02d01e59d464c0880cae77ac8dd6cbd11ce"
+      },
+      "model_config_sha256": "1cdb77ac968f548b1ff8d515b1b0895fd0b018380dc0618cae2842a053c3c0e5",
+      "model_index_sha256": "7e56fbd5798006f65297d7214d7181565eafba37b6453e73d7f2ad71cbd095f2",
+      "weight_inventory_sha256": "842f9758617831835ba6a2601b3a19c5ac049b87dc58a9b359b7701e0027453f",
+      "benchmark_sha256": "a04901c438d78667d050805b26fad1d4092f6e70ed0bde2b2f666ef9aa72ddfe",
+      "classifier_sha256": "47b94a7b12155ad1a58a773fb2326cc2c28bc2129d25a72752a2a10374b46596",
+      "tokenizer_sha256": {
+        "tokenizer.json": "0997f410c57a1f4e53b09e4be8f4a172d90edd9564368fb0847030937229b9f3",
+        "tokenizer_config.json": "b11349aafa7cdc6a320767cf7ceb29ed82f7eda5d65e8e0819e76f0ce947bf27",
+        "chat_template.jinja": "c3cf9e34abf4f9e36c2d72165aa9c132d3e2a725b6c2586aaa3a8af9d7a81041"
+      },
+      "math_grader_sha256": "5737dcc06cf8981c00cc4d27defffa079015fd686356d5a90b9a7917a7521db9",
+      "runtime_present": false,
+      "cache_policy": null,
+      "threshold": null,
+      "converted_regions": null,
+      "graph_execution": {
+        "decode_steps": 1084
+      },
+      "server_args": {
+        "dtype": "bfloat16",
+        "tp_size": 1,
+        "pp_size": 1,
+        "attention_backend": "triton",
+        "linear_attn_decode_backend": "triton",
+        "linear_attn_prefill_backend": "triton",
+        "context_length": 16384,
+        "cuda_graph_bs": [
+          1
+        ],
+        "disable_cuda_graph": false,
+        "mem_fraction_static": 0.75,
+        "max_total_tokens": 18000,
+        "max_mamba_cache_size": 4
+      }
+    },
+    {
+      "mode": "early_exit",
+      "rank": 1,
+      "count": 3,
+      "prediction_sha256": "87541d72f2a9aead6ba997fb0b5761bedd76328580dc9c8fe4e0c78c18718207",
+      "gpu": "NVIDIA H200",
+      "gpu_uuid": "bf340f7d-3719-d4df-82f0-1f17e913fa3d",
+      "torch": "2.11.0+cu129",
+      "cuda": "12.9",
+      "source_file_sha256": "2ef53c01de950a084e9218363ac7522d1af01514486633b5cf074d456daef6d9",
+      "runtime_source_sha256": {
+        "runtime.py": "cd60cb3bf324db5eea055ba6269fd4412fb2f6e2d0fce7e8d11559336fe76fd5",
+        "conditional.py": "d5b645597ea55867d3eae4d5e416b05efd7d57dac39d6d805f585c3ec5dc5c66",
+        "conditional.cu": "dfbcacd86bf5238d8c725cd31ed639f76f00a7be4206dd645ed3024ca7622bf9",
+        "smoke.py": "ef9f393a9058d17faf5707f3595cb02d01e59d464c0880cae77ac8dd6cbd11ce"
+      },
+      "model_config_sha256": "1cdb77ac968f548b1ff8d515b1b0895fd0b018380dc0618cae2842a053c3c0e5",
+      "model_index_sha256": "7e56fbd5798006f65297d7214d7181565eafba37b6453e73d7f2ad71cbd095f2",
+      "weight_inventory_sha256": "842f9758617831835ba6a2601b3a19c5ac049b87dc58a9b359b7701e0027453f",
+      "benchmark_sha256": "a04901c438d78667d050805b26fad1d4092f6e70ed0bde2b2f666ef9aa72ddfe",
+      "classifier_sha256": "47b94a7b12155ad1a58a773fb2326cc2c28bc2129d25a72752a2a10374b46596",
+      "tokenizer_sha256": {
+        "tokenizer.json": "0997f410c57a1f4e53b09e4be8f4a172d90edd9564368fb0847030937229b9f3",
+        "tokenizer_config.json": "b11349aafa7cdc6a320767cf7ceb29ed82f7eda5d65e8e0819e76f0ce947bf27",
+        "chat_template.jinja": "c3cf9e34abf4f9e36c2d72165aa9c132d3e2a725b6c2586aaa3a8af9d7a81041"
+      },
+      "math_grader_sha256": "5737dcc06cf8981c00cc4d27defffa079015fd686356d5a90b9a7917a7521db9",
+      "runtime_present": true,
+      "cache_policy": "async",
+      "threshold": 0.9885793690681457,
+      "converted_regions": [
+        [
+          76,
+          16,
+          16,
+          62,
+          76,
+          16,
+          16,
+          62
+        ]
+      ],
+      "graph_execution": {
+        "decode_steps": 1080
+      },
+      "server_args": {
+        "dtype": "bfloat16",
+        "tp_size": 1,
+        "pp_size": 1,
+        "attention_backend": "triton",
+        "linear_attn_decode_backend": "triton",
+        "linear_attn_prefill_backend": "triton",
+        "context_length": 16384,
+        "cuda_graph_bs": [
+          1
+        ],
+        "disable_cuda_graph": false,
+        "mem_fraction_static": 0.75,
+        "max_total_tokens": 18000,
+        "max_mamba_cache_size": 4
+      }
+    }
+  ],
+  "paired_prediction_sha256": {
+    "predictions-0.jsonl": "bb71d72cc131e7554a31b807f247c776ba116a9fd5af8748cf57beaecd43d416",
+    "predictions-1.jsonl": "91ab3626fbd3a9589a75b499fe29a5207bdc1d4de24747f7b47aacd3430f822c"
+  },
+  "settings": {
+    "engine": "SGLang ModelRunner",
+    "baseline": "independent process without EarlyExitRuntime",
+    "dtype": "BF16",
+    "graph_batch_size": 1,
+    "concurrency": 1,
+    "tp": 1,
+    "pp": 1,
+    "context_length": 16384,
+    "attention_backend": "triton",
+    "gdn_backend": "triton",
+    "cache_policy": "async",
+    "policy": "five-class cal99",
+    "mode_order": "all full shards, then early-exit shards on the same respective GPU",
+    "warmup_sequences": 2,
+    "warmup_tokens": 16,
+    "sampling": "greedy",
+    "thinking": false,
+    "mmlu_shots": 5,
+    "gsm8k_max_new_tokens": 2048,
+    "math_max_new_tokens": 4096,
+    "matched_tokens": 128,
+    "matched_examples_per_task": 1
+  },
+  "timing_scope": "ModelRunner prefill of all but the final prompt token, plus synchronized decode starting with that final token and including token readback; excludes model load, graph capture, warmup, tokenization, HTTP and server scheduler.",
+  "matched_protocol": "Up to matched-examples-per-task selected GSM8K and MATH questions by original evaluation index. Exactly matched-tokens decode steps use the full-model trajectory; after EOS, baseline continuation supplies the remaining fixed inputs. Both modes replay the same stored token IDs.",
+  "cache_semantics": "Skipped-path middle activations bypass work on the main stream; all skipped KV/GDN states are backfilled each token, then joined before the next token. This differs from native capture's one-step frozen-cache counterfactual.",
+  "limits": "Complete full/early-exit quality and speed require complete_benchmarks=true. Fixed process order can retain thermal/load drift. Matched replay uses identical full-model token inputs, ignoring EOS to reach the fixed length when necessary; it is separate from task generation.",
+  "official_comparison": "Primary baseline: the same checkpoint1479 fully executed. Inspected official Qwen3.8-27B card does not list these three original benchmark scores."
+}

@@ -1,0 +1,174 @@
+{
+  "runs": [
+    {
+      "stage": "smoke",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-smoke-1120-r3",
+      "uuid": "10d6f302-94b0-42d0-824d-aeebe307ba88",
+      "job_id": "j-1795126026-937370",
+      "state": "verified",
+      "phase": "Succeeded",
+      "source_commit": "6374ca6f97f489268831ba502c0c7ff437fd3ce3",
+      "verification": {
+        "markers": [
+          {
+            "replica": "0",
+            "exit_code": 0
+          }
+        ],
+        "files": {
+          "selection.json": {
+            "sha256": "9ecf47223f3a8a103909d0b5dfe453a2d1acd1a492f0973c95fa7169dbcca369",
+            "bytes": 9273
+          }
+        }
+      }
+    },
+    {
+      "stage": "pilot",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-pilot-1120-r2",
+      "uuid": "27aa5c33-c4b7-42db-905e-3d2d1cfeff2a",
+      "job_id": "j-1795126283-562993",
+      "state": "verified",
+      "phase": "Succeeded",
+      "source_commit": "65c537058b1ee363a5d8238491b1aa87a545484d",
+      "verification": {
+        "markers": [
+          {
+            "replica": "0",
+            "exit_code": 0
+          }
+        ],
+        "files": {
+          "selection.json": {
+            "sha256": "659ff24c26c7265c9fc33c97c3ea5eb964bd1322f677b256b9825911784a0c48",
+            "bytes": 110917
+          }
+        }
+      }
+    },
+    {
+      "stage": "capture",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-capture-1120-r1",
+      "uuid": "16c8e725-fc9c-4bfc-9583-59d65f2dfcaa",
+      "job_id": "j-1795127150-231917",
+      "state": "verified",
+      "phase": "Succeeded",
+      "source_commit": "aaf848ebcd900496257267b9b4d0c039bd57e061",
+      "verification": {
+        "markers": [
+          {
+            "replica": "0",
+            "exit_code": 0
+          }
+        ],
+        "files": {
+          "summary.json": {
+            "sha256": "976134ef45a57a933b00935169dc742e1fbc87e10649e83c64eddb5eeb2a8896",
+            "bytes": 3020
+          }
+        }
+      }
+    },
+    {
+      "stage": "eval-smoke",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-eval-smoke-1120-r1",
+      "uuid": "c6d79e79-e728-436d-bbcb-038e77b852a1",
+      "job_id": "j-1795130564-650289",
+      "state": "verified",
+      "phase": "Succeeded",
+      "source_commit": "d3500f9526f816782b7efa11199d7bc17c215a12",
+      "verification": {
+        "markers": [
+          {
+            "replica": "0",
+            "exit_code": 0
+          }
+        ],
+        "files": {
+          "evaluation-summary.json": {
+            "sha256": "f098b0144911e1fff829b8462569e97ec4601edbf0d827444ea51cb35807098c",
+            "bytes": 16298
+          }
+        }
+      }
+    },
+    {
+      "stage": "eval",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-eval-1120-r1",
+      "uuid": "bcabe5ca-f742-4f2f-80d1-639fdcc15a2c",
+      "job_id": "j-1795131018-644726",
+      "state": "verified",
+      "phase": "Stopped",
+      "source_commit": "d3500f9526f816782b7efa11199d7bc17c215a12",
+      "status": "user_stopped",
+      "complete_benchmark_results": false,
+      "note": "Stopped at user request before full counts; partial predictions are preserved in the run directory. Controller assertion only required terminal Succeeded."
+    },
+    {
+      "stage": "sglang-runtime-smoke",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-smoke-1120-r6",
+      "uuid": "1b6bb5ad-8d12-4863-8bae-966499102a51",
+      "manifest_sha256": "4b88f8013af94ff808c59f1edc4a485e2a5c24ff68e9ef79b29a9d03314d428c",
+      "source": "6c1c84ec8836c91ccc67eca38baa7831c73f7b78",
+      "job_id": "j-1795142769-206713",
+      "state": "verified",
+      "phase": "Succeeded",
+      "verification": {
+        "markers": [
+          {
+            "replica": "0",
+            "exit_code": 0
+          }
+        ],
+        "files": {
+          "smoke-summary.json": {
+            "sha256": "a4645bf90484b468f0e93897b052d6d92441358dea10fbe954ccb4bf3d3be812",
+            "bytes": 10226
+          },
+          "conditional-summary.json": {
+            "sha256": "7cb2cbf8142e8dfc7c1162e5d158555ae368451cc2502720dfe56e173f729234",
+            "bytes": 3052
+          },
+          "kernel-probe-summary.json": {
+            "sha256": "0313c95dc08a23c4c2aff02f8db170d53b58f9a1f690436d6aa1ce8e0be3a8e4",
+            "bytes": 51657
+          }
+        }
+      },
+      "complete_benchmark_results": false,
+      "image": "registry.lg.shzhisuan.com/library/sglang:v0.5.13.post1-cu129@sha256:163e3f6e921a03b2eaaaf8e2f4f9b7ddf98d7bef54e2deddfadadb3733ae14d4",
+      "scope": "Batch1 TP1 32-token same-input controls; exact logits/cache parity, forced mixed routes, learned routes, and separate 8-step profiles. Five real-operator regressions run without sanitizer in r6. The r5 diagnostic used Compute Sanitizer."
+    },
+    {
+      "stage": "sglang-eval-smoke",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-eval-smoke-1120-r1",
+      "uuid": "c6457d0b-3414-4ca4-a171-81671c4209df",
+      "manifest_sha256": "576b3b68a2619c0215b1edf33c1d7900ab2223e0396fb370d67d61dac96e8e1c",
+      "source": "6c1c84ec8836c91ccc67eca38baa7831c73f7b78",
+      "job_id": "j-1795143382-269448",
+      "state": "verified",
+      "phase": "Succeeded",
+      "verification": {
+        "markers": [
+          {
+            "replica": "0",
+            "exit_code": 0
+          }
+        ],
+        "files": {
+          "evaluation-summary.json": {
+            "sha256": "b3500465bac7bfe9f3ef05d9a8b0c0ba47039b6b938afa0f50eae8879337b176",
+            "bytes": 21328
+          }
+        }
+      },
+      "complete_benchmark_results": false,
+      "counts": {
+        "gsm8k": 2,
+        "math": 2,
+        "mmlu": 2
+      },
+      "scope": "Same-GPU paired full/async evaluation smoke, five-shot MMLU, greedy nonthinking math generation, one fixed128 replay per math task. No complete task score claim."
+    }
+  ]
+}

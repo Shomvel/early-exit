@@ -1,0 +1,11 @@
+{
+  "repo": "Qwen/Qwen3.8-27B",
+  "revision": "37561816e66b5b9153b1b64c10968c18c1e6f4a0",
+  "url": "https://huggingface.co/Qwen/Qwen3.8-27B/blob/37561816e66b5b9153b1b64c10968c18c1e6f4a0/README.md",
+  "original_benchmark_scores": {
+    "gsm8k": null,
+    "math": null,
+    "mmlu": null
+  },
+  "note": "The consulted official model card does not publish the three original benchmark scores."
+}

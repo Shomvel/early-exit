@@ -1,0 +1,14 @@
+{
+  "checks": {
+    "python_syntax": "10 Python files compile; native GPU entrypoints require the pinned image for runtime imports",
+    "cli_help": "11 lightweight/managed help commands pass from /tmp",
+    "data": "12,000 conversations: split SHA256, per-conversation content SHA, row/content disjointness; all source parquet hashes pass; exact benchmark counts and 57 MMLU subjects",
+    "managed": "Six built-in stages and custom argv; current training_run.load_launch_spec accepts specs; local fake tool checks prepare-once, submit->foreground reconcile, verified summary collection and stopped-run rejection",
+    "model_fingerprint": "Synthetic shard create/verify/reference-copy identity; changed shard rejected",
+    "math_equivalence": "289 original/packaged normalization comparisons match",
+    "historical_results": "Binary/five-class successful receipts, exit0 and summary SHA256 match",
+    "repository_scope": "No raw JSONL/parquet, checkpoints, captures, credentials or local workstation paths copied; each package file under 2 MiB",
+    "gpu": "No new GPU workload executed by packaging verification"
+  },
+  "limits": "CPU packaging verification does not establish SGLang runtime quality, model parity or end-to-end speed. Native source history and completed training receipts are recorded separately."
+}
