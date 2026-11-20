@@ -101,7 +101,22 @@ Built-in stages and extra inputs:
 
 The original five-class script deliberately requires the recorded four capture shards and baseline classifier SHA256. Its `SOURCE`, `SKIPS`, expected counts and label definition describe that experiment. A different geometry or new captures require a versioned script/config update, not silently reusing those constants.
 
-For SGLang use `custom`, a repository-relative `experiments/perfectblend/sglang_run.py` entrypoint and a JSON array of its arguments. The command is executed from the prepared immutable source checkout; it must write outputs under `RUN_DIR`. Use `workload_kind=training` for full-model smoke/evaluation. The custom path also supports future training or evaluation scripts without embedding workstation paths into their source.
+For SGLang use `custom` and a repository-relative `experiments/perfectblend/sglang_run.py` (real-model differential smoke) or `experiments/perfectblend/sglang_eval.py` (benchmarks) entrypoint. Pass a JSON array of its arguments. The command is executed from the prepared immutable source checkout; it writes outputs under `RUN_DIR`. Use `workload_kind=training` for full-model smoke/evaluation.
+
+The SGLang runtime uses CUDA conditional nodes for device-only decisions and overlaps a skipped middle prefix with the main decode suffix on a second stream. The background branch repairs both KV and GDN state before the next decode step. `--cache-policy serial` provides an identical-policy serial reference; the independent full-model process is the main quality/speed baseline. See the [runtime contract](../../python/sglang/srt/early_exit/README.md).
+
+```bash
+RUN_DIR=/shared/smoke python3 experiments/perfectblend/sglang_run.py \
+  --model /shared/model --classifier /shared/classifier-multiclass.pt
+
+RUN_DIR=/shared/eval-smoke python3 experiments/perfectblend/sglang_eval.py \
+  --model /shared/model --data /shared/data \
+  --classifier /shared/classifier-multiclass.pt --workers 2 --smoke
+```
+
+Omit `--smoke` for all 20,361 test questions. The evaluator requires the pinned benchmark SHA and model inventory; pass `--weight-inventory /shared/inventory.json` when using another inventory path. It checks graph execution and complementary repair counters at every request, preserves original predictions, and reports generation lengths, accuracy, latency and separate 128-token matched replay. `complete_benchmarks` is true only when all three full question counts are present. A successful smoke has `complete_benchmarks=false`.
+
+The optional `launch_overlay.py --module sglang.srt.early_exit.smoke ...` launcher accepts an immutable source overlay with `overlay-manifest.json`. It checks the base source hashes against the pinned image, copies its package into `RUN_DIR`, and applies only hash-verified modifications. Standard full checkouts can use the direct entrypoints above.
 
 The native scripts can also run directly in the verified image with explicit `RUN_DIR` and identical argv, but managed GPU execution should retain UUID, source/image and terminal replica receipts. Scripts write nonempty resolved `config.yaml` files at runtime; all 27B model weights stay frozen.
 
@@ -110,6 +125,8 @@ The native scripts can also run directly in the verified image with explicit `RU
 At the recorded cal99 threshold, the original sigmoid gate achieved heldout one-step action precision 98.6910%, coverage 31.5757% and mean skipped blocks 3.18512. The five-class head achieved 98.7718%, 31.6132% and 3.47745. These are **teacher-forced full-history one-step** counterfactual label metrics. The five-class cal99 accepted positions all chose width 11. They do not measure generation accuracy or end-to-end serving acceleration. Head-only H200 timings and class imbalance are documented in `references/five-class-report.md`.
 
 The original native smoke/evaluation smoke succeeded. The native full benchmark run was stopped at the user's request and has no complete benchmark summary. Its partial predictions remain in the original shared run. `references/run-status.json` records the status; this package does not resume that stopped run.
+
+The [verified SGLang runtime smoke](references/sglang-runtime-report.md) passed exact full/no-skip and serial/async cache/logit controls, and recorded actual GPU stream overlap. Its short control timings are separate from complete benchmark scores and speed estimates.
 
 After a successful completed native run, collect small receipts and render the comparison:
 

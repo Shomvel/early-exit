@@ -1,3 +1,5 @@
+> **Early Exit research fork.** Frozen 27B classifier training, layer calibration and paired GSM8K/MATH/MMLU evaluation live in [experiments/perfectblend](experiments/perfectblend/README.md). GPU conditional routing and concurrent KV/GDN cache repair are described in the [runtime contract](python/sglang/srt/early_exit/README.md). Upstream SGLang documentation follows.
+
 <div align="center" id="sglangtop">
 <img src="https://raw.githubusercontent.com/sgl-project/sglang/main/assets/logo.png" alt="logo" width="400" margin="10px"></img>
 

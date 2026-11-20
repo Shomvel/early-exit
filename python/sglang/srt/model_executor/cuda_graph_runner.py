@@ -828,6 +828,12 @@ class CudaGraphRunner:
 
         with graph_ctx(cuda_graph=graph, pool=pool, stream=stream):
             out = captured_fn()
+        from sglang.srt.early_exit.runtime import get_runtime
+
+        runtime = get_runtime(self.model_runner.model)
+        if runtime is not None:
+            runtime.convert(graph)
+            graph.instantiate()
         return out
 
     def _create_device_graph(self):
@@ -835,7 +841,11 @@ class CudaGraphRunner:
             if _is_hip:
                 raise RuntimeError("Breakable CUDA graph is not supported on ROCm/HIP")
             return BreakableCUDAGraph()
-        return torch.cuda.CUDAGraph()
+        from sglang.srt.early_exit.runtime import get_runtime
+
+        return torch.cuda.CUDAGraph(
+            keep_graph=get_runtime(self.model_runner.model) is not None
+        )
 
     def capture_one_batch_size(
         self, bs: int, forward: Callable, stream_idx: Optional[int] = None
@@ -987,6 +997,10 @@ class CudaGraphRunner:
 
             attn_backend.init_forward_metadata_out_graph(forward_batch, in_capture=True)
 
+            from sglang.srt.early_exit.runtime import get_runtime
+
+            early_exit_runtime = get_runtime(self.model_runner.model)
+
             def run_once():
                 # Must run inside the capture block: warmup mutations here are
                 # undone by on_after_cuda_graph_warmup so capture starts clean.
@@ -1018,12 +1032,17 @@ class CudaGraphRunner:
                 ):
                     kwargs["input_embeds"] = buffers.input_embeds[:num_tokens]
 
-                logits_output_or_pp_proxy_tensors = forward(
-                    input_ids,
-                    forward_batch.positions,
-                    forward_batch,
-                    **kwargs,
-                )
+                with (
+                    early_exit_runtime.graph_build()
+                    if early_exit_runtime is not None
+                    else contextlib.nullcontext()
+                ):
+                    logits_output_or_pp_proxy_tensors = forward(
+                        input_ids,
+                        forward_batch.positions,
+                        forward_batch,
+                        **kwargs,
+                    )
                 return logits_output_or_pp_proxy_tensors
 
             self.deepep_adapter.capture(is_extend_in_batch=False)

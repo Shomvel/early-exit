@@ -103,6 +103,72 @@
       "status": "user_stopped",
       "complete_benchmark_results": false,
       "note": "Stopped at user request before full counts; partial predictions are preserved in the run directory. Controller assertion only required terminal Succeeded."
+    },
+    {
+      "stage": "sglang-runtime-smoke",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-smoke-1120-r6",
+      "uuid": "1b6bb5ad-8d12-4863-8bae-966499102a51",
+      "manifest_sha256": "4b88f8013af94ff808c59f1edc4a485e2a5c24ff68e9ef79b29a9d03314d428c",
+      "source": "6c1c84ec8836c91ccc67eca38baa7831c73f7b78",
+      "job_id": "j-1795142769-206713",
+      "state": "verified",
+      "phase": "Succeeded",
+      "verification": {
+        "markers": [
+          {
+            "replica": "0",
+            "exit_code": 0
+          }
+        ],
+        "files": {
+          "smoke-summary.json": {
+            "sha256": "a4645bf90484b468f0e93897b052d6d92441358dea10fbe954ccb4bf3d3be812",
+            "bytes": 10226
+          },
+          "conditional-summary.json": {
+            "sha256": "7cb2cbf8142e8dfc7c1162e5d158555ae368451cc2502720dfe56e173f729234",
+            "bytes": 3052
+          },
+          "kernel-probe-summary.json": {
+            "sha256": "0313c95dc08a23c4c2aff02f8db170d53b58f9a1f690436d6aa1ce8e0be3a8e4",
+            "bytes": 51657
+          }
+        }
+      },
+      "complete_benchmark_results": false,
+      "image": "registry.lg.shzhisuan.com/library/sglang:v0.5.13.post1-cu129@sha256:163e3f6e921a03b2eaaaf8e2f4f9b7ddf98d7bef54e2deddfadadb3733ae14d4",
+      "scope": "Batch1 TP1 32-token same-input controls; exact logits/cache parity, forced mixed routes, learned routes, and separate 8-step profiles. Five real-operator regressions run without sanitizer in r6. The r5 diagnostic used Compute Sanitizer."
+    },
+    {
+      "stage": "sglang-eval-smoke",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-eval-smoke-1120-r1",
+      "uuid": "c6457d0b-3414-4ca4-a171-81671c4209df",
+      "manifest_sha256": "576b3b68a2619c0215b1edf33c1d7900ab2223e0396fb370d67d61dac96e8e1c",
+      "source": "6c1c84ec8836c91ccc67eca38baa7831c73f7b78",
+      "job_id": "j-1795143382-269448",
+      "state": "verified",
+      "phase": "Succeeded",
+      "verification": {
+        "markers": [
+          {
+            "replica": "0",
+            "exit_code": 0
+          }
+        ],
+        "files": {
+          "evaluation-summary.json": {
+            "sha256": "b3500465bac7bfe9f3ef05d9a8b0c0ba47039b6b938afa0f50eae8879337b176",
+            "bytes": 21328
+          }
+        }
+      },
+      "complete_benchmark_results": false,
+      "counts": {
+        "gsm8k": 2,
+        "math": 2,
+        "mmlu": 2
+      },
+      "scope": "Same-GPU paired full/async evaluation smoke, five-shot MMLU, greedy nonthinking math generation, one fixed128 replay per math task. No complete task score claim."
     }
   ]
 }
