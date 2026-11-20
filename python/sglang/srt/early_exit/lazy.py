@@ -100,8 +100,9 @@ def save_boundary(
 class GraphPrefillKernel:
     """Single-request, <=64-token FLA chunks with device-only ragged length."""
 
-    def __init__(self, chunk_indices):
+    def __init__(self, chunk_indices, chunk_offsets):
         self.chunk_indices = chunk_indices
+        self.chunk_offsets = chunk_offsets
 
     def extend(
         self, q, k, v, g, beta, *, ssm_states, cache_indices, query_start_loc, **kwargs
@@ -124,6 +125,7 @@ class GraphPrefillKernel:
             initial_state_indices=cache_indices,
             cu_seqlens=query_start_loc,
             chunk_indices=self.chunk_indices,
+            chunk_offsets=self.chunk_offsets,
         )
         return output.to(q.dtype), None, states
 
@@ -215,7 +217,10 @@ class DeferredCache:
         )
         replay_linear.kernel_dispatcher = copy.copy(linear.kernel_dispatcher)
         replay_linear.kernel_dispatcher.extend_kernel = GraphPrefillKernel(
-            torch.zeros((1, 2), dtype=torch.int64, device="cuda")
+            torch.zeros((1, 2), dtype=torch.int64, device="cuda"),
+            # Exactly one sequence and one <=64-token chunk. Build outside
+            # capture; generic offset preparation creates host-side tensors.
+            torch.tensor([0, 1], dtype=torch.int64, device="cuda"),
         )
         replay_backend = copy.copy(backend)
         replay_backend.full_attn_backend = replay_full

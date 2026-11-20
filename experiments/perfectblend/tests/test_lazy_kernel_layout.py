@@ -54,7 +54,9 @@ class LazyKernelLayoutTest(unittest.TestCase):
             state = torch.randn(2, 3, 4, 4)
             lengths = torch.tensor([0, capacity], dtype=torch.int32)
             with patch.dict(sys.modules, modules):
-                output, _, updated = namespace["GraphPrefillKernel"](None).extend(
+                output, _, updated = namespace["GraphPrefillKernel"](
+                    None, torch.tensor([0, 1])
+                ).extend(
                     *inputs,
                     ssm_states=state,
                     cache_indices=torch.tensor([1]),
