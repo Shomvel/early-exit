@@ -352,7 +352,7 @@
       "uuid": "4d46df45-2661-4a81-b8fa-b75475178754",
       "job_id": "j-1795150409-791357",
       "controller_job_id": "j-1795150399-256642",
-      "phase": "Running",
+      "phase": "Succeeded",
       "source": "4adba5efe68d04426bad125f0e1c1a8a57f8557c",
       "batch_sizes": [
         1,
@@ -367,7 +367,11 @@
       },
       "replay_examples_per_math_task": 8,
       "matched_tokens": 128,
-      "complete_benchmark_results": false
+      "complete_benchmark_results": false,
+      "state": "verified",
+      "summary_sha256": "e68b842e03ace1cc1670b952d45f90d0b314b5488048e2fecb30096e0693b500",
+      "routing": "per_request",
+      "scope": "Completed historical per-request pilot. User requested common batch action afterwards; new runtime evaluation uses an independent source and run."
     }
   ]
 }

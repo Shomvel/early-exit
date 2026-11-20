@@ -1,0 +1,536 @@
+{
+  "observed_at": "2026-11-20T05:32:29.577642+00:00",
+  "run_uuid": "4d46df45-2661-4a81-b8fa-b75475178754",
+  "job_id": "j-1795150409-791357",
+  "controller_job_id": "j-1795150399-256642",
+  "source_commit": "4adba5efe68d04426bad125f0e1c1a8a57f8557c",
+  "skill_commit": "b7aa8f6be408706b9a98b96c0de4060520d2e19c",
+  "phase": "Succeeded",
+  "replica_exit_code": 0,
+  "summary_passed": true,
+  "complete_benchmarks": false,
+  "summary_sha256": "e68b842e03ace1cc1670b952d45f90d0b314b5488048e2fecb30096e0693b500",
+  "gpu_uuid": "6c0f270b-7695-12c6-bd6f-a148d319cae4",
+  "paired_identity_equal": true,
+  "paired_server_args_equal": true,
+  "paired_trajectory_sha256_equal": true,
+  "pooled_gsm8k_math": {
+    "1": {
+      "fixed_replay": {
+        "full": {
+          "effective_tokens": 2048,
+          "waste_tokens": 0,
+          "row_efficiency": 1.0,
+          "decode_seconds": 30.66281644999981,
+          "effective_tokens_per_second": 66.7909943412916,
+          "total_seconds": 31.509505674242973,
+          "requests": 16
+        },
+        "early_exit": {
+          "effective_tokens": 2048,
+          "waste_tokens": 0,
+          "row_efficiency": 1.0,
+          "decode_seconds": 30.332327239215374,
+          "effective_tokens_per_second": 67.51872297329787,
+          "total_seconds": 31.15194160863757,
+          "requests": 16
+        },
+        "throughput_speedup": 1.0108956100920985
+      },
+      "generation": {
+        "full": {
+          "effective_tokens": 17288,
+          "waste_tokens": 0,
+          "row_efficiency": 1.0,
+          "decode_seconds": 260.64058688282967,
+          "effective_tokens_per_second": 66.32888686585017,
+          "total_seconds": 263.28833944443613,
+          "requests": 32
+        },
+        "early_exit": {
+          "effective_tokens": 20222,
+          "waste_tokens": 0,
+          "row_efficiency": 1.0,
+          "decode_seconds": 303.3067954191938,
+          "effective_tokens_per_second": 66.67176702075405,
+          "total_seconds": 305.14032024145126,
+          "requests": 32
+        },
+        "throughput_speedup": 1.0051693940770836
+      }
+    },
+    "2": {
+      "fixed_replay": {
+        "full": {
+          "effective_tokens": 2048,
+          "waste_tokens": 0,
+          "row_efficiency": 1.0,
+          "decode_seconds": 15.823310101404786,
+          "effective_tokens_per_second": 129.4293031530855,
+          "total_seconds": 16.695093492046,
+          "requests": 16
+        },
+        "early_exit": {
+          "effective_tokens": 2048,
+          "waste_tokens": 0,
+          "row_efficiency": 1.0,
+          "decode_seconds": 17.87530084978789,
+          "effective_tokens_per_second": 114.57149824833867,
+          "total_seconds": 18.309685844928026,
+          "requests": 16
+        },
+        "throughput_speedup": 0.8852052468584072
+      },
+      "generation": {
+        "full": {
+          "effective_tokens": 17280,
+          "waste_tokens": 7048,
+          "row_efficiency": 0.7102926668858928,
+          "decode_seconds": 189.4093655962497,
+          "effective_tokens_per_second": 91.23096920579171,
+          "total_seconds": 191.5096630603075,
+          "requests": 32
+        },
+        "early_exit": {
+          "effective_tokens": 20179,
+          "waste_tokens": 9559,
+          "row_efficiency": 0.6785594189252808,
+          "decode_seconds": 264.3067004615441,
+          "effective_tokens_per_second": 76.34691048226372,
+          "total_seconds": 265.2522137183696,
+          "requests": 32
+        },
+        "throughput_speedup": 0.8368530022962523
+      }
+    },
+    "4": {
+      "fixed_replay": {
+        "full": {
+          "effective_tokens": 2048,
+          "waste_tokens": 0,
+          "row_efficiency": 1.0,
+          "decode_seconds": 8.044167424552143,
+          "effective_tokens_per_second": 254.5944026163804,
+          "total_seconds": 8.501421826891601,
+          "requests": 16
+        },
+        "early_exit": {
+          "effective_tokens": 2048,
+          "waste_tokens": 0,
+          "row_efficiency": 1.0,
+          "decode_seconds": 11.353890619240701,
+          "effective_tokens_per_second": 180.37869737175268,
+          "total_seconds": 11.567300936207175,
+          "requests": 16
+        },
+        "throughput_speedup": 0.7084943561918956
+      },
+      "generation": {
+        "full": {
+          "effective_tokens": 17243,
+          "waste_tokens": 14817,
+          "row_efficiency": 0.5378353087960075,
+          "decode_seconds": 127.32585189305246,
+          "effective_tokens_per_second": 135.42418718300257,
+          "total_seconds": 128.28597459662706,
+          "requests": 32
+        },
+        "early_exit": {
+          "effective_tokens": 20407,
+          "waste_tokens": 23913,
+          "row_efficiency": 0.46044675090252707,
+          "decode_seconds": 251.81892420444638,
+          "effective_tokens_per_second": 81.03838924922098,
+          "total_seconds": 252.28556769527495,
+          "requests": 32
+        },
+        "throughput_speedup": 0.5984041029517976
+      }
+    },
+    "8": {
+      "fixed_replay": {
+        "full": {
+          "effective_tokens": 2048,
+          "waste_tokens": 0,
+          "row_efficiency": 1.0,
+          "decode_seconds": 4.192943193018436,
+          "effective_tokens_per_second": 488.43972019703796,
+          "total_seconds": 4.455339060164988,
+          "requests": 16
+        },
+        "early_exit": {
+          "effective_tokens": 2048,
+          "waste_tokens": 0,
+          "row_efficiency": 1.0,
+          "decode_seconds": 7.74128158390522,
+          "effective_tokens_per_second": 264.555678255906,
+          "total_seconds": 7.884006324224174,
+          "requests": 16
+        },
+        "throughput_speedup": 0.5416342433190804
+      },
+      "generation": {
+        "full": {
+          "effective_tokens": 18479,
+          "waste_tokens": 30929,
+          "row_efficiency": 0.37400825777202074,
+          "decode_seconds": 102.54918689094484,
+          "effective_tokens_per_second": 180.1964555764967,
+          "total_seconds": 103.14917304459959,
+          "requests": 32
+        },
+        "early_exit": {
+          "effective_tokens": 20741,
+          "waste_tokens": 36723,
+          "row_efficiency": 0.3609390226924683,
+          "decode_seconds": 210.7778075095266,
+          "effective_tokens_per_second": 98.40220014178941,
+          "total_seconds": 211.08133722282946,
+          "requests": 32
+        },
+        "throughput_speedup": 0.546082883966693
+      }
+    }
+  },
+  "quality_and_generation_by_task": {
+    "1": {
+      "gsm8k": {
+        "correct": {
+          "full": 15,
+          "early_exit": 15
+        },
+        "count": 16,
+        "lost_correct": 0,
+        "gained_correct": 0,
+        "truncated": {
+          "full": 0,
+          "early_exit": 1
+        },
+        "effective_tokens_per_second": {
+          "full": 66.75731135269793,
+          "early_exit": 67.06172982746766
+        },
+        "e2e_speedup": 0.7805200638019077,
+        "output_tokens": {
+          "full": 5211,
+          "early_exit": 6751
+        },
+        "completed_row_waste_tokens": {
+          "full": 0,
+          "early_exit": 0
+        }
+      },
+      "math": {
+        "correct": {
+          "full": 16,
+          "early_exit": 14
+        },
+        "count": 16,
+        "lost_correct": 2,
+        "gained_correct": 0,
+        "truncated": {
+          "full": 0,
+          "early_exit": 1
+        },
+        "effective_tokens_per_second": {
+          "full": 66.14572324326952,
+          "early_exit": 66.47803790309293
+        },
+        "e2e_speedup": 0.9039238592274852,
+        "output_tokens": {
+          "full": 12077,
+          "early_exit": 13471
+        },
+        "completed_row_waste_tokens": {
+          "full": 0,
+          "early_exit": 0
+        }
+      },
+      "mmlu": {
+        "correct": {
+          "full": 13,
+          "early_exit": 13
+        },
+        "count": 16,
+        "lost_correct": 0,
+        "gained_correct": 0,
+        "truncated": {
+          "full": 0,
+          "early_exit": 0
+        },
+        "effective_tokens_per_second": {
+          "full": 64.21901917477886,
+          "early_exit": 63.734193003096465
+        },
+        "e2e_speedup": 1.6683139346856033,
+        "output_tokens": {
+          "full": 16,
+          "early_exit": 16
+        },
+        "completed_row_waste_tokens": {
+          "full": 0,
+          "early_exit": 0
+        }
+      }
+    },
+    "2": {
+      "gsm8k": {
+        "correct": {
+          "full": 15,
+          "early_exit": 15
+        },
+        "count": 16,
+        "lost_correct": 0,
+        "gained_correct": 0,
+        "truncated": {
+          "full": 0,
+          "early_exit": 1
+        },
+        "effective_tokens_per_second": {
+          "full": 103.61869664109025,
+          "early_exit": 82.13701318044397
+        },
+        "e2e_speedup": 0.6209613067291615,
+        "output_tokens": {
+          "full": 5211,
+          "early_exit": 6751
+        },
+        "completed_row_waste_tokens": {
+          "full": 1291,
+          "early_exit": 2537
+        }
+      },
+      "math": {
+        "correct": {
+          "full": 16,
+          "early_exit": 14
+        },
+        "count": 16,
+        "lost_correct": 2,
+        "gained_correct": 0,
+        "truncated": {
+          "full": 0,
+          "early_exit": 1
+        },
+        "effective_tokens_per_second": {
+          "full": 86.7529342968771,
+          "early_exit": 73.73372456923701
+        },
+        "e2e_speedup": 0.7677366402564683,
+        "output_tokens": {
+          "full": 12069,
+          "early_exit": 13428
+        },
+        "completed_row_waste_tokens": {
+          "full": 5757,
+          "early_exit": 7022
+        }
+      },
+      "mmlu": {
+        "correct": {
+          "full": 13,
+          "early_exit": 13
+        },
+        "count": 16,
+        "lost_correct": 0,
+        "gained_correct": 0,
+        "truncated": {
+          "full": 0,
+          "early_exit": 0
+        },
+        "effective_tokens_per_second": {
+          "full": 123.12688791848204,
+          "early_exit": 106.4586090857451
+        },
+        "e2e_speedup": 1.3036542065176129,
+        "output_tokens": {
+          "full": 16,
+          "early_exit": 16
+        },
+        "completed_row_waste_tokens": {
+          "full": 0,
+          "early_exit": 0
+        }
+      }
+    },
+    "4": {
+      "gsm8k": {
+        "correct": {
+          "full": 15,
+          "early_exit": 15
+        },
+        "count": 16,
+        "lost_correct": 0,
+        "gained_correct": 0,
+        "truncated": {
+          "full": 0,
+          "early_exit": 1
+        },
+        "effective_tokens_per_second": {
+          "full": 166.89470975207675,
+          "early_exit": 86.1453289355089
+        },
+        "e2e_speedup": 0.3977621466191903,
+        "output_tokens": {
+          "full": 5190,
+          "early_exit": 6806
+        },
+        "completed_row_waste_tokens": {
+          "full": 2706,
+          "early_exit": 7126
+        }
+      },
+      "math": {
+        "correct": {
+          "full": 16,
+          "early_exit": 13
+        },
+        "count": 16,
+        "lost_correct": 3,
+        "gained_correct": 0,
+        "truncated": {
+          "full": 0,
+          "early_exit": 1
+        },
+        "effective_tokens_per_second": {
+          "full": 125.25408137417348,
+          "early_exit": 78.70361559869305
+        },
+        "e2e_speedup": 0.5591974848764808,
+        "output_tokens": {
+          "full": 12053,
+          "early_exit": 13601
+        },
+        "completed_row_waste_tokens": {
+          "full": 12111,
+          "early_exit": 16787
+        }
+      },
+      "mmlu": {
+        "correct": {
+          "full": 13,
+          "early_exit": 13
+        },
+        "count": 16,
+        "lost_correct": 0,
+        "gained_correct": 0,
+        "truncated": {
+          "full": 0,
+          "early_exit": 0
+        },
+        "effective_tokens_per_second": {
+          "full": 241.08838938805027,
+          "early_exit": 164.5907241709776
+        },
+        "e2e_speedup": 1.143106836015565,
+        "output_tokens": {
+          "full": 16,
+          "early_exit": 16
+        },
+        "completed_row_waste_tokens": {
+          "full": 0,
+          "early_exit": 0
+        }
+      }
+    },
+    "8": {
+      "gsm8k": {
+        "correct": {
+          "full": 15,
+          "early_exit": 15
+        },
+        "count": 16,
+        "lost_correct": 0,
+        "gained_correct": 0,
+        "truncated": {
+          "full": 1,
+          "early_exit": 1
+        },
+        "effective_tokens_per_second": {
+          "full": 152.8931305113753,
+          "early_exit": 94.69136497667517
+        },
+        "e2e_speedup": 0.6108289746393825,
+        "output_tokens": {
+          "full": 6620,
+          "early_exit": 6743
+        },
+        "completed_row_waste_tokens": {
+          "full": 14300,
+          "early_exit": 14193
+        }
+      },
+      "math": {
+        "correct": {
+          "full": 16,
+          "early_exit": 16
+        },
+        "count": 16,
+        "lost_correct": 0,
+        "gained_correct": 0,
+        "truncated": {
+          "full": 0,
+          "early_exit": 0
+        },
+        "effective_tokens_per_second": {
+          "full": 200.14862367399618,
+          "early_exit": 100.29554666666444
+        },
+        "e2e_speedup": 0.4263045403206312,
+        "output_tokens": {
+          "full": 11859,
+          "early_exit": 13998
+        },
+        "completed_row_waste_tokens": {
+          "full": 16629,
+          "early_exit": 22530
+        }
+      },
+      "mmlu": {
+        "correct": {
+          "full": 13,
+          "early_exit": 13
+        },
+        "count": 16,
+        "lost_correct": 0,
+        "gained_correct": 0,
+        "truncated": {
+          "full": 0,
+          "early_exit": 0
+        },
+        "effective_tokens_per_second": {
+          "full": 460.38014623103226,
+          "early_exit": 449.66876942074134
+        },
+        "e2e_speedup": 1.3466320744462301,
+        "output_tokens": {
+          "full": 16,
+          "early_exit": 16
+        },
+        "completed_row_waste_tokens": {
+          "full": 0,
+          "early_exit": 0
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Small selected pilot, fixed full-before-early-exit order, static completion waste and batch-dependent BF16 numerics. Throughput improvements require measured results; batch>1 support alone establishes no speedup.",
+    "No pilot result was used here to choose batch or alter the independent formal32 evaluation.",
+    "MMLU generated one option token and all16 routing actions were no-skip at every batch; its prefill-dominated E2E difference does not measure skipped-layer acceleration."
+  ],
+  "resource_mutations": false,
+  "artifact_sha256": {
+    "pb-sglang-batch-evaluate-1120-r1-batch-evaluation-summary.json": "e68b842e03ace1cc1670b952d45f90d0b314b5488048e2fecb30096e0693b500",
+    "pb-sglang-batch-evaluate-1120-r1-prepare-job.json": "80ce5feac2755bc3962de36b47a53a17836b3b123ba9a1a109e8d3358746fe4c",
+    "pb-sglang-batch-evaluate-1120-r1-prepare-replicas.json": "73981e42504ed94624f8131c6639cdb3f655e3980a35e6c771fe371e3b8c7ad2",
+    "pb-sglang-batch-evaluate-1120-r1-submit-job.json": "0fdf1ada6466e24f5c2b7f180cc13de9f33e690928d763574efee07a008486dc",
+    "pb-sglang-batch-evaluate-1120-r1-submit-replicas.json": "1d92afe2b73791cffa7b7fbc969304be24d37ab4c881e7f40c06c545cefc7136",
+    "pb-sglang-batch-evaluate-1120-r1-submit-logs.json": "d543fbc177846fa5b8443d739ac51f4903936957fc9e824ecb858df4ac2cd33b",
+    "pb-sglang-batch-evaluate-1120-r1-gpu-job.json": "b0e0111c9bb319dd72c923bdc025459cf85fa60200942775780f5b17c397c12e",
+    "pb-sglang-batch-evaluate-1120-r1-gpu-replicas.json": "a84632098dc82064c1abd7248511e2e2adcd650aa45339515e5963f5ff9e99fc",
+    "pb-sglang-batch-evaluate-1120-r1-gpu-logs.json": "d51b35d2bea9872b9cf55c89571405330eb6c83bc76a81b01cfd2abe209b90b1",
+    "pb-sglang-batch-evaluate-1120-r1-verified.json": "4356d19ccea78bef75e8a616b3b682a90cb8d08f77409319f7077ffa8a5102e4",
+    "pb-sglang-batch-evaluate-1120-r1-final.json": "f8b1f2d26f93f87aaedfe7b815bd2dfcdad0e25804034653163960a881de26c0"
+  }
+}
