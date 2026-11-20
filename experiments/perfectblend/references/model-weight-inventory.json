@@ -1,0 +1,77 @@
+{
+  "model": "/gpfs/shared-model-weight/qwen38-20261019/hf-model",
+  "files": [
+    {
+      "file": "model-00001-of-00012.safetensors",
+      "bytes": 4997391272,
+      "mtime_ns": 1792384662235018027,
+      "sha256": "ce1711affa79e81e9b20c482cc68f17b5f6cf52d62b68957e4cbb664c3af4589"
+    },
+    {
+      "file": "model-00002-of-00012.safetensors",
+      "bytes": 4965238248,
+      "mtime_ns": 1792384681960146934,
+      "sha256": "e8b930f934d8f9ff1c3be42477f82da3914995dfc3edf5802908cd7583194c7f"
+    },
+    {
+      "file": "model-00003-of-00012.safetensors",
+      "bytes": 4933779360,
+      "mtime_ns": 1792384714338625253,
+      "sha256": "fc7a51f5434caa8ffaf21b01d3150a7116e7a0e4c30fe15ea2a55e580dd74c60"
+    },
+    {
+      "file": "model-00004-of-00012.safetensors",
+      "bytes": 4965238360,
+      "mtime_ns": 1792384669786111351,
+      "sha256": "f888d1e976d2e74538b346d4694a41db15e389eac2b062dc51bd574cf8b5f55f"
+    },
+    {
+      "file": "model-00005-of-00012.safetensors",
+      "bytes": 4911743112,
+      "mtime_ns": 1792384717056606278,
+      "sha256": "f2afe3ab1741b942ed91fa82358efb818d5c50c72f02c7f10f46e8ddb004b45d"
+    },
+    {
+      "file": "model-00006-of-00012.safetensors",
+      "bytes": 4987274624,
+      "mtime_ns": 1792384734815637187,
+      "sha256": "b9ec3ee363b35537c37b2fd114725ac6af192708ee8f4b19817f750570b8c6d0"
+    },
+    {
+      "file": "model-00007-of-00012.safetensors",
+      "bytes": 4911743120,
+      "mtime_ns": 1792384681525577725,
+      "sha256": "b7eef58d54a930c8601ab5026b3b7ee4a337988d47b9a20144e3eb01bfb87712"
+    },
+    {
+      "file": "model-00008-of-00012.safetensors",
+      "bytes": 4965238320,
+      "mtime_ns": 1792384716027979482,
+      "sha256": "07cbc4a55f98a095e58e92391500cd9eb317c2dd5c70ab32d7b46e3a194ff643"
+    },
+    {
+      "file": "model-00009-of-00012.safetensors",
+      "bytes": 4933779424,
+      "mtime_ns": 1792384752851322445,
+      "sha256": "aeeffeda40fab4992061c370cb00c9adf395cd01aaea9d3beb68634e45595b13"
+    },
+    {
+      "file": "model-00010-of-00012.safetensors",
+      "bytes": 4965238336,
+      "mtime_ns": 1792384756884340964,
+      "sha256": "c969cb16ad8ffdd04b5c26e4e8aad6970db69d8c07e942e61f68fa11f321fec3"
+    },
+    {
+      "file": "model-00011-of-00012.safetensors",
+      "bytes": 2634134784,
+      "mtime_ns": 1792384741300232242,
+      "sha256": "f411f46b07ae05fe563e436ccf79a50c2cba00565b31f6fae092f59948c9cc2a"
+    },
+    {
+      "file": "model-00012-of-00012.safetensors",
+      "bytes": 2542807248,
+      "mtime_ns": 1792384746799263226,
+      "sha256": "ceb14bcdacf940c4946d7b14490dbddc4a8da92adccc98f5faf4e9ff3bedf7c4"
+    }
+  ]
+}

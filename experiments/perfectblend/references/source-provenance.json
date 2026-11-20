@@ -1,0 +1,57 @@
+{
+  "original_native_source_commit": "d3500f9526f816782b7efa11199d7bc17c215a12",
+  "original_multiclass_source_commit": "ed9aeac6bd191ec8eff191100045a88588404ce4",
+  "note": "Algorithms copied from the validated experiment. Packaged entrypoints add configurable data/model/run paths; compare source checksums before claiming byte-identical source.",
+  "files": [
+    {
+      "file": "native/engine.py",
+      "source": "src/engine.py",
+      "source_sha256": "504f94f1f373f797e1eabad9703cf311b34cfb5d52c32ad491cf0701ad82c9e8",
+      "packaged_sha256": "749b70b0ac34fa296c32151f66436d725cdf9a1c06b543b3069473e8b2725ae3"
+    },
+    {
+      "file": "native/pipeline.py",
+      "source": "src/pipeline.py",
+      "source_sha256": "1649b78b0795db3a700040d86e0dc4459d3816ec151aaaea614db593df3cfb9c",
+      "packaged_sha256": "11b340e0a6c68a160bd042449ca73b5fae3de4ad090563d8f6276f5c309e4428"
+    },
+    {
+      "file": "native/evaluate.py",
+      "source": "src/evaluate.py",
+      "source_sha256": "27d99fbdd6ed5a1ba88ab03fb61eab77780707017fa2e615e120022c48408ea3",
+      "packaged_sha256": "7a3262e45a17cf2644a7cee54a64c4c61f8013c13fb03616147513a5d7eb8a52"
+    },
+    {
+      "file": "native/math_equivalence.py",
+      "source": "src/math_equivalence.py",
+      "source_sha256": "c4101b1f51a2bb65665194aecd9f761d668c0c248a0350f196c2950e87488527",
+      "packaged_sha256": "5737dcc06cf8981c00cc4d27defffa079015fd686356d5a90b9a7917a7521db9"
+    },
+    {
+      "file": "prepare_data.py",
+      "source": "ops/prepare_data.py",
+      "source_sha256": "9054785bc452591f1b7ac46f786db37f7f338515e6cd3d61ee17f11aa601c817",
+      "packaged_sha256": "5a5fa8f0d7124dcef379f4b9f0c96ad4f5080d2427dfb75f834ecef9a876dc0f"
+    },
+    {
+      "file": "report.py",
+      "source": "ops/report.py",
+      "source_sha256": "fe5490f4cc13652809e89c8c855c8a55fc825f4d4ea6822359b123110760329c",
+      "packaged_sha256": "f59bb15024d1323b4579eae746d4fbce3fa9a34784c489f22b8530c08af714dd"
+    },
+    {
+      "file": "train_multiclass.py",
+      "source": "multiclass/src/train_head.py",
+      "source_sha256": "dd13d42aa0073264836315c2e1e52a7c10f952ab4fff251bb036f27b42d1a38f",
+      "packaged_sha256": "dd13d42aa0073264836315c2e1e52a7c10f952ab4fff251bb036f27b42d1a38f"
+    }
+  ],
+  "packaging_changes": [
+    "Required explicit model inventory in native training/evaluation; validate index completeness and optional metadata hashes.",
+    "Explicit data/cache/HF endpoint and receipt/report output paths; no workstation-relative defaults.",
+    "Portable managed.py delegates lifecycle to an external complete training_run.py tool; separate specs/outputs from immutable source.",
+    "Standalone model fingerprint and pinned data verification entrypoints; small historical result receipts only.",
+    "Hendrycks MATH source attribution and string-literal/trailing-whitespace cleanup, preserving normalization behavior."
+  ],
+  "sglang_base_commit": "85fd90072d1a9f2432842b03588f63b745e524e4"
+}

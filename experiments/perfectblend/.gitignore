@@ -1,0 +1,11 @@
+__pycache__/
+*.pyc
+.venv/
+data/
+runs/
+artifacts/
+*.pt
+*.npz
+*.parquet
+*.jsonl
+*.bundle

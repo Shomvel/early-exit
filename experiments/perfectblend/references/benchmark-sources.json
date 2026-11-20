@@ -1,0 +1,47 @@
+[
+  {
+    "benchmark": "gsm8k",
+    "repo": "openai/gsm8k",
+    "revision": "740312add88f781978c0658806c59bc2815b9866",
+    "files": [
+      {
+        "file": "main/test-00000-of-00001.parquet",
+        "bytes": 419088,
+        "sha256": "ee7b8da9e381df27b9e3f7758a159ab2bdaa4dbaa910546cbbc47e0cb44e4f59",
+        "rows": 1319
+      }
+    ]
+  },
+  {
+    "benchmark": "math",
+    "repo": "DigitalLearningGmbH/MATH-lighteval",
+    "revision": "0530c78699ea5e8eb5530600900e1f328b48acad",
+    "files": [
+      {
+        "file": "data/test-00000-of-00001.parquet",
+        "bytes": 1855870,
+        "sha256": "7dca8d6e41af88ecf82f2b5f36eb5530e083aaaa86ee325f62bd5c31535178c6",
+        "rows": 5000
+      }
+    ]
+  },
+  {
+    "benchmark": "mmlu",
+    "repo": "cais/mmlu",
+    "revision": "c30699e8356da336a370243923dbaf21066bb9fe",
+    "files": [
+      {
+        "file": "all/dev-00000-of-00001.parquet",
+        "bytes": 76504,
+        "sha256": "2b19bde1ed8ca6b482fb283abc90e8e0d9d228947029c0b91795d64b28b3bc3f",
+        "rows": 285
+      },
+      {
+        "file": "all/test-00000-of-00001.parquet",
+        "bytes": 3504718,
+        "sha256": "74a41822ce7d3def56e1682f958469c04642a5336a5ce912fa375fdb90fb25d7",
+        "rows": 14042
+      }
+    ]
+  }
+]

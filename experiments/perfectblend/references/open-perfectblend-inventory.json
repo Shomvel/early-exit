@@ -1,0 +1,42 @@
+{
+  "repo": "mlabonne/open-perfectblend",
+  "revision": "af60f3c18201652a83a93f46fcfee1b646ba3df7",
+  "files": [
+    {
+      "file": "data/train-00000-of-00006.parquet",
+      "bytes": 248696008,
+      "sha256": "06d223e493c9e3822c7862ae0705c1a0e4705fd21385276917fc8348e7ce7b0f",
+      "rows": 236819
+    },
+    {
+      "file": "data/train-00001-of-00006.parquet",
+      "bytes": 247525250,
+      "sha256": "b596ee25d864caee19f34f9dd26dbddbff08b8b8b7621b12307aca4999eb92ab",
+      "rows": 236818
+    },
+    {
+      "file": "data/train-00002-of-00006.parquet",
+      "bytes": 246915862,
+      "sha256": "4f19b5301415821c3668f51c2c9efd4d8273f3bc996a17ebb4ab9a774b366ded",
+      "rows": 236818
+    },
+    {
+      "file": "data/train-00003-of-00006.parquet",
+      "bytes": 247511584,
+      "sha256": "bcb8dba3d5404f2a1e3efda56d32455ccb8341ac1c62c71b46910570b2a304cc",
+      "rows": 236818
+    },
+    {
+      "file": "data/train-00004-of-00006.parquet",
+      "bytes": 246966726,
+      "sha256": "0bf70a9f4d429bedc055d14055eef7d3c1d015e10f819036089daf9503422d55",
+      "rows": 236818
+    },
+    {
+      "file": "data/train-00005-of-00006.parquet",
+      "bytes": 245744891,
+      "sha256": "932bde36acc6887b7c176bad9ffa5b83d1850b2e8735e302613b85976ac9a12d",
+      "rows": 236818
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "Name": "replaced-by-managed-plan",
+  "Project": "fdj-infra",
+  "ZoneId": "cn-shanghai-a",
+  "QuotaGroup": "nex_bp",
+  "Priority": "9",
+  "Qos": "Guaranteed",
+  "UsePrivateMachine": true,
+  "JobType": "normal",
+  "RestartPolicy": "Never",
+  "BackoffLimit": 1,
+  "TaskSpecs": {
+    "t0": {
+      "Replicas": 1,
+      "GPU": "4",
+      "CPU": "32",
+      "Memory": "192Gi",
+      "Image": "registry.gate.yicloud.com.cn/fdj-infra/weaver-trainer:v1.14.35@sha256:d00e4d298a979f055e5eef9d5449d59e10d22b88c287d99d79ee9256e151fb12",
+      "MountGPFS": "gpfs://gpfs1/bp-data-pvc:/mnt/work;gpfs://gpfs1/shared-model-weight:/gpfs/shared-model-weight",
+      "PositiveTags": ["feature/gpfs=yes", "H200"],
+      "RootfsSource": {"Kind": "image"},
+      "UpdatePolicy": "Active",
+      "RestartPolicy": "Never",
+      "MaxRunningDuration": "8h",
+      "Internet": false,
+      "Env": {
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONUNBUFFERED": "1",
+        "OMP_NUM_THREADS": "4",
+        "HF_HUB_OFFLINE": "1",
+        "TRANSFORMERS_OFFLINE": "1"
+      }
+    }
+  }
+}

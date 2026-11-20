@@ -1,0 +1,108 @@
+{
+  "runs": [
+    {
+      "stage": "smoke",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-smoke-1120-r3",
+      "uuid": "10d6f302-94b0-42d0-824d-aeebe307ba88",
+      "job_id": "j-1795126026-937370",
+      "state": "verified",
+      "phase": "Succeeded",
+      "source_commit": "6374ca6f97f489268831ba502c0c7ff437fd3ce3",
+      "verification": {
+        "markers": [
+          {
+            "replica": "0",
+            "exit_code": 0
+          }
+        ],
+        "files": {
+          "selection.json": {
+            "sha256": "9ecf47223f3a8a103909d0b5dfe453a2d1acd1a492f0973c95fa7169dbcca369",
+            "bytes": 9273
+          }
+        }
+      }
+    },
+    {
+      "stage": "pilot",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-pilot-1120-r2",
+      "uuid": "27aa5c33-c4b7-42db-905e-3d2d1cfeff2a",
+      "job_id": "j-1795126283-562993",
+      "state": "verified",
+      "phase": "Succeeded",
+      "source_commit": "65c537058b1ee363a5d8238491b1aa87a545484d",
+      "verification": {
+        "markers": [
+          {
+            "replica": "0",
+            "exit_code": 0
+          }
+        ],
+        "files": {
+          "selection.json": {
+            "sha256": "659ff24c26c7265c9fc33c97c3ea5eb964bd1322f677b256b9825911784a0c48",
+            "bytes": 110917
+          }
+        }
+      }
+    },
+    {
+      "stage": "capture",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-capture-1120-r1",
+      "uuid": "16c8e725-fc9c-4bfc-9583-59d65f2dfcaa",
+      "job_id": "j-1795127150-231917",
+      "state": "verified",
+      "phase": "Succeeded",
+      "source_commit": "aaf848ebcd900496257267b9b4d0c039bd57e061",
+      "verification": {
+        "markers": [
+          {
+            "replica": "0",
+            "exit_code": 0
+          }
+        ],
+        "files": {
+          "summary.json": {
+            "sha256": "976134ef45a57a933b00935169dc742e1fbc87e10649e83c64eddb5eeb2a8896",
+            "bytes": 3020
+          }
+        }
+      }
+    },
+    {
+      "stage": "eval-smoke",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-eval-smoke-1120-r1",
+      "uuid": "c6d79e79-e728-436d-bbcb-038e77b852a1",
+      "job_id": "j-1795130564-650289",
+      "state": "verified",
+      "phase": "Succeeded",
+      "source_commit": "d3500f9526f816782b7efa11199d7bc17c215a12",
+      "verification": {
+        "markers": [
+          {
+            "replica": "0",
+            "exit_code": 0
+          }
+        ],
+        "files": {
+          "evaluation-summary.json": {
+            "sha256": "f098b0144911e1fff829b8462569e97ec4601edbf0d827444ea51cb35807098c",
+            "bytes": 16298
+          }
+        }
+      }
+    },
+    {
+      "stage": "eval",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-eval-1120-r1",
+      "uuid": "bcabe5ca-f742-4f2f-80d1-639fdcc15a2c",
+      "job_id": "j-1795131018-644726",
+      "state": "verified",
+      "phase": "Stopped",
+      "source_commit": "d3500f9526f816782b7efa11199d7bc17c215a12",
+      "status": "user_stopped",
+      "complete_benchmark_results": false,
+      "note": "Stopped at user request before full counts; partial predictions are preserved in the run directory. Controller assertion only required terminal Succeeded."
+    }
+  ]
+}

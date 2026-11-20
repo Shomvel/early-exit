@@ -1,0 +1,129 @@
+{
+  "source": 32,
+  "skips": [
+    5,
+    6,
+    7,
+    11
+  ],
+  "train_conversations": 10000,
+  "calibration_conversations": 1000,
+  "heldout_conversations": 1000,
+  "positions": {
+    "train": 79865,
+    "calibration": 7993,
+    "heldout": 7984
+  },
+  "curves": [
+    {
+      "epoch": 1,
+      "loss": 0.5890748792119147,
+      "optimizer_steps": 78
+    },
+    {
+      "epoch": 2,
+      "loss": 0.5160076315816594,
+      "optimizer_steps": 156
+    },
+    {
+      "epoch": 3,
+      "loss": 0.47482144155439926,
+      "optimizer_steps": 234
+    },
+    {
+      "epoch": 4,
+      "loss": 0.43617635565171864,
+      "optimizer_steps": 312
+    },
+    {
+      "epoch": 5,
+      "loss": 0.39769029361098784,
+      "optimizer_steps": 390
+    },
+    {
+      "epoch": 6,
+      "loss": 0.36061201796970216,
+      "optimizer_steps": 468
+    }
+  ],
+  "policies": [
+    {
+      "goal": 0.95,
+      "threshold": 0.45001841866970066,
+      "calibration": {
+        "total": 7993,
+        "accepted": 6523,
+        "tp": 6197,
+        "fp": 326,
+        "precision": 0.9500229955541929,
+        "coverage": 0.8160890779432003,
+        "mean_skipped_blocks": 8.65957712998874,
+        "expected_block_fraction_saved": 0.13530589265607407,
+        "skipped_width_counts": {
+          "0": 1470,
+          "5": 0,
+          "6": 85,
+          "7": 528,
+          "11": 5910
+        }
+      },
+      "heldout": {
+        "total": 7984,
+        "accepted": 6576,
+        "tp": 6300,
+        "fp": 276,
+        "precision": 0.958029197080292,
+        "coverage": 0.8236472945891784,
+        "mean_skipped_blocks": 8.787324649298597,
+        "expected_block_fraction_saved": 0.13730194764529058,
+        "skipped_width_counts": {
+          "0": 1408,
+          "5": 0,
+          "6": 54,
+          "7": 477,
+          "11": 6045
+        }
+      }
+    },
+    {
+      "goal": 0.99,
+      "threshold": 0.9307399958968162,
+      "calibration": {
+        "total": 7993,
+        "accepted": 2302,
+        "tp": 2279,
+        "fp": 23,
+        "precision": 0.9900086880973067,
+        "coverage": 0.28800200175153257,
+        "mean_skipped_blocks": 2.8972851244839233,
+        "expected_block_fraction_saved": 0.0452700800700613,
+        "skipped_width_counts": {
+          "0": 5691,
+          "5": 0,
+          "6": 68,
+          "7": 456,
+          "11": 1778
+        }
+      },
+      "heldout": {
+        "total": 7984,
+        "accepted": 2521,
+        "tp": 2488,
+        "fp": 33,
+        "precision": 0.9869099563665212,
+        "coverage": 0.3157565130260521,
+        "mean_skipped_blocks": 3.1851202404809618,
+        "expected_block_fraction_saved": 0.04976750375751503,
+        "skipped_width_counts": {
+          "0": 5463,
+          "5": 0,
+          "6": 65,
+          "7": 494,
+          "11": 1962
+        }
+      }
+    }
+  ],
+  "classifier_sha256": "0a9c4ca0c5d8a98a172b97bff1782c10e9f91cae6854398db14ef407a08f5556",
+  "label_history": "Native full-history cached one-step counterfactual; teacher-forced observed answer tokens."
+}

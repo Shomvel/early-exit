@@ -1,0 +1,63 @@
+{
+  "dataset": "mlabonne/open-perfectblend",
+  "revision": "af60f3c18201652a83a93f46fcfee1b646ba3df7",
+  "seed": 20261120,
+  "sampling": "uniform row-index rejection sampling",
+  "dataset_rows": 1420909,
+  "candidate_pool": 60000,
+  "splits": [
+    {
+      "split": "train",
+      "count": 10000,
+      "sha256": "5b9603c7267aa1793e7a85a692fec5b706fbd8ec5662f25f9d0f708133e949ae",
+      "bytes": 24623737,
+      "sources": {
+        "openbmb/UltraInteract_sft": 1966,
+        "theblackcat102/evol-codealpaca-v1": 746,
+        "HuggingFaceH4/orca-math-word-problems-200k": 1511,
+        "mlabonne/ultrachat_200k_sft": 1527,
+        "meta-math/MetaMathQA": 2883,
+        "Post-training-Data-Flywheel/AutoIF-instruct-61k": 439,
+        "HuggingFaceH4/ultrafeedback_binarized": 466,
+        "mlabonne/lmsys-arena-human-preference-55k-sharegpt": 462
+      }
+    },
+    {
+      "split": "calibration",
+      "count": 1000,
+      "sha256": "ef5650b942625f51d2811276eee3540dc5916d35b415a881866d61b6f87f4ba9",
+      "bytes": 2490878,
+      "sources": {
+        "openbmb/UltraInteract_sft": 198,
+        "meta-math/MetaMathQA": 289,
+        "mlabonne/ultrachat_200k_sft": 158,
+        "Post-training-Data-Flywheel/AutoIF-instruct-61k": 44,
+        "theblackcat102/evol-codealpaca-v1": 94,
+        "HuggingFaceH4/orca-math-word-problems-200k": 133,
+        "mlabonne/lmsys-arena-human-preference-55k-sharegpt": 44,
+        "HuggingFaceH4/ultrafeedback_binarized": 40
+      }
+    },
+    {
+      "split": "heldout",
+      "count": 1000,
+      "sha256": "f834a957016a94121c9fa1c23cb0a77b89685133353fefca00afef36557bce3c",
+      "bytes": 2543439,
+      "sources": {
+        "openbmb/UltraInteract_sft": 193,
+        "mlabonne/ultrachat_200k_sft": 171,
+        "meta-math/MetaMathQA": 291,
+        "HuggingFaceH4/orca-math-word-problems-200k": 134,
+        "theblackcat102/evol-codealpaca-v1": 70,
+        "Post-training-Data-Flywheel/AutoIF-instruct-61k": 51,
+        "HuggingFaceH4/ultrafeedback_binarized": 49,
+        "mlabonne/lmsys-arena-human-preference-55k-sharegpt": 41
+      }
+    }
+  ],
+  "exclusions": {
+    "missing_assistant": 546,
+    "benchmark_overlap": 132
+  },
+  "decontamination": "Normalized exact query and 13-word benchmark query anchors, checked across all user turns; no semantic paraphrase guarantee."
+}
