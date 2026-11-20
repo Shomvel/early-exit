@@ -11,6 +11,7 @@ This directory contains the data preparation, geometry selection, frozen-model f
 | `fingerprint_model.py` | Hash all indexed safetensors shards and stamp their shared-storage metadata |
 | `native/pipeline.py` | Smoke, training-data pilot scan, cached counterfactual feature capture, binary head fitting and calibration |
 | `train_multiclass.py` | Fit the five-action shared MLP from the same already captured features |
+| `recall_sweep.py` | Compare gate objectives, depth, context, ensembles and action policies for recall at high precision on the same captured features; [report](references/recall-sweep-report.md) |
 | `native/evaluate.py` | Native Transformers full/early-exit paired benchmark evaluator |
 | `sglang_run.py`, `sglang_eval.py` | SGLang server orchestration and benchmark evaluation; see each script's `--help` |
 | `managed.py` | Build raw specs and delegate prepare, submit, reconcile and status to an external `training_run.py` |
