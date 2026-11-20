@@ -1,0 +1,81 @@
+{
+  "validated_at": "2026-11-20T06:15:03.799216+00:00",
+  "routing": "split_skip",
+  "status": "cpu_validated_gpu_not_run",
+  "files": {
+    "python/sglang/srt/early_exit/batch_smoke.py": "eee1d7d2c64b8fc3e3f88abc2210f1f13876465219a80b6418f5309d5ed46af6",
+    "python/sglang/srt/early_exit/probe.py": "b043bcb3b2a7cfa90f290dc6381945d895e4c5ebad724f21cc1dfef949a075c1",
+    "python/sglang/srt/early_exit/batch_evaluate.py": "9d7c7c10cb4323bafc066fea1e139053b2e3155f6555351400e3c7b22ce56d90",
+    "experiments/perfectblend/tests/test_batch_protocol.py": "89a581ab8df84cec6f3f6b527567b1834871cab9bc30a49ea7265e5b8b5f2561"
+  },
+  "validation": [
+    {
+      "command": "python3 -m unittest experiments.perfectblend.tests.test_batch_protocol",
+      "passed": true,
+      "tests": 8
+    },
+    {
+      "command": "python3 -m compileall -q owned files",
+      "passed": true
+    },
+    {
+      "command": "Black --check/isort --check-only/Ruff E9,F63,F7,F82/git diff --check",
+      "passed": true
+    },
+    {
+      "command": "CPU synthetic paired aggregate with identical full/EE identities and fixed128 trajectories",
+      "passed": true,
+      "summary_sha256": "09b34c7f5e1f8c5ab4dddc31e2c8c8971cb3f5e9d2b82373980e8e392dc3f5de",
+      "rejected": [
+        "legacy batch_min routing",
+        "empty converted graph list",
+        "old eight-region graphs"
+      ]
+    }
+  ],
+  "smoke": {
+    "batch_sizes": [
+      1,
+      2,
+      3,
+      4,
+      8
+    ],
+    "max_batch_size": 8,
+    "steps": 16,
+    "full_vs_no_skip_atol": 0.02,
+    "full_vs_no_skip_rtol": 0,
+    "serial_async_mixed": "bitwise logits and caches",
+    "coverage": "zero/all positive, four positive minima, every mixed no-skip/skip population size; ordered partition, minimum capacity and every row/group counter checked against Python oracle",
+    "padding": "native graph sentinel checks and resident real KV/GDN canary"
+  },
+  "gpu_probe": {
+    "partition": "device partition, gather, bucket IF and merge",
+    "kv_store": "native MHATokenToKVPool BF16 NHD two-stream masked Triton writes; unequal K/V dims; real slots exact and slot0 unchanged"
+  },
+  "pilot": {
+    "batch_sizes": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "fingerprints": [
+      "batch.py",
+      "split.py",
+      "masked_kv.py",
+      "all evaluate.RUNTIME_FILES"
+    ],
+    "timing": "only final routing metadata read after measured decode; paired full+EE fixed replay uses same batch-one full trajectory",
+    "reports": [
+      "real-row actions",
+      "nonempty group actions",
+      "physical IF launches",
+      "group size histogram",
+      "minimal capacity histogram",
+      "packed group padding slots",
+      "completion waste"
+    ]
+  },
+  "limitations": "CPU checks validate protocol handling only. Split GPU probe/model parity/throughput must pass on independent immutable source; old per-request/batch_min results do not validate this source."
+}

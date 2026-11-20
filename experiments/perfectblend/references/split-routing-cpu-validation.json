@@ -1,0 +1,40 @@
+{
+  "observed_at": "2026-11-20T06:22:00.681292+00:00",
+  "routing": "split_skip",
+  "scope": "CPU tensor partition, captured dispatcher shape/IF planning, RoPE/MRoPE gather, inverse merge, ragged KV/GDN request ownership and scratch separation. CUDA numerical parity and throughput remain unverified.",
+  "tests": {
+    "count": 11,
+    "passed": true,
+    "command": "python3 -m unittest experiments.perfectblend.tests.test_batch_positions experiments.perfectblend.tests.test_batch_routing experiments.perfectblend.tests.test_batch_backend -v"
+  },
+  "exhaustive_membership_patterns": 6681,
+  "format": "Black, isort --profile black and Ruff F passed for root-owned files",
+  "files": {
+    "python/sglang/srt/early_exit/runtime.py": "c1d802ebc7bc4d3eb2b5ab668837ceec9a54b136010dd8f04a749738dd033e08",
+    "python/sglang/srt/early_exit/split.py": "8d70622b70b9aec9859a5743c3fb2f47897c7d1a0bf8ea3e4174ed5da8b10c7f",
+    "python/sglang/srt/early_exit/masked_kv.py": "a8988776ddbdf0bae30909d973d4b5aaa107e0823a5baa5eaa03f17e6bf42326",
+    "python/sglang/srt/early_exit/batch.py": "f36e73a9b5d6d5c0926b6a10e73ffafdd0803c0792ddc3610df714a90fa5fa48",
+    "python/sglang/srt/early_exit/evaluate.py": "0d3feb795deba48be61922eb8c6f0218f7ff0f69e135a67d376e27ac6fd0e7e2",
+    "experiments/perfectblend/tests/test_batch_positions.py": "5abe3ea435f1dbebbdcc11f8cf5224aa32be55a9471c8b97333063c8c79de7a4",
+    "experiments/perfectblend/tests/test_batch_routing.py": "45574dbb91b14830e0e2f6011d735aac888adf8f8c5e871a147aa99ed5220a4c",
+    "experiments/perfectblend/tests/test_batch_backend.py": "8daf8d53daace0ed639da2bfc4e34713684febdd24ee752497f5e65f4ad34fd0"
+  },
+  "snapshot_source": "94bfec7df86c8cb63d30657a3f61c750cb38ca79",
+  "smoke_entry_tests": 4,
+  "root_tests": 11,
+  "total_tests": 21,
+  "frozen_gpu_source_files": {
+    "runtime.py": "c1d802ebc7bc4d3eb2b5ab668837ceec9a54b136010dd8f04a749738dd033e08",
+    "split.py": "8d70622b70b9aec9859a5743c3fb2f47897c7d1a0bf8ea3e4174ed5da8b10c7f",
+    "masked_kv.py": "a8988776ddbdf0bae30909d973d4b5aaa107e0823a5baa5eaa03f17e6bf42326",
+    "batch.py": "f36e73a9b5d6d5c0926b6a10e73ffafdd0803c0792ddc3610df714a90fa5fa48",
+    "evaluate.py": "0d3feb795deba48be61922eb8c6f0218f7ff0f69e135a67d376e27ac6fd0e7e2",
+    "batch_smoke.py": "eee1d7d2c64b8fc3e3f88abc2210f1f13876465219a80b6418f5309d5ed46af6",
+    "probe.py": "b043bcb3b2a7cfa90f290dc6381945d895e4c5ebad724f21cc1dfef949a075c1"
+  },
+  "gpu_validation": "Prepared, not submitted at evidence creation",
+  "evaluator_protocol_tests": 4,
+  "overlay_regressions": 2,
+  "gpu_smoke": "verified",
+  "gpu_summary_sha256": "101414b178be44e12fe2839fdc9d53ecd3bfbfa6747b7160cc3e7fd1c8a1f3ff"
+}

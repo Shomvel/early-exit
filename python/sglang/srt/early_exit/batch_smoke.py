@@ -1,9 +1,10 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Real batched ModelRunner differential test for independent GPU jump actions.
+"""Real ModelRunner differential test of GPU no-skip/skip partitioning.
 
-Compare every row's token logits, KV slots and GDN state against full execution
-when actions are zero, then compare serial/async repair with heterogeneous
-forced actions and fixed full-model input trajectories. No benchmark claim.
+Compare token logits, KV slots and GDN state against full execution when all
+proposals are zero. Check GPU packing and minimal capacity buckets per step,
+then compare serial/async repair on identical full-model input trajectories.
+No benchmark claim.
 """
 
 import argparse
@@ -16,10 +17,29 @@ import time
 from pathlib import Path
 
 FULL_PARITY_ATOL = 0.02
+WIDTHS = (0, 5, 6, 7, 11)
 
 
 def save(path, value):
     Path(path).write_text(json.dumps(value, indent=2, allow_nan=False) + "\n")
+
+
+def cache_snapshot(raw, request, length):
+    slots = raw.req_to_token_pool.req_to_token[request.req_pool_idx, :length].long()
+    result = {}
+    for layer in range(32, 43):
+        if layer in raw.attn_backend.full_attn_layers:
+            result[f"k{layer}"] = (
+                raw.token_to_kv_pool.get_key_buffer(layer)[slots].cpu().clone()
+            )
+            result[f"v{layer}"] = (
+                raw.token_to_kv_pool.get_value_buffer(layer)[slots].cpu().clone()
+            )
+        else:
+            cache = raw.req_to_token_pool.mamba2_layer_cache(layer)
+            result[f"conv{layer}"] = cache.conv[0][request.mamba_pool_idx].cpu().clone()
+            result[f"ssm{layer}"] = cache.temporal[request.mamba_pool_idx].cpu().clone()
+    return result
 
 
 def run_batch(runner, prompts, *, steps, forced_tokens=None, actions=None):
@@ -31,26 +51,48 @@ def run_batch(runner, prompts, *, steps, forced_tokens=None, actions=None):
     size = len(prompts)
     raw = runner.torch_runner
     runtime = get_runtime(raw.model)
-    runner.clear()
-    reqs = prepare_synthetic_inputs_for_latency_test(
-        size, len(prompts[0]) - 1, [ids[:-1] for ids in prompts]
+    capture_size = min(
+        value for value in raw.server_args.cuda_graph_bs if value >= size
     )
+    runner.clear()
+    inputs = [ids[:-1] for ids in prompts]
+    # A real, separately allocated request remains resident while graph padding
+    # decodes the others. This canary checks that original and packed padding
+    # cannot mutate another real request's KV/GDN state.
+    canary_input = inputs[0] if size < capture_size else None
+    all_inputs = inputs + ([canary_input] if canary_input is not None else [])
+    all_reqs = prepare_synthetic_inputs_for_latency_test(
+        len(all_inputs), len(prompts[0]) - 1, all_inputs
+    )
+    reqs = all_reqs[:size]
     current = torch.tensor(
         [ids[-1] for ids in prompts], dtype=torch.int64, device="cuda"
     )
     torch.cuda.synchronize()
     begin = time.perf_counter()
-    _, _, batch = runner.extend(reqs)
+    _, _, batch = runner.extend(all_reqs)
     torch.cuda.synchronize()
     prefill = time.perf_counter() - begin
+    canary_before = None
+    if canary_input is not None:
+        canary_before = cache_snapshot(raw, all_reqs[-1], len(canary_input))
+        batch.filter_batch(keep_indices=list(range(size)))
     if runtime:
-        runtime.histogram.zero_()
-        runtime.executed.zero_()
-        runtime.row_histogram.zero_()
-        runtime.row_executed.zero_()
-        runtime.batched_main_executed.zero_()
+        for name in (
+            "histogram",
+            "executed",
+            "row_histogram",
+            "row_executed",
+            "batch_executed",
+            "group_executed",
+            "group_action_histogram",
+            "group_size_histogram",
+            "bucket_histogram",
+            "batched_main_executed",
+        ):
+            getattr(runtime, name).zero_()
         runtime.force.fill_(-1)
-    generated, logits = [], []
+    generated, logits, routing_steps, padding_steps = [], [], [], []
     start, end = torch.cuda.Event(enable_timing=True), torch.cuda.Event(
         enable_timing=True
     )
@@ -70,6 +112,38 @@ def run_batch(runner, prompts, *, steps, forced_tokens=None, actions=None):
         current, scores = runner.decode(current, batch)
         generated.append(current.cpu().tolist())
         logits.append(scores.detach().clone())
+        if runtime:
+            routing_steps.append(
+                dict(
+                    proposed=runtime.proposed_action[:capture_size].cpu().tolist(),
+                    applied=runtime.action[:capture_size].cpu().tolist(),
+                    group_actions=runtime.group_actions.cpu().tolist(),
+                    group_counts=runtime.group_counts.cpu().tolist(),
+                    group_indices=runtime.group_indices[:, :capture_size]
+                    .cpu()
+                    .tolist(),
+                    group_capacities=runtime.group_capacities.cpu().tolist(),
+                )
+            )
+        if size < capture_size:
+            registry = raw.graph_runner.buffer_registry
+            padding_steps.append(
+                dict(
+                    req_pool_indices=registry.get_slot("req_pool_indices")
+                    .buffer[size:capture_size]
+                    .cpu()
+                    .tolist(),
+                    out_cache_loc=registry.get_slot("out_cache_loc")
+                    .buffer[size:capture_size]
+                    .cpu()
+                    .tolist(),
+                    mamba_cache_indices=raw.attn_backend.linear_attn_backend.forward_metadata.mamba_cache_indices[
+                        size:capture_size
+                    ]
+                    .cpu()
+                    .tolist(),
+                )
+            )
         if forced_tokens is not None:
             current = torch.tensor(
                 forced_tokens[step], dtype=torch.int64, device="cuda"
@@ -77,28 +151,23 @@ def run_batch(runner, prompts, *, steps, forced_tokens=None, actions=None):
     end.record()
     end.synchronize()
     elapsed = time.perf_counter() - begin
-    state = {}
-    for row, (request, ids) in enumerate(zip(reqs, prompts)):
-        slots = raw.req_to_token_pool.req_to_token[
-            request.req_pool_idx, : len(ids) - 1 + steps
-        ].long()
-        row_state = {}
-        for layer in range(32, 43):
-            if layer in raw.attn_backend.full_attn_layers:
-                row_state[f"k{layer}"] = raw.token_to_kv_pool.get_key_buffer(layer)[
-                    slots
-                ].cpu()
-                row_state[f"v{layer}"] = raw.token_to_kv_pool.get_value_buffer(layer)[
-                    slots
-                ].cpu()
-            else:
-                cache = raw.req_to_token_pool.mamba2_layer_cache(layer)
-                row_state[f"conv{layer}"] = cache.conv[0][request.mamba_pool_idx].cpu()
-                row_state[f"ssm{layer}"] = cache.temporal[request.mamba_pool_idx].cpu()
-        state[str(row)] = row_state
+    state = {
+        str(row): cache_snapshot(raw, request, len(ids) - 1 + steps)
+        for row, (request, ids) in enumerate(zip(reqs, prompts))
+    }
+    canary_check = (
+        comparisons(
+            canary_before,
+            cache_snapshot(raw, all_reqs[-1], len(canary_input)),
+            exact=True,
+        )
+        if canary_before is not None
+        else dict(passed=True, exercised=False)
+    )
     summary = dict(
         generated=generated,
         batch_size=size,
+        captured_batch_size=capture_size,
         prompt_tokens=[len(ids) for ids in prompts],
         steps=steps,
         prefill_seconds=prefill,
@@ -108,18 +177,72 @@ def run_batch(runner, prompts, *, steps, forced_tokens=None, actions=None):
         executed=runtime.executed.cpu().tolist() if runtime else None,
         row_histogram=runtime.row_histogram.cpu().tolist() if runtime else None,
         row_executed=runtime.row_executed.cpu().tolist() if runtime else None,
+        batch_executed=runtime.batch_executed.cpu().tolist() if runtime else None,
         batched_main_replays=(
             int(runtime.batched_main_executed.cpu()) if runtime else 0
         ),
+        routing=runtime.routing if runtime else None,
+        converted_regions=runtime.converted if runtime else None,
+        capture_batch_sizes=list(raw.server_args.cuda_graph_bs),
+        group_executed=runtime.group_executed.cpu().tolist() if runtime else None,
+        group_action_histogram=(
+            runtime.group_action_histogram.cpu().tolist() if runtime else None
+        ),
+        group_size_histogram=(
+            runtime.group_size_histogram.cpu().tolist() if runtime else None
+        ),
+        bucket_histogram=runtime.bucket_histogram.cpu().tolist() if runtime else None,
+        routing_steps=routing_steps,
+        padding_steps=padding_steps,
+        padding_canary=canary_check,
     )
     return summary, torch.stack(logits).cpu(), state
 
 
-def action_schedule(size):
-    widths = (0, 11, 5, 6, 7)
-    return [
-        [widths[(row + step) % len(widths)] for row in range(size)] for step in range(5)
+def split_oracle(proposed):
+    """Independent Python partition/bucket oracle; never used to route replay."""
+    if not proposed or any(value not in (-1, *WIDTHS) for value in proposed):
+        raise ValueError("Split proposals must be -1/0/5/6/7/11")
+    size = len(proposed)
+    allowed = sorted({value for value in (1, 2, 4, 8, size) if value <= size})
+    members = [
+        [row for row, value in enumerate(proposed) if value == 0],
+        [row for row, value in enumerate(proposed) if value > 0],
     ]
+    positive = [value for value in proposed if value > 0]
+    width = min(positive, default=-1)
+    counts = list(map(len, members))
+    return dict(
+        applied=[width if value > 0 else value for value in proposed],
+        group_actions=[0 if counts[0] else -1, width],
+        group_counts=counts,
+        group_indices=[rows + [-1] * (size - len(rows)) for rows in members],
+        group_capacities=[
+            min(value for value in allowed if value >= count) if count else 0
+            for count in counts
+        ],
+    )
+
+
+def action_schedule(size):
+    # All zero / all positive plus every nontrivial partition size. Diverse
+    # positive proposals exercise their common minimum without a zero veto.
+    schedule = [[0] * size]
+    for index in range(1, len(WIDTHS)):
+        schedule.append(
+            [WIDTHS[index + row % (len(WIDTHS) - index)] for row in range(size)]
+        )
+    for count in range(1, size):
+        index = 1 + (count - 1) % 4
+        positive_rank, values = 0, []
+        for row in range(size):
+            if (row + count) % size < count:
+                values.append(0)
+            else:
+                values.append(WIDTHS[index + positive_rank % (len(WIDTHS) - index)])
+                positive_rank += 1
+        schedule.append(values)
+    return schedule
 
 
 def worker(args):
@@ -235,65 +358,147 @@ def comparisons(left, right, exact=False):
     )
 
 
+def padding_checks(summary, size, steps):
+    padding = summary["captured_batch_size"] - size
+    observations = summary["padding_steps"]
+    errors = []
+    if len(observations) != (steps if padding else 0):
+        errors.append("padding observation count differs")
+    for offset, observed in enumerate(observations):
+        for name, expected in (
+            ("req_pool_indices", [0] * padding),
+            ("out_cache_loc", [0] * padding),
+            ("mamba_cache_indices", [-1] * padding),
+        ):
+            if observed[name] != expected:
+                errors.append(dict(step=offset, field=name, actual=observed[name]))
+    canary = summary["padding_canary"]
+    if not canary["passed"] or (padding and not canary.get("exact", False)):
+        errors.append("resident real-request KV/GDN canary changed")
+    return dict(passed=not errors, errors=errors, padded_rows=padding, canary=canary)
+
+
 def route_checks(summary, size, steps, schedule=None):
-    """Check each segment's exact count, not just main/repair complementarity."""
-    widths = (0, 5, 6, 7, 11)
+    """Check GPU partitions, minimal buckets and per-row/group launch counts."""
     errors = []
 
     def equal(name, actual, expected):
         if actual != expected:
             errors.append(dict(field=name, actual=actual, expected=expected))
 
-    histograms, executions = summary["row_histogram"], summary["row_executed"]
-    equal("counter_rows", [len(histograms), len(executions)], [8, 8])
-    for row, (histogram, executed) in enumerate(zip(histograms, executions)):
-        equal(f"row{row}.tokens", sum(histogram), steps if row < size else 0)
-        if row >= size:
-            equal(f"row{row}.padding_histogram", histogram, [0] * 5)
-            equal(f"row{row}.padding_execution", executed, [0] * 8)
-            continue
-        if schedule is not None:
-            expected = [
-                sum(
-                    schedule[step % len(schedule)][row] == width
-                    for step in range(steps)
-                )
-                for width in widths
-            ]
-            equal(f"row{row}.histogram", histogram, expected)
-        expected_main = [
-            sum(count for count, action in zip(histogram, widths) if action < boundary)
-            for boundary in widths[1:]
-        ]
+    equal("routing", summary["routing"], "split_skip")
+    equal("trace_steps", len(summary["routing_steps"]), steps)
+    expected_regions = [
+        12 * len({cap for cap in (1, 2, 4, 8, captured) if cap <= captured})
+        for captured in summary["capture_batch_sizes"]
+    ]
+    equal(
+        "regions_per_graph",
+        sorted(len(value) for value in summary["converted_regions"]),
+        sorted(expected_regions),
+    )
+    capture = summary["captured_batch_size"]
+    row_histograms = [[0] * 5 for _ in range(8)]
+    row_executions = [[0] * 8 for _ in range(8)]
+    group_histograms = [[0] * 5 for _ in range(2)]
+    size_histograms = [[0] * 9 for _ in range(2)]
+    bucket_histograms = [[0] * 9 for _ in range(2)]
+    group_executions = [[0] * 8 for _ in range(2)]
+    diversity = split_steps = positive_steps = 0
+    for offset, event in enumerate(summary["routing_steps"]):
+        proposed = event["proposed"]
+        equal(f"step{offset}.proposal_rows", len(proposed), capture)
         equal(
-            f"row{row}.execution",
-            executed,
-            expected_main + [steps - count for count in expected_main],
+            f"step{offset}.proposal_padding", proposed[size:], [-1] * (capture - size)
         )
+        if schedule is not None:
+            equal(
+                f"step{offset}.proposed",
+                proposed[:size],
+                schedule[offset % len(schedule)],
+            )
+        if len(proposed) != capture or any(
+            value not in WIDTHS for value in proposed[:size]
+        ):
+            errors.append(dict(field=f"step{offset}.proposal_domain", actual=proposed))
+            continue
+        expected = split_oracle(proposed)
+        for name, value in expected.items():
+            equal(f"step{offset}.{name}", event[name], value)
+        for row, action in enumerate(expected["applied"][:size]):
+            row_histograms[row][WIDTHS.index(action)] += 1
+            segments = [int(action < width) for width in WIDTHS[1:]] + [
+                int(action >= width) for width in WIDTHS[1:]
+            ]
+            row_executions[row] = [a + b for a, b in zip(row_executions[row], segments)]
+        for group, action in enumerate(expected["group_actions"]):
+            size_histograms[group][expected["group_counts"][group]] += 1
+            bucket_histograms[group][expected["group_capacities"][group]] += 1
+            if action >= 0:
+                group_histograms[group][WIDTHS.index(action)] += 1
+                segments = [int(action < width) for width in WIDTHS[1:]] + [
+                    int(action >= width) for width in WIDTHS[1:]
+                ]
+                group_executions[group] = [
+                    a + b for a, b in zip(group_executions[group], segments)
+                ]
+        diversity += int(len(set(proposed[:size])) > 1)
+        split_steps += int(all(expected["group_counts"]))
+        positive_steps += int(expected["group_counts"][1] > 0)
+    batch_execution = [sum(values) for values in zip(*group_executions)]
+    equal("row_histogram", summary["row_histogram"], row_histograms)
+    equal("row_executed", summary["row_executed"], row_executions)
     equal(
         "histogram",
         summary["histogram"],
-        [sum(row[index] for row in histograms) for index in range(5)],
+        [sum(values) for values in zip(*row_histograms)],
     )
     equal(
         "executed",
         summary["executed"],
-        [sum(row[index] for row in executions) for index in range(8)],
+        [sum(values) for values in zip(*row_executions)],
     )
-    batched = summary["batched_main_replays"]
-    if schedule is not None:
+    equal("group_action_histogram", summary["group_action_histogram"], group_histograms)
+    equal("group_size_histogram", summary["group_size_histogram"], size_histograms)
+    equal("bucket_histogram", summary["bucket_histogram"], bucket_histograms)
+    equal("group_executed", summary["group_executed"], group_executions)
+    equal("batch_executed", summary["batch_executed"], batch_execution)
+    equal(
+        "physical_region_count",
+        sum(summary["batch_executed"]),
+        4 * sum(map(sum, group_histograms)),
+    )
+    equal(
+        "batched_main_replays", summary["batched_main_replays"], group_histograms[0][0]
+    )
+    if schedule is not None and len(schedule) > 1:
         equal(
-            "batched_main_replays",
-            batched,
-            sum(
-                size == 8
-                and all(action == 0 for action in schedule[step % len(schedule)])
-                for step in range(steps)
-            ),
+            "forced_jump_coverage",
+            [
+                WIDTHS[index]
+                for index, count in enumerate(
+                    [sum(values) for values in zip(*group_histograms)]
+                )
+                if count
+            ],
+            list(WIDTHS),
         )
-    elif not 0 <= batched <= (min(row[0] for row in histograms) if size == 8 else 0):
-        errors.append(dict(field="batched_main_replays", actual=batched))
-    return dict(passed=not errors, errors=errors)
+        if size > 1 and (not diversity or not split_steps):
+            errors.append(
+                dict(
+                    field="mixed_partition_coverage",
+                    diversity=diversity,
+                    split_steps=split_steps,
+                )
+            )
+    return dict(
+        passed=not errors,
+        errors=errors,
+        group_action_counts=group_histograms,
+        proposed_diversity_steps=diversity,
+        split_steps=split_steps,
+        positive_skip_steps=positive_steps,
+    )
 
 
 def main(args):
@@ -319,9 +524,9 @@ def main(args):
             tp=1,
             pp=1,
             attention_backend="triton",
-            decision="one GPU action per request; static one-request conditional middle bodies; fully real bs8 with all actions zero uses an exclusive batched middle body",
-            full_vs_row_atol=FULL_PARITY_ATOL,
-            full_vs_row_rtol=0,
+            decision="split_skip: GPU partition into zero and positive proposals, positive-group minimum jump, smallest active 1/2/4/8 capacity per group; padding excluded",
+            full_vs_no_skip_atol=FULL_PARITY_ATOL,
+            full_vs_no_skip_rtol=0,
         ),
     )
     probe = batch_probe(ConditionalRegions())
@@ -389,6 +594,12 @@ def main(args):
                     args.steps,
                     schedule,
                 )
+                check[mode + "_" + name + "_padding"] = padding_checks(
+                    records[mode][key][name], size, args.steps
+                )
+        check["full_padding"] = padding_checks(
+            records["full"][key]["reference"], size, args.steps
+        )
         check["serial_async_logits"] = comparisons(
             values["serial"][key]["mixed_logits"],
             values["async"][key]["mixed_logits"],
@@ -410,7 +621,8 @@ def main(args):
         records=records,
         conditional_probe=probe,
         classifier_sha256=hashlib.sha256(args.classifier.read_bytes()).hexdigest(),
-        scope="Batch correctness, heterogeneous actions and padded-row isolation; throughput requires a separate paired benchmark.",
+        routing="split_skip",
+        scope="GPU no-skip/skip partition, positive-group minimum width, minimal active graph buckets, physical launch counts and real-cache padding isolation; throughput requires a separate paired benchmark.",
     )
     save(output / "batch-smoke-summary.json", summary)
     compact = {
@@ -439,18 +651,18 @@ def parse_args():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model", type=Path, required=True)
     parser.add_argument("--classifier", type=Path, required=True)
-    parser.add_argument("--batch-sizes", nargs="+", type=int, default=[1, 2, 3, 4])
-    parser.add_argument("--max-batch-size", type=int, choices=(1, 2, 4, 8), default=4)
+    parser.add_argument("--batch-sizes", nargs="+", type=int, default=[1, 2, 3, 4, 8])
+    parser.add_argument("--max-batch-size", type=int, choices=(1, 2, 4, 8), default=8)
     parser.add_argument("--steps", type=int, default=16)
     parser.add_argument(
         "--worker", choices=("full", "serial", "async"), help=argparse.SUPPRESS
     )
     args = parser.parse_args()
-    if args.steps < 1 or not all(
-        1 <= size <= args.max_batch_size for size in args.batch_sizes
-    ):
+    if args.steps < max(
+        len(action_schedule(size)) for size in args.batch_sizes
+    ) or not all(1 <= size <= args.max_batch_size for size in args.batch_sizes):
         parser.error(
-            "steps must be positive and batch-sizes within the captured maximum"
+            "steps must cover all five actions and partition sizes, and batches fit the captured maximum"
         )
     for name in ("model", "classifier"):
         setattr(args, name, getattr(args, name).expanduser().resolve())

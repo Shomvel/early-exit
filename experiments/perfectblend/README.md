@@ -150,10 +150,13 @@ The original native smoke/evaluation smoke succeeded. The native full benchmark 
 
 The [verified SGLang runtime smoke](references/sglang-runtime-report.md) passed exact full/no-skip and serial/async cache/logit controls, and recorded actual GPU stream overlap. Its short control timings are separate from complete benchmark scores and speed estimates.
 
-The 32-GPU SGLang evaluation is running with batch one and the validated runtime.
-`references/run-status.json` records its immutable identity and the stopped
-startup attempt. Multi-request runtime and throughput experiments have separate
-sources and results; their development does not change the active evaluation.
+The [32-GPU batch-one evaluation](references/sglang-full-benchmark-report.md)
+completed all 20,361 questions in each mode. GSM8K accuracy was 96.74%/95.91%,
+MATH 89.30%/84.74% and MMLU 80.79%/80.81% for full/early exit. Fixed128 replay
+speedups were 1.0063×/1.0098× for GSM8K/MATH; MATH end-to-end speedup was 0.8862×.
+All 64 worker receipts and four runtime exits passed. `references/run-status.json`
+records the immutable identities. Multi-request runtime and throughput
+experiments retain independent sources and results.
 
 The separate small-batch request evaluator uses real, different-length prompts:
 
@@ -173,11 +176,23 @@ same full batch-one 128-token trajectories for fixed-input timing. This entrypoi
 is a throughput pilot and always reports `complete_benchmarks=false`. The full
 20,361-question evaluation remains a separate run.
 
-The [small-batch GPU verification](references/sglang-batch-runtime-report.md)
+The historical [small-batch GPU verification](references/sglang-batch-runtime-report.md)
 passed full/no-skip and serial/async mixed-route bitwise logits/cache controls at
 batch1/2/3/4/8, with exact route, padding and exclusive batch-eight branch counts.
-The real-request batch1/2 entrypoint E2E also succeeded. The active 16-question
-throughput pilot has its own run identity in `references/run-status.json`.
+The real-request batch1/2 entrypoint E2E also succeeded. The completed
+[per-request throughput pilot](references/sglang-per-request-batch-pilot-report.md)
+records its independent source and all batch sizes. Its fixed128 EE/full
+throughput ratios were 1.011/0.885/0.708/0.542 at batch 1/2/4/8.
+
+The current runtime implements `split_skip`: after source 32, GPU partitioning
+forms one no-skip batch and one common-width skip batch. Each group uses its
+smallest capacity 1/2/4/8, with original request/cache ownership restored before
+the shared suffix. The [split-group GPU smoke](references/sglang-split-smoke-report.md)
+passed full/no-skip and serial/async mixed bitwise logits/cache checks for
+batch 1/2/3/4/8, device partition/capacity checks and padding canaries. The new
+throughput pilot retains an independent source/run identity. See the
+[runtime contract](../../python/sglang/srt/early_exit/README.md) for device-only
+selection, cache backfill, padding stores and acceptance checks.
 
 After a successful completed native run, collect small receipts and render the comparison:
 

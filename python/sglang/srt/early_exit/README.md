@@ -16,32 +16,40 @@ experimental runtime controls rather than public serving API parameters.
 
 At the source boundary the GPU computes the action and saves the hidden
 and residual tensors. The main branch bypasses the selected prefix of
-layers33–43 and runs the remaining middle layers and layers44–64. The
+layers33–43 and runs the remaining middle layers and layers 44–64. The
 repair branch starts at the saved boundary and evaluates the skipped prefix,
 updating its full-attention KV and GDN convolution/recurrent state. Main and
 repair predicates are complementary for four fixed layer segments. This
 executes each middle layer exactly once across the two branches.
 
-Each request has its own GPU action and eight CUDA IF regions. Layers1–32
-and layers44–64 stay batched; the middle layers execute as static single-row
-bodies, with row views of the request's KV/GDN indices and private attention
-scratch for each row and stream. KV index pointers retain global offsets
-into the shared flat index array; GDN query offsets are rebased for the
-one-token body. A graph-padding row has action `-1`, so both its main and
-repair middle bodies stay inactive. Changing batch size selects another
-captured graph; decisions never return to Python during replay.
+At each decode step, `split_skip` partitions real rows on the GPU into a
+no-skip group (proposal 0) and a skip group (positive proposals). The skip group
+uses the shortest positive proposal as its common jump. Padding proposals are
+`-1` and enter neither group. Empty groups execute no middle layers. Raw
+proposals, applied row actions, group membership and counts remain on device.
 
-The batch-eight graph has one additional batched middle region. The GPU enables
-it only when all eight rows select action0; it disables the per-row regions for
-that replay. This preserves the full model's GEMM shapes for the common all-no-skip
-case. Mixed actions or any padding row retain the individual conditional bodies.
-The raw classifier actions and their histograms remain separate from these
-execution predicates.
+Layers 1–32 use the original batch. GPU gathers pack each group's hidden state,
+RoPE/MRoPE positions and request/cache indices in source order. Each nonempty
+group selects the smallest captured capacity in 1/2/4/8 that fits its count;
+CUDA IF nodes enable only that capacity's middle operators. Group outputs merge
+back into source order before layers 44–64. There are twelve marked segments per
+capacity: four no-skip main, four skip main and four skip repair. Each nonempty
+group executes four complementary segments per step. Real-row executions,
+physical region launches, group sizes and capacity padding have separate counters.
 
-The individual middle regions replace batched GEMMs with per-row GEMVs and
-create eight conditional regions per captured row. They establish independent
-routing for small batches; batching efficiency and graph conversion cost
-require measurement before reporting serving acceleration.
+Full-attention ragged KV indices and GDN state indices follow the gathered
+requests. Repair uses private full-attention scratch. Distinct groups can
+execute the same layer concurrently; the packed BF16/NHD KV writer suppresses
+padding stores into reserved slot 0, while GDN padding retains index -1. This
+keeps their real cache writes disjoint. The GPU probe checks actual KV stores,
+and the padded-batch smoke checks a separately allocated resident request as a
+cache canary.
+
+Common positive jumps can change policy semantics when positive widths differ.
+Quality, proposal/applied histograms, group occupancy and fixed-input throughput
+are evaluated independently using the same frozen head. Prefix/suffix batching
+is shared; only the middle path splits. A split of 2/6 within batch 8 therefore
+uses capacities 2/8, while a 4/4 split uses 4/4.
 
 CUDA conditional graph nodes read the device action directly. Capture-time
 markers delimit the regions; the CUDA helper clones the captured graph,
@@ -92,14 +100,13 @@ RUN_DIR=/shared/batch-smoke python -m sglang.srt.early_exit.batch_smoke \
   --batch-sizes 1 2 3 4 8 --max-batch-size 8 --steps 16
 ```
 
-This entrypoint first checks four independent vector actions and inactive
-padding in a synthetic CUDA graph, then starts full/serial/async ModelRunner
-processes on the same GPU. Each row rotates through actions0/5/6/7/11 while
-following the full model's input trajectory. It verifies exact per-row
-histograms and segment counts, serial/async bitwise cache/logit equality,
-and graph padding isolation (batch3 uses graph4). Full-batched execution
-and single-row middle operations may round BF16 GEMM/GEMV values differently.
-The report preserves each KV/GDN tensor's absolute and relative errors and
-uses a fixed absolute tolerance0.02 with relative tolerance0 for this parity
-control, plus exact generated tokens. A failed control writes its report and
-exits with an error. These smoke timings are correctness diagnostics.
+This entrypoint checks GPU partitioning, group-width selection, capacity
+selection, conditional execution and padding in a synthetic graph, then starts
+full/serial/async ModelRunner processes on the same GPU. Heterogeneous row
+proposals exercise actions 0/5/6/7/11 and mixed group sizes while following the
+full model's input trajectory. It verifies per-step membership and applied
+actions, per-row, per-group and physical execution counts,
+serial/async bitwise cache/logit equality, and graph padding isolation (batch3
+uses graph4). Full/no-skip parity retains fixed absolute tolerance0.02 and
+relative tolerance0, plus exact generated tokens. A failed control writes its
+report and exits with an error. These timings are correctness diagnostics.

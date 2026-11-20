@@ -1,0 +1,51 @@
+{
+  "validated_at": "2026-11-20T06:10:23.717810+00:00",
+  "routing": "split_skip",
+  "status": "cpu_validated_gpu_not_run",
+  "files": {
+    "python/sglang/srt/early_exit/batch_smoke.py": "eee1d7d2c64b8fc3e3f88abc2210f1f13876465219a80b6418f5309d5ed46af6",
+    "python/sglang/srt/early_exit/probe.py": "b043bcb3b2a7cfa90f290dc6381945d895e4c5ebad724f21cc1dfef949a075c1"
+  },
+  "validation": [
+    {
+      "command": "python3 -m unittest experiments.perfectblend.tests.test_batch_protocol.BatchSmokeProtocolTest",
+      "passed": true,
+      "tests": 4
+    },
+    {
+      "command": "python3 -m compileall -q batch_smoke.py probe.py test_batch_protocol.py",
+      "passed": true
+    },
+    {
+      "command": "Black/isort formatting; Ruff E9,F63,F7,F82; git diff --check",
+      "passed": true
+    }
+  ],
+  "expected_gpu_validation": {
+    "batch_sizes": [
+      1,
+      2,
+      3,
+      4,
+      8
+    ],
+    "max_batch_size": 8,
+    "steps": 16,
+    "full_vs_no_skip_atol": 0.02,
+    "full_vs_no_skip_rtol": 0,
+    "serial_async_mixed_logits_and_cache": "bitwise",
+    "routing_trace": [
+      "proposed",
+      "applied",
+      "group_actions",
+      "group_counts",
+      "group_indices",
+      "group_capacities"
+    ],
+    "forced_schedule": "all zero, four positive minima, every nontrivial partition size; all steps verified against independent Python oracle",
+    "branches_per_graph": "12 * number of capacities <= capture size",
+    "padding": "original graph sentinels, per-row zero counters and resident real KV/GDN canary",
+    "probe": "actual GPU partition/gather/minimal bucket/merge, selected IF/PDL execution; native MHATokenToKVPool BF16 NHD masked Triton store with two streams, unequal K/V head dims, real writes and unchanged slot0"
+  },
+  "limitations": "CPU protocol and static checks only. GPU probe, logits/cache parity, and throughput have not run on this split source."
+}

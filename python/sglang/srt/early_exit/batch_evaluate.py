@@ -136,6 +136,147 @@ def eos_tokens(tokenizer):
     return result
 
 
+def batch_routing_metrics(snapshot, size, steps):
+    """Validate applied row routes, group launches and minimal capacity use."""
+    if not 1 <= size <= 8 or steps < 1:
+        raise ValueError("Batch route metrics require real rows and decode steps")
+    if snapshot["routing"] != "split_skip":
+        raise ValueError("Batch pilot requires split_skip routing")
+    rows, executions = snapshot["row_histogram"], snapshot["row_executed"]
+    if len(rows) != 8 or len(executions) != 8:
+        raise ValueError("Routing receipt omits captured/padded rows")
+    groups = snapshot["group_action_histogram"]
+    sizes, buckets = snapshot["group_size_histogram"], snapshot["bucket_histogram"]
+    if len(groups) != 2 or len(sizes) != 2 or len(buckets) != 2:
+        raise ValueError("Split routing receipt requires two groups")
+
+    def segments(histogram):
+        main = [
+            sum(count for count, action in zip(histogram, WIDTHS) if action < width)
+            for width in WIDTHS[1:]
+        ]
+        total = sum(histogram)
+        return main + [total - count for count in main]
+
+    def valid_counts(values, length):
+        return len(values) == length and all(
+            isinstance(value, int) and value >= 0 for value in values
+        )
+
+    for row, (histogram, execution) in enumerate(zip(rows, executions)):
+        if (
+            not valid_counts(histogram, 5)
+            or sum(histogram) != (steps if row < size else 0)
+            or execution != segments(histogram)
+        ):
+            raise ValueError("Applied row histogram or main/repair executions differ")
+    if snapshot["histogram"] != [sum(values) for values in zip(*rows)] or snapshot[
+        "executed"
+    ] != [sum(values) for values in zip(*executions)]:
+        raise ValueError("Aggregate route counters differ from real row executions")
+    capture = next(value for value in (1, 2, 4, 8) if value >= size)
+    capacities = [value for value in (1, 2, 4, 8) if value <= capture]
+    group_exec = []
+    for group, (actions, counts, capacities_hist) in enumerate(
+        zip(groups, sizes, buckets)
+    ):
+        if (
+            not valid_counts(actions, 5)
+            or not valid_counts(counts, 9)
+            or not valid_counts(capacities_hist, 9)
+        ):
+            raise ValueError("Split histograms require nonnegative integer counts")
+        if (
+            sum(counts) != steps
+            or sum(capacities_hist) != steps
+            or any(counts[size + 1 :])
+        ):
+            raise ValueError("Group size/bucket histograms differ from decode steps")
+        if sum(actions) != steps - counts[0] or (
+            any(actions[1:]) if group == 0 else actions[0] != 0
+        ):
+            raise ValueError("Group action histogram differs from its nonempty steps")
+        real_slots = sum(count * index for index, count in enumerate(counts))
+        wanted = (
+            snapshot["histogram"][0] if group == 0 else sum(snapshot["histogram"][1:])
+        )
+        if real_slots != wanted:
+            raise ValueError("Group sizes differ from actual zero/positive row actions")
+        expected_buckets = [0] * 9
+        for count, frequency in enumerate(counts):
+            if not frequency:
+                continue
+            capacity = (
+                min(value for value in capacities if value >= count) if count else 0
+            )
+            expected_buckets[capacity] += frequency
+        if capacities_hist != expected_buckets:
+            raise ValueError("Group bucket histogram differs from minimal capacities")
+        group_exec.append(segments(actions))
+    launched = [sum(values) for values in zip(*group_exec)]
+    if (
+        snapshot["group_executed"] != group_exec
+        or snapshot["batch_executed"] != launched
+        or sum(launched) != 4 * sum(map(sum, groups))
+    ):
+        raise ValueError("Physical IF launches differ from nonempty group actions")
+    if snapshot["batched_main_replays"] != groups[0][0]:
+        raise ValueError(
+            "No-skip group replays differ from zero-action group histogram"
+        )
+    proposed = snapshot["last_proposed_actions"]
+    if (
+        len(proposed) != capture
+        or any(value not in WIDTHS for value in proposed[:size])
+        or proposed[size:] != [-1] * (capture - size)
+    ):
+        raise ValueError("Last proposal trace has invalid real or padded rows")
+    members = [
+        [row for row, value in enumerate(proposed) if value == 0],
+        [row for row, value in enumerate(proposed) if value > 0],
+    ]
+    counts = list(map(len, members))
+    minimum = min((value for value in proposed if value > 0), default=-1)
+    expected = dict(
+        last_applied_actions=[minimum if value > 0 else value for value in proposed],
+        last_group_actions=[0 if counts[0] else -1, minimum],
+        last_group_counts=counts,
+        last_group_indices=[
+            indices + [-1] * (capture - len(indices)) for indices in members
+        ],
+        last_group_capacities=[
+            min(value for value in capacities if value >= count) if count else 0
+            for count in counts
+        ],
+    )
+    if any(snapshot[key] != value for key, value in expected.items()):
+        raise ValueError(
+            "Last GPU partition/action/bucket differs from independent oracle"
+        )
+    capacity_slots = sum(
+        index * count for histogram in buckets for index, count in enumerate(histogram)
+    )
+    return dict(
+        routing="split_skip",
+        group_action_histogram={
+            name: dict(zip(map(str, WIDTHS), histogram))
+            for name, histogram in zip(("no_skip", "skip"), groups)
+        },
+        group_size_histogram=sizes,
+        group_bucket_histogram=buckets,
+        group_middle_region_launches=group_exec,
+        batch_middle_region_launches=launched,
+        conditional_middle_region_launches=sum(launched),
+        nonempty_group_replays=sum(map(sum, groups)),
+        conditional_group_real_row_slots=size * steps,
+        conditional_group_capacity_slots=capacity_slots,
+        conditional_group_padding_slots=capacity_slots - size * steps,
+        batched_no_skip_replays=groups[0][0],
+        last_proposed_actions=proposed,
+        **expected,
+    )
+
+
 def generate_batch(
     runner,
     tokenizer,
@@ -207,6 +348,11 @@ def generate_batch(
             "executed",
             "row_histogram",
             "row_executed",
+            "batch_executed",
+            "group_executed",
+            "group_action_histogram",
+            "group_size_histogram",
+            "bucket_histogram",
             "batched_main_executed",
         ):
             getattr(runtime, name).zero_()
@@ -258,6 +404,55 @@ def generate_batch(
         for row in executions
     ):
         raise ValueError("Main and repair bodies do not cover every real decode row")
+    capture_size = min(
+        value for value in raw.server_args.cuda_graph_bs if value >= size
+    )
+    routing_metrics = (
+        batch_routing_metrics(
+            dict(
+                routing=runtime.routing,
+                histogram=histogram,
+                executed=runtime.executed.cpu().tolist(),
+                row_histogram=runtime.row_histogram.cpu().tolist(),
+                row_executed=runtime.row_executed.cpu().tolist(),
+                batch_executed=runtime.batch_executed.cpu().tolist(),
+                batched_main_replays=int(runtime.batched_main_executed.cpu()),
+                last_proposed_actions=runtime.proposed_action[:capture_size]
+                .cpu()
+                .tolist(),
+                last_applied_actions=runtime.action[:capture_size].cpu().tolist(),
+                group_executed=runtime.group_executed.cpu().tolist(),
+                group_action_histogram=runtime.group_action_histogram.cpu().tolist(),
+                group_size_histogram=runtime.group_size_histogram.cpu().tolist(),
+                bucket_histogram=runtime.bucket_histogram.cpu().tolist(),
+                last_group_actions=runtime.group_actions.cpu().tolist(),
+                last_group_counts=runtime.group_counts.cpu().tolist(),
+                last_group_indices=runtime.group_indices[:, :capture_size]
+                .cpu()
+                .tolist(),
+                last_group_capacities=runtime.group_capacities.cpu().tolist(),
+            ),
+            size,
+            accounting.steps,
+        )
+        if runtime
+        else dict(
+            routing="full",
+            group_action_histogram={
+                name: dict.fromkeys(map(str, WIDTHS), 0) for name in ("no_skip", "skip")
+            },
+            group_size_histogram=[[0] * 9 for _ in range(2)],
+            group_bucket_histogram=[[0] * 9 for _ in range(2)],
+            group_middle_region_launches=[[0] * 8 for _ in range(2)],
+            batch_middle_region_launches=[0] * 8,
+            conditional_middle_region_launches=0,
+            nonempty_group_replays=0,
+            conditional_group_real_row_slots=0,
+            conditional_group_capacity_slots=0,
+            conditional_group_padding_slots=0,
+            batched_no_skip_replays=0,
+        )
+    )
     records = []
     for row, generated in enumerate(accounting.generated):
         choice = accounting.choices[row]
@@ -288,9 +483,6 @@ def generate_batch(
                 },
             )
         )
-    capture_size = min(
-        value for value in raw.server_args.cuda_graph_bs if value >= size
-    )
     measured = dict(
         requests=size,
         prompt_tokens=sum(map(len, prompts)),
@@ -300,9 +492,7 @@ def generate_batch(
         computed_real_row_tokens=computed_tokens,
         captured_batch_size=capture_size,
         graph_padding_decode_slots=(capture_size - size) * accounting.steps,
-        batched_no_skip_replays=(
-            int(runtime.batched_main_executed.cpu()) if runtime else 0
-        ),
+        **routing_metrics,
         prefill_seconds=prefill,
         prefill_cuda_ms=prefill_start.elapsed_time(prefill_end),
         decode_seconds=decode,
@@ -335,6 +525,8 @@ def execution_identity(args):
     identity.update(
         batch_evaluator_sha256=p.sha(__file__),
         batch_metadata_sha256=p.sha(Path(__file__).with_name("batch.py")),
+        batch_grouping_sha256=p.sha(Path(__file__).with_name("split.py")),
+        batch_masked_kv_sha256=p.sha(Path(__file__).with_name("masked_kv.py")),
         protocol_evaluator_sha256=p.sha(Path(__file__).with_name("evaluate.py")),
     )
     return identity
@@ -392,6 +584,7 @@ def worker(args):
         raise ValueError("Worker has the wrong full/early-exit model path")
     if runtime is not None and (
         runtime.mode != args.cache_policy
+        or runtime.routing != "split_skip"
         or runtime.checkpoint_sha256 != p.sha(args.classifier)
         or not runtime.converted
     ):
@@ -576,6 +769,7 @@ def worker(args):
         torch=str(torch.__version__),
         cuda=torch.version.cuda,
         runtime_present=runtime is not None,
+        routing=runtime.routing if runtime else "full",
         cache_policy=runtime.mode if runtime else None,
         graph_execution=graph_counts,
         threshold=runtime.threshold if runtime else None,
@@ -624,6 +818,12 @@ def timing_summary(rows):
             "completed_row_waste_tokens",
             "computed_real_row_tokens",
             "graph_padding_decode_slots",
+            "conditional_middle_region_launches",
+            "nonempty_group_replays",
+            "conditional_group_real_row_slots",
+            "conditional_group_capacity_slots",
+            "conditional_group_padding_slots",
+            "batched_no_skip_replays",
             "prefill_seconds",
             "prefill_cuda_ms",
             "decode_seconds",
@@ -644,6 +844,29 @@ def timing_summary(rows):
         batches=len(rows),
         **totals,
         routing_histogram_including_completed_row_waste=histogram,
+        group_action_histogram={
+            name: {
+                str(width): sum(
+                    row["group_action_histogram"][name][str(width)] for row in rows
+                )
+                for width in WIDTHS
+            }
+            for name in ("no_skip", "skip")
+        },
+        group_size_histogram=[
+            [
+                sum(row["group_size_histogram"][group][count] for row in rows)
+                for count in range(9)
+            ]
+            for group in range(2)
+        ],
+        group_bucket_histogram=[
+            [
+                sum(row["group_bucket_histogram"][group][count] for row in rows)
+                for count in range(9)
+            ]
+            for group in range(2)
+        ],
         mean_main_skipped_layers_including_completed_row_waste=sum(
             width * histogram[str(width)] for width in WIDTHS
         )
@@ -680,6 +903,21 @@ def aggregate(args, out):
             raise ValueError("Batch evaluator receipt counts differ")
         if receipt["runtime_present"] != (mode == "early_exit"):
             raise ValueError("Full/early-exit receipt paths differ")
+        if receipt["routing"] != ("split_skip" if mode == "early_exit" else "full"):
+            raise ValueError("Pilot receipt belongs to a different routing policy")
+        if mode == "early_exit":
+            expected_regions = [
+                12 * len([cap for cap in (1, 2, 4, 8) if cap <= size])
+                for size in receipt["server_args"]["cuda_graph_bs"]
+            ]
+            if sorted(map(len, receipt["converted_regions"])) != sorted(
+                expected_regions
+            ):
+                raise ValueError(
+                    "Split runtime IF regions differ from captured capacities"
+                )
+        if any(row["routing"] != receipt["routing"] for row in timings[mode]):
+            raise ValueError("Batch timing routing differs from the worker receipt")
         if receipt["graph_execution"]["decode_real_row_slots"] < sum(
             row["computed_real_row_tokens"] for row in timings[mode]
         ):
@@ -871,7 +1109,7 @@ def aggregate(args, out):
         timing_scope="One elapsed time per static microbatch, including output token/choice readback; excludes model load, graph capture, warmup, tokenization, HTTP and scheduler. Completed real request rows keep decoding and are reported as waste. Per-request logical_completion_seconds marks EOS/limit observation inside the decode loop; results are flushed after the microbatch and these latencies are never summed as device time.",
         replay_protocol="Every requested batch size and both modes replay the same stored batch-one full-model greedy trajectory for each selected GSM8K/MATH question, ignoring EOS to reach the fixed length.",
         quality_protocol="Pinned evaluator prompts and grading; greedy non-thinking chat for GSM8K/MATH with 2048/4096 limits, five-shot MMLU choice scoring. This selected pilot complements the independent full benchmark run.",
-        runtime_scope="Prefixes/tails use batched operators. A fully real capture of eight requests with all actions zero uses one exclusive batched middle body; other middle regions expand per request. Actions and IF selection stay on GPU.",
+        runtime_scope="split_skip: GPU partition puts zero proposals in the no-skip group and positive proposals in the skip group. The skip group shares its minimum positive width. Device counts select each group's smallest 1/2/4/8 capacity; only that bucket executes. Packed middle capacity padding, group launches and real-row actions are reported separately. Original padding is excluded from selection and counters.",
         limits="Small selected pilot, fixed full-before-early-exit order, static completion waste and batch-dependent BF16 numerics. Throughput improvements require measured results; batch>1 support alone establishes no speedup.",
     )
     save(out / "batch-evaluation-summary.json", summary)
@@ -909,6 +1147,7 @@ def main(args):
             replay_indices=sorted(replay),
             max_total_tokens=args.max_total_tokens,
             cache_policy=args.cache_policy,
+            routing="split_skip",
             tp=1,
             pp=1,
             completion_policy="Static microbatch; finished request rows keep computing and are counted as waste",

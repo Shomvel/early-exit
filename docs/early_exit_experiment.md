@@ -39,6 +39,26 @@ The original native full benchmark run was intentionally stopped before completi
 
 The inspected official Qwen3.8-27B card revision `37561816e66b5b9153b1b64c10968c18c1e6f4a0` omits these three original benchmark scores. The experiment therefore compares against its own full checkpoint execution. The official model card evidence is retained in `references/official-card.json`.
 
+The completed [SGLang batch-one report](../experiments/perfectblend/references/sglang-full-benchmark-report.md)
+covers all 20,361 test questions in both modes, with all 64 workers and four
+replicas verified. GSM8K accuracy changed 96.74%→95.91%, MATH 89.30%→84.74% and
+MMLU 80.79%→80.81%. Fixed128-token replay improved decode by 0.63%/0.98% on the two
+math tasks; MATH's longer generated outputs increased same-GPU end-to-end time
+by 12.85%. One-step action precision therefore did not preserve full-generation
+quality in this serving cache policy.
+
+The current `split_skip` runtime forms no-skip and skip groups on the GPU after
+source 32. The skip group takes the shortest positive proposal, and each group
+selects a minimal captured capacity 1/2/4/8. Hidden state, positions, ragged KV
+indices and GDN indices are packed together; outputs merge back before the
+common suffix. Cache repair overlaps within the token and joins before the
+next decode step. A packed BF16/NHD KV writer suppresses padding stores into
+slot 0 so concurrent groups retain disjoint cache writes. The
+[runtime contract](../python/sglang/srt/early_exit/README.md) and
+[split-group GPU verification](../experiments/perfectblend/references/sglang-split-smoke-report.md)
+record its behavior and numerical controls. Its throughput evaluation has a
+separate source and run from the completed batch-one benchmark.
+
 ## Execution and provenance
 
 The [README](../experiments/perfectblend/README.md) gives data, fingerprint, managed launch and collection commands. GPU runs require a clean immutable shared checkout, exact image digest, precise argv, a new run UUID and final reconciliation of Job and every expected replica. `managed.py` delegates this lifecycle to the separately installed YiCloud `training_run.py`; it does not create GPU jobs itself or carry credentials.

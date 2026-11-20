@@ -17,6 +17,15 @@ from pathlib import Path
 EXPECTED = {"gsm8k": 1319, "math": 5000, "mmlu": 14042}
 BENCHMARK_SHA256 = "a04901c438d78667d050805b26fad1d4092f6e70ed0bde2b2f666ef9aa72ddfe"
 SEED = 20261120
+RUNTIME_FILES = (
+    "runtime.py",
+    "batch.py",
+    "split.py",
+    "masked_kv.py",
+    "conditional.py",
+    "conditional.cu",
+    "smoke.py",
+)
 _MATH_EQUIVALENCE = None
 
 
@@ -530,8 +539,7 @@ def execution_identity(args):
             source_root() / "experiments/perfectblend/native/math_equivalence.py"
         ),
         runtime_source_sha256={
-            name: sha(Path(__file__).with_name(name))
-            for name in ("runtime.py", "conditional.py", "conditional.cu", "smoke.py")
+            name: sha(Path(__file__).with_name(name)) for name in RUNTIME_FILES
         },
     )
 
@@ -637,7 +645,7 @@ def worker(args):
         if runtime.checkpoint_sha256 != sha(args.classifier):
             raise ValueError("Loaded classifier differs from the configured checkpoint")
         if any(
-            len(graph) != 8 or any(count <= 0 for count in graph)
+            len(graph) != 12 or any(count <= 0 for count in graph)
             for graph in runtime.converted
         ):
             raise ValueError("Early-exit graph has an empty conditional region")
@@ -765,8 +773,7 @@ def worker(args):
         cuda=torch.version.cuda,
         source_file_sha256=sha(__file__),
         runtime_source_sha256={
-            name: sha(Path(__file__).with_name(name))
-            for name in ("runtime.py", "conditional.py", "conditional.cu", "smoke.py")
+            name: sha(Path(__file__).with_name(name)) for name in RUNTIME_FILES
         },
         model_config_sha256=sha(args.model / "config.json"),
         model_index_sha256=sha(args.model / "model.safetensors.index.json"),
