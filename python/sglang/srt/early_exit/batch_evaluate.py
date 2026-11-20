@@ -381,7 +381,9 @@ def generate_batch(
     prefill_end.record()
     prefill_end.synchronize()
     prefill = time.perf_counter() - tick
-    if runtime:
+    if runtime and runtime.routing == "fixed_skip":
+        runtime.reset_metrics()
+    elif runtime:
         if runtime.lazy is not None:
             runtime.lazy.reset()
         for name in (
@@ -438,7 +440,10 @@ def generate_batch(
         if runtime
         else [[accounting.steps, 0, 0, 0, 0] for _ in prompts]
     )
-    executions = runtime.row_executed[:size].cpu().tolist() if runtime else None
+    executions = (
+        runtime.row_executed[:size].cpu().tolist()
+        if runtime and runtime.routing != "fixed_skip" else None
+    )
     if sum(histogram) != computed_tokens or any(
         sum(row) != accounting.steps for row in row_histograms
     ):
@@ -455,7 +460,7 @@ def generate_batch(
     capture_size = min(
         value for value in raw.server_args.cuda_graph_bs if value >= size
     )
-    routing_metrics = (
+    routing_metrics = runtime.metrics(size, accounting.steps) if runtime and runtime.routing == "fixed_skip" else (
         dict(routing=runtime.routing, lazy_cache=runtime.lazy.metrics(batch))
         if runtime is not None and runtime.lazy is not None
         else (

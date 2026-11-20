@@ -132,12 +132,19 @@ class EarlyExitRuntime:
     @classmethod
     def from_environment(cls, config, pp_group):
         path = os.environ.get("SGLANG_EARLY_EXIT_CHECKPOINT")
-        if not path:
+        fixed = os.environ.get("SGLANG_EARLY_EXIT_FIXED_SKIP")
+        if not path and fixed is None:
             return None
         from sglang.srt.layers.dp_attention import get_attention_tp_size
 
         if pp_group.world_size != 1 or get_attention_tp_size() != 1:
             raise ValueError("GPU early exit currently requires TP1/PP1")
+        if fixed is not None:
+            if path:
+                raise ValueError("Fixed skipping and classifier routing are separate modes")
+            from sglang.srt.early_exit.fixed import FixedSkipRuntime
+
+            return FixedSkipRuntime(int(fixed), config)
         routing = os.environ.get("SGLANG_EARLY_EXIT_ROUTING", "batch_min")
         if routing == "batch_min":
             from sglang.srt.early_exit.common import BatchWideRuntime

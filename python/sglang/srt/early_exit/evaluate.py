@@ -21,6 +21,7 @@ RUNTIME_FILES = (
     "runtime.py",
     "policy.py",
     "common.py",
+    "fixed.py",
     "batch.py",
     "split.py",
     "masked_kv.py",
@@ -526,7 +527,7 @@ def execution_identity(args):
         model_index_sha256=sha(args.model / "model.safetensors.index.json"),
         weight_inventory_sha256=sha(args.weight_inventory),
         benchmark_sha256=BENCHMARK_SHA256,
-        classifier_sha256=sha(args.classifier),
+        classifier_sha256=sha(args.classifier) if args.classifier is not None else None,
         tokenizer_sha256={
             name: sha(args.model / name)
             for name in (
