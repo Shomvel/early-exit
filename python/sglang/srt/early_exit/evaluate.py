@@ -19,6 +19,7 @@ BENCHMARK_SHA256 = "a04901c438d78667d050805b26fad1d4092f6e70ed0bde2b2f666ef9aa72
 SEED = 20261120
 RUNTIME_FILES = (
     "runtime.py",
+    "policy.py",
     "batch.py",
     "split.py",
     "masked_kv.py",

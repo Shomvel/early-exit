@@ -161,6 +161,7 @@ def collect(args, out):
                 "conditional.py",
                 "conditional.cu",
                 "runtime.py",
+                "policy.py",
             )
         },
     )
