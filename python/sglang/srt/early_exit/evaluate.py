@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: Apache-2.0
-"""Same-GPU paired SGLang ModelRunner GSM8K/MATH/MMLU evaluation."""
+"""Distributed paired SGLang evaluation with verified partial-run reuse."""
 
 import argparse
 import hashlib
@@ -221,6 +221,7 @@ def summarize(records):
         group = [row for row in records if row["benchmark"] == benchmark]
         if not group:
             raise ValueError(f"No completed questions for {benchmark}")
+        timing_group = [row for row in group if row.get("timing_pair_eligible", True)]
         modes = {}
         for mode in ("full", "early_exit"):
             values = [row["results"][mode] for row in group]
@@ -235,6 +236,17 @@ def summarize(records):
                     "skipped_blocks_total",
                 )
             }
+            timing_values = [row["results"][mode] for row in timing_group]
+            timing_totals = {
+                key: sum(row[key] for row in timing_values)
+                for key in (
+                    "generated_tokens",
+                    "prefill_seconds",
+                    "decode_seconds",
+                    "decode_cuda_ms",
+                    "total_seconds",
+                )
+            }
             correct = sum(row["correct"] for row in values)
             modes[mode] = dict(
                 count=len(values),
@@ -242,11 +254,20 @@ def summarize(records):
                 accuracy=correct / len(values),
                 truncated=sum(row["truncated"] for row in values),
                 **totals,
-                decode_tokens_per_second=totals["generated_tokens"]
-                / totals["decode_seconds"],
-                decode_cuda_tokens_per_second=totals["generated_tokens"]
-                * 1000
-                / totals["decode_cuda_ms"],
+                timing_sample_count=len(timing_values),
+                timing_totals=timing_totals,
+                decode_tokens_per_second=(
+                    timing_totals["generated_tokens"] / timing_totals["decode_seconds"]
+                    if timing_totals["decode_seconds"]
+                    else None
+                ),
+                decode_cuda_tokens_per_second=(
+                    timing_totals["generated_tokens"]
+                    * 1000
+                    / timing_totals["decode_cuda_ms"]
+                    if timing_totals["decode_cuda_ms"]
+                    else None
+                ),
                 mean_skipped_blocks=totals["skipped_blocks_total"]
                 / totals["generated_tokens"],
                 percentiles={
@@ -262,14 +283,26 @@ def summarize(records):
             )
         modes["comparison"] = dict(
             accuracy_delta=modes["early_exit"]["accuracy"] - modes["full"]["accuracy"],
-            end_to_end_speedup=modes["full"]["total_seconds"]
-            / modes["early_exit"]["total_seconds"],
-            decode_throughput_speedup=modes["early_exit"]["decode_tokens_per_second"]
-            / modes["full"]["decode_tokens_per_second"],
-            decode_cuda_throughput_speedup=modes["early_exit"][
-                "decode_cuda_tokens_per_second"
-            ]
-            / modes["full"]["decode_cuda_tokens_per_second"],
+            same_gpu_generation_count=len(timing_group),
+            imported_quality_only_count=len(group) - len(timing_group),
+            end_to_end_speedup=(
+                modes["full"]["timing_totals"]["total_seconds"]
+                / modes["early_exit"]["timing_totals"]["total_seconds"]
+                if timing_group
+                else None
+            ),
+            decode_throughput_speedup=(
+                modes["early_exit"]["decode_tokens_per_second"]
+                / modes["full"]["decode_tokens_per_second"]
+                if timing_group
+                else None
+            ),
+            decode_cuda_throughput_speedup=(
+                modes["early_exit"]["decode_cuda_tokens_per_second"]
+                / modes["full"]["decode_cuda_tokens_per_second"]
+                if timing_group
+                else None
+            ),
             lost_correct=sum(
                 row["results"]["full"]["correct"]
                 and not row["results"]["early_exit"]["correct"]
@@ -476,6 +509,79 @@ def paths(out, mode, rank):
     return out / f"sglang-{mode}-{rank}.jsonl", out / f"worker-{mode}-{rank}.json"
 
 
+def execution_identity(args):
+    return dict(
+        model_config_sha256=sha(args.model / "config.json"),
+        model_index_sha256=sha(args.model / "model.safetensors.index.json"),
+        weight_inventory_sha256=sha(args.weight_inventory),
+        benchmark_sha256=BENCHMARK_SHA256,
+        classifier_sha256=sha(args.classifier),
+        tokenizer_sha256={
+            name: sha(args.model / name)
+            for name in (
+                "tokenizer.json",
+                "tokenizer_config.json",
+                "special_tokens_map.json",
+                "chat_template.jinja",
+            )
+            if (args.model / name).is_file()
+        },
+        math_grader_sha256=sha(
+            source_root() / "experiments/perfectblend/native/math_equivalence.py"
+        ),
+        runtime_source_sha256={
+            name: sha(Path(__file__).with_name(name))
+            for name in ("runtime.py", "conditional.py", "conditional.cu", "smoke.py")
+        },
+    )
+
+
+def resume_predictions(args):
+    if args.resume_from is None:
+        return {}, None
+    from sglang.srt.early_exit.evaluation_resume import load_resume
+
+    return load_resume(
+        args.resume_from,
+        current_identity=execution_identity(args),
+        evaluator_path=__file__,
+    )
+
+
+def wait_for_files(paths_to_wait, out, timeout):
+    deadline = time.monotonic() + timeout
+    while not all(path.is_file() for path in paths_to_wait):
+        failures = sorted(out.glob("replica-failure-*.json"))
+        if failures:
+            raise RuntimeError(
+                "Another evaluation replica failed: " + failures[0].read_text()
+            )
+        if time.monotonic() > deadline:
+            raise TimeoutError("Timed out waiting for evaluation replica artifacts")
+        time.sleep(5)
+
+
+def validate_imported(row, imported, ids):
+    expected = dict(
+        benchmark=row["benchmark"],
+        evaluation_index=row["evaluation_index"],
+        source_file=row["source_file"],
+        index=row["index"],
+        subject=row.get("subject", row.get("type")),
+        level=row.get("level"),
+        prompt_sha256=hashlib.sha256(
+            json.dumps(ids, separators=(",", ":")).encode()
+        ).hexdigest(),
+    )
+    if any(imported.get(key) != value for key, value in expected.items()):
+        raise ValueError(
+            "Imported prediction has different question or prompt metadata"
+        )
+    verdict = grade(row, imported["result"]["text"])
+    if any(imported["result"].get(key) != value for key, value in verdict.items()):
+        raise ValueError("Imported prediction has a different grading result")
+
+
 def worker(args):
     import torch
 
@@ -495,6 +601,7 @@ def worker(args):
     shard = selected[args.rank :: args.workers]
     matched = matched_indices(selected, args.matched_examples_per_task)
     verify_model(args)
+    imported_predictions, resume_evidence = resume_predictions(args)
     if args.worker_mode == "full" and os.environ.get("SGLANG_EARLY_EXIT_CHECKPOINT"):
         raise ValueError(
             "The baseline subprocess must not have a classifier environment variable"
@@ -561,18 +668,33 @@ def worker(args):
                     if row["benchmark"] == "mmlu"
                     else (2048 if row["benchmark"] == "gsm8k" else 4096)
                 )
-                result = generate(
-                    runner,
-                    tokenizer,
-                    ids,
-                    limit=maximum,
-                    choice_ids=choice_ids if row["benchmark"] == "mmlu" else None,
+                imported = (
+                    imported_predictions.get(row["evaluation_index"])
+                    if args.worker_mode == "full"
+                    else None
                 )
-                result.update(grade(row, result["text"]))
+                if imported is not None:
+                    validate_imported(row, imported, ids)
+                    result = imported["result"]
+                else:
+                    result = generate(
+                        runner,
+                        tokenizer,
+                        ids,
+                        limit=maximum,
+                        choice_ids=choice_ids if row["benchmark"] == "mmlu" else None,
+                    )
+                    result.update(grade(row, result["text"]))
                 replay = {}
                 if row["evaluation_index"] in matched:
                     length = args.matched_tokens
-                    if args.worker_mode == "full":
+                    if imported is not None:
+                        forced = imported["matched_tokens"].get("forced_ids")
+                        if forced is None or len(forced) != length:
+                            raise ValueError(
+                                "Imported matched example lacks its pinned full trajectory"
+                            )
+                    elif args.worker_mode == "full":
                         forced = result["generated_ids"][:length]
                         if len(forced) < length:
                             forced = generate(
@@ -608,6 +730,10 @@ def worker(args):
                     result=result,
                     matched_tokens=replay,
                 )
+                if imported is not None:
+                    record["resumed_from"] = dict(
+                        imported["resumed_from"], matched_replay_remeasured=bool(replay)
+                    )
                 handle.write(
                     json.dumps(record, ensure_ascii=False, allow_nan=False) + "\n"
                 )
@@ -622,11 +748,16 @@ def worker(args):
                         benchmark=row["benchmark"],
                         correct=result["correct"],
                         generated_tokens=result["generated_tokens"],
+                        imported=imported is not None,
                     )
+    completed_rows = read_jsonl(path)
     evidence = dict(
         mode=args.worker_mode,
         rank=args.rank,
         count=len(shard),
+        imported_count=sum("resumed_from" in row for row in completed_rows),
+        new_count=sum("resumed_from" not in row for row in completed_rows),
+        resume=resume_evidence,
         prediction_sha256=sha(path),
         gpu=torch.cuda.get_device_name(0),
         gpu_uuid=str(torch.cuda.get_device_properties(0).uuid),
@@ -710,11 +841,23 @@ def aggregate(args, out, selected):
             if receipt["classifier_sha256"] != sha(args.classifier):
                 raise ValueError("Classifier changed during evaluation")
             if receipt["graph_execution"]["decode_steps"] < sum(
-                row["result"]["generated_tokens"] for row in rows
+                row["result"]["generated_tokens"]
+                for row in rows
+                if "resumed_from" not in row
             ):
                 raise ValueError(
                     "Worker CUDA-graph receipt omits measured decode steps"
                 )
+            imported_count = sum("resumed_from" in row for row in rows)
+            if (
+                receipt["imported_count"] != imported_count
+                or receipt["new_count"] != len(rows) - imported_count
+            ):
+                raise ValueError(
+                    "Worker receipt reuse counts differ from its predictions"
+                )
+            if mode == "early_exit" and imported_count:
+                raise ValueError("Only original full-model predictions may be imported")
             data[mode] = {row["evaluation_index"]: row for row in rows}
             worker_receipts[mode] = receipt
             receipts.append(receipt)
@@ -734,6 +877,7 @@ def aggregate(args, out, selected):
             "math_grader_sha256",
             "torch",
             "cuda",
+            "resume",
         ):
             if worker_receipts["full"][key] != worker_receipts["early_exit"][key]:
                 raise ValueError("Full/early-exit execution identity differs: " + key)
@@ -752,6 +896,14 @@ def aggregate(args, out, selected):
                     if full[key] != candidate[key]:
                         raise ValueError("Paired question metadata differs")
                 matched = {}
+                if (
+                    full.get("resumed_from")
+                    and full["matched_tokens"]
+                    and not full["resumed_from"]["matched_replay_remeasured"]
+                ):
+                    raise ValueError(
+                        "Imported matched replay was not remeasured on the current GPU"
+                    )
                 if full["matched_tokens"] or candidate["matched_tokens"]:
                     if (
                         full["matched_tokens"]["forced_ids"]
@@ -783,6 +935,8 @@ def aggregate(args, out, selected):
                 record.update(
                     results={"full": full["result"], "early_exit": candidate["result"]},
                     matched_tokens=matched,
+                    timing_pair_eligible="resumed_from" not in full,
+                    resumed_from=full.get("resumed_from"),
                 )
                 handle.write(
                     json.dumps(record, ensure_ascii=False, allow_nan=False) + "\n"
@@ -810,6 +964,11 @@ def aggregate(args, out, selected):
         counts=counts,
         benchmarks=metrics,
         workers=args.workers,
+        local_workers=args.local_workers,
+        imported_full_predictions=sum(
+            row.get("resumed_from") is not None for row in paired
+        ),
+        same_gpu_generation_pairs=sum(row["timing_pair_eligible"] for row in paired),
         classifier_sha256=sha(args.classifier),
         worker_receipts=receipts,
         paired_prediction_sha256={
@@ -829,7 +988,7 @@ def aggregate(args, out, selected):
             gdn_backend="triton",
             cache_policy=args.cache_policy,
             policy="five-class cal99",
-            mode_order="all full shards, then early-exit shards on the same respective GPU",
+            mode_order="each replica completes its full shards, then early-exit shards on the same respective GPUs; imported full quality records retain original source provenance",
             warmup_sequences=2,
             warmup_tokens=16,
             sampling="greedy",
@@ -840,6 +999,7 @@ def aggregate(args, out, selected):
             matched_tokens=args.matched_tokens,
             matched_examples_per_task=args.matched_examples_per_task,
         ),
+        resume_timing_scope="Imported full predictions contribute to quality and generation-length totals only. Free-generation speed ratios and decode tokens/s use exclusively new same-GPU paired questions. Every fixed-token replay, including imported full questions, is remeasured on the new paired GPU.",
         timing_scope="ModelRunner prefill of all but the final prompt token, plus synchronized decode starting with that final token and including token readback; excludes model load, graph capture, warmup, tokenization, HTTP and server scheduler.",
         matched_protocol="Up to matched-examples-per-task selected GSM8K and MATH questions by original evaluation index. Exactly matched-tokens decode steps use the full-model trajectory; after EOS, baseline continuation supplies the remaining fixed inputs. Both modes replay the same stored token IDs.",
         cache_semantics="Skipped-path middle activations bypass work on the main stream; all skipped KV/GDN states are backfilled each token, then joined before the next token. This differs from native capture's one-step frozen-cache counterfactual.",
@@ -855,16 +1015,35 @@ def aggregate(args, out, selected):
     )
 
 
+def replica_topology(args):
+    replica = int(os.environ.get("KUBEBRAIN_REPLICA", "0"))
+    replicas = int(os.environ.get("KUBEBRAIN_REPLICA_TOTAL", "1"))
+    local_workers = (
+        args.local_workers if args.local_workers is not None else args.workers
+    )
+    if replicas < 1 or not 0 <= replica < replicas or local_workers < 1:
+        raise ValueError("Invalid authoritative replica identity")
+    if local_workers * replicas != args.workers:
+        raise ValueError(
+            "workers must equal local-workers times KUBEBRAIN_REPLICA_TOTAL"
+        )
+    return replica, replicas, local_workers
+
+
 def main(args):
     import torch
 
+    replica, replicas, args.local_workers = replica_topology(args)
     out = Path(os.environ["RUN_DIR"])
     out.mkdir(parents=True, exist_ok=True)
-    if any(
-        (out / name).exists() for name in ("config.yaml", "evaluation-summary.json")
-    ) or list(out.glob("sglang-*.jsonl")):
+    if replica == 0 and (
+        any(
+            (out / name).exists() for name in ("config.yaml", "evaluation-summary.json")
+        )
+        or list(out.glob("sglang-*.jsonl"))
+    ):
         raise ValueError(
-            "RUN_DIR already has an experiment config; use a new immutable run"
+            "RUN_DIR already has evaluation outputs; use a new immutable run"
         )
     tests, _ = read_benchmarks(args.data)
     selected = select_rows(
@@ -874,38 +1053,60 @@ def main(args):
         limit_per_task=args.limit_per_task,
     )
     verify_model(args)
-    if not args.classifier.is_file() or torch.cuda.device_count() < args.workers:
+    imported, resume_evidence = resume_predictions(args)
+    if not set(imported).issubset({row["evaluation_index"] for row in selected}):
+        raise ValueError("Resume snapshot includes questions outside this evaluation")
+    if not args.classifier.is_file() or torch.cuda.device_count() < args.local_workers:
         raise ValueError(
-            "A classifier checkpoint and at least one visible GPU per worker are required"
+            "A classifier checkpoint and one visible GPU per local worker are required"
         )
     visible = os.environ.get("CUDA_VISIBLE_DEVICES")
     devices = (
-        visible.split(",")[: args.workers]
+        visible.split(",")[: args.local_workers]
         if visible
-        else [str(index) for index in range(args.workers)]
+        else [str(index) for index in range(args.local_workers)]
     )
-    save(
-        out / "config.yaml",
-        dict(
-            argv=sys.argv,
-            model=str(args.model),
-            data=str(args.data),
-            classifier=str(args.classifier),
-            classifier_sha256=sha(args.classifier),
-            weight_inventory_sha256=sha(args.weight_inventory),
-            benchmark_sha256=BENCHMARK_SHA256,
-            policy=args.policy,
-            cache_policy=args.cache_policy,
-            workers=args.workers,
-            selected_counts=dict(Counter(row["benchmark"] for row in selected)),
-            smoke=args.smoke,
-            limit_per_task=args.limit_per_task,
-        ),
+    config = dict(
+        argv=sys.argv,
+        model=str(args.model),
+        data=str(args.data),
+        classifier=str(args.classifier),
+        classifier_sha256=sha(args.classifier),
+        weight_inventory_sha256=sha(args.weight_inventory),
+        benchmark_sha256=BENCHMARK_SHA256,
+        policy=args.policy,
+        cache_policy=args.cache_policy,
+        workers=args.workers,
+        local_workers=args.local_workers,
+        replicas=replicas,
+        selected_counts=dict(Counter(row["benchmark"] for row in selected)),
+        smoke=args.smoke,
+        limit_per_task=args.limit_per_task,
+        batch_size=args.batch_size,
+        resume=resume_evidence,
+    )
+    if replica == 0:
+        save(out / "config.yaml", config)
+    else:
+        wait_for_files([out / "config.yaml"], out, args.barrier_timeout_seconds)
+        recorded = json.loads((out / "config.yaml").read_text())
+        if any(
+            recorded[key] != value for key, value in config.items() if key != "argv"
+        ):
+            raise ValueError("Replicas disagree about the evaluation configuration")
+    emit(
+        "REPLICA_START",
+        replica=replica,
+        replicas=replicas,
+        local_workers=args.local_workers,
+        first_global_rank=replica * args.local_workers,
+        imported=resume_evidence,
     )
     for mode in ("full", "early_exit"):
         children = []
         try:
-            for rank, device in enumerate(devices):
+            for local_rank, device in enumerate(devices):
+                rank = replica * args.local_workers + local_rank
                 source = str(Path(__file__).resolve().parents[3])
                 env = dict(
                     os.environ,
@@ -942,11 +1143,20 @@ def main(args):
                     str(rank),
                 ]
                 children.append(subprocess.Popen(command, env=env))
-            for child in children:
-                if child.wait():
+            while True:
+                statuses = [child.poll() for child in children]
+                if any(status is not None and status != 0 for status in statuses):
                     raise RuntimeError(
-                        "SGLang evaluation worker failed; inspect preserved partial JSONL and worker logs"
+                        "SGLang evaluation worker failed; preserved partial JSONL and logs identify the first error"
                     )
+                failures = sorted(out.glob("replica-failure-*.json"))
+                if failures:
+                    raise RuntimeError(
+                        "Another evaluation replica failed: " + failures[0].read_text()
+                    )
+                if all(status == 0 for status in statuses):
+                    break
+                time.sleep(2)
         finally:
             for child in children:
                 if child.poll() is None:
@@ -954,7 +1164,36 @@ def main(args):
             for child in children:
                 if child.poll() is None:
                     child.wait(timeout=60)
-    aggregate(args, out, selected)
+        emit("REPLICA_MODE_PASS", replica=replica, mode=mode)
+    save(
+        out / f"replica-complete-{replica}.json",
+        dict(replica=replica, workers=args.local_workers),
+    )
+    if replica == 0:
+        all_receipts = [
+            paths(out, mode, rank)[1]
+            for rank in range(args.workers)
+            for mode in ("full", "early_exit")
+        ]
+        wait_for_files(
+            all_receipts
+            + [out / f"replica-complete-{rank}.json" for rank in range(replicas)],
+            out,
+            args.barrier_timeout_seconds,
+        )
+        aggregate(args, out, selected)
+    else:
+        wait_for_files(
+            [out / "evaluation-summary.json"], out, args.barrier_timeout_seconds
+        )
+        summary = json.loads((out / "evaluation-summary.json").read_text())
+        if not summary["passed"] or summary["workers"] != args.workers:
+            raise ValueError("Replica observed an invalid aggregate evaluation summary")
+    emit(
+        "REPLICA_PASS",
+        replica=replica,
+        summary_sha256=sha(out / "evaluation-summary.json"),
+    )
 
 
 def parse_args():
@@ -970,7 +1209,17 @@ def parse_args():
         default=source_root()
         / "experiments/perfectblend/references/model-weight-inventory.json",
     )
-    parser.add_argument("--workers", type=int, default=1)
+    parser.add_argument(
+        "--workers", type=int, default=1, help="Total worker GPUs across all replicas"
+    )
+    parser.add_argument("--local-workers", type=int, help="Worker GPUs in each replica")
+    parser.add_argument(
+        "--resume-from",
+        type=Path,
+        help="Immutable verified partial full-model snapshot",
+    )
+    parser.add_argument("--barrier-timeout-seconds", type=int, default=86400)
+    parser.add_argument("--batch-size", type=int, default=1)
     parser.add_argument("--smoke", action="store_true")
     parser.add_argument("--limit-per-task", type=int)
     parser.add_argument("--matched-examples-per-task", type=int, default=8)
@@ -980,9 +1229,19 @@ def parse_args():
     )
     parser.add_argument("--rank", type=int, help=argparse.SUPPRESS)
     args = parser.parse_args()
-    for name in ("workers", "matched_tokens"):
+    for name in ("workers", "matched_tokens", "barrier_timeout_seconds", "batch_size"):
         if getattr(args, name) < 1:
             parser.error(name.replace("_", "-") + " must be positive")
+    if args.local_workers is not None and args.local_workers < 1:
+        parser.error("local-workers must be positive")
+    if args.batch_size != 1:
+        parser.error(
+            "Quality evaluation currently requires batch-size=1; multi-request runtime is validated separately"
+        )
+    if args.resume_from is not None and (args.smoke or args.limit_per_task is not None):
+        parser.error(
+            "Partial-run reuse requires the complete original evaluation protocol"
+        )
     if args.limit_per_task is not None and args.limit_per_task < 1:
         parser.error("limit-per-task must be positive")
     if args.matched_examples_per_task < 0:
@@ -997,9 +1256,24 @@ def parse_args():
         parser.error("rank is an internal worker option")
     for name in ("model", "data", "classifier", "weight_inventory"):
         setattr(args, name, getattr(args, name).expanduser().resolve())
+    if args.resume_from is not None:
+        args.resume_from = args.resume_from.expanduser().resolve()
     return args
 
 
 if __name__ == "__main__":
     args = parse_args()
-    (worker if args.worker_mode else main)(args)
+    if args.worker_mode:
+        worker(args)
+    else:
+        try:
+            main(args)
+        except BaseException as error:
+            out = Path(os.environ["RUN_DIR"])
+            out.mkdir(parents=True, exist_ok=True)
+            replica = int(os.environ.get("KUBEBRAIN_REPLICA", "0"))
+            save(
+                out / f"replica-failure-{replica}.json",
+                dict(replica=replica, error=type(error).__name__ + ": " + str(error)),
+            )
+            raise

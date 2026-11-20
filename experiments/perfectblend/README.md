@@ -116,6 +116,28 @@ RUN_DIR=/shared/eval-smoke python3 experiments/perfectblend/sglang_eval.py \
 
 Omit `--smoke` for all 20,361 test questions. The evaluator requires the pinned benchmark SHA and model inventory; pass `--weight-inventory /shared/inventory.json` when using another inventory path. It checks graph execution and complementary repair counters at every request, preserves original predictions, and reports generation lengths, accuracy, latency and separate 128-token matched replay. `complete_benchmarks` is true only when all three full question counts are present. A successful smoke has `complete_benchmarks=false`.
 
+The evaluator also supports four nodes with eight independent GPUs each: pass
+`--workers 32 --local-workers 8` in a four-replica managed Job. Replica identity
+comes from `KUBEBRAIN_REPLICA` and `KUBEBRAIN_REPLICA_TOTAL`. Each replica runs its
+eight full-model workers before the corresponding early-exit workers; replica
+zero waits for all 64 worker receipts and four completion markers before
+aggregating. Runtime overlays and their receipts use separate
+`runtime-replica-N` directories under the shared run. The concurrent real-launcher
+regression is `python3 -m unittest discover -s experiments/perfectblend/tests -p test_launch_overlay.py`.
+
+For this experiment's 8-to-32-GPU migration, `--resume-from /shared/snapshot`
+accepts an immutable `early_exit_evaluation_resume_v1` snapshot bound to the
+original run UUID. It checks every file's SHA256, configuration, model,
+classifier, benchmark, tokenizer, runtime and evaluator protocol, then verifies
+each imported question and prompt. Imported full predictions contribute to
+accuracy and generation-length statistics. Free-generation speed comparisons
+use newly computed same-GPU pairs; all fixed-token replays are measured again
+on the new paired GPU. A snapshot contains the original run/config, five source
+files, complete JSONL lines from all eight original full workers, and its
+`resume-manifest.json`. See `evaluation_resume.py` for the schema. The recorded
+migration retained 6,111 full predictions; it does not resume the user-stopped
+native Transformers run.
+
 The optional `launch_overlay.py --module sglang.srt.early_exit.smoke ...` launcher accepts an immutable source overlay with `overlay-manifest.json`. It checks the base source hashes against the pinned image, copies its package into `RUN_DIR`, and applies only hash-verified modifications. Standard full checkouts can use the direct entrypoints above.
 
 The native scripts can also run directly in the verified image with explicit `RUN_DIR` and identical argv, but managed GPU execution should retain UUID, source/image and terminal replica receipts. Scripts write nonempty resolved `config.yaml` files at runtime; all 27B model weights stay frozen.
@@ -127,6 +149,11 @@ At the recorded cal99 threshold, the original sigmoid gate achieved heldout one-
 The original native smoke/evaluation smoke succeeded. The native full benchmark run was stopped at the user's request and has no complete benchmark summary. Its partial predictions remain in the original shared run. `references/run-status.json` records the status; this package does not resume that stopped run.
 
 The [verified SGLang runtime smoke](references/sglang-runtime-report.md) passed exact full/no-skip and serial/async cache/logit controls, and recorded actual GPU stream overlap. Its short control timings are separate from complete benchmark scores and speed estimates.
+
+The 32-GPU SGLang evaluation is running with batch one and the validated runtime.
+`references/run-status.json` records its immutable identity and the stopped
+startup attempt. Multi-request runtime and throughput experiments have separate
+sources and results; their development does not change the active evaluation.
 
 After a successful completed native run, collect small receipts and render the comparison:
 

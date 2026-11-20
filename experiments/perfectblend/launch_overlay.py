@@ -20,6 +20,18 @@ def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def replica_runtime_root(run_directory, environment):
+    replica = int(environment.get("KUBEBRAIN_REPLICA", "0"))
+    total = int(environment.get("KUBEBRAIN_REPLICA_TOTAL", "1"))
+    if total < 1 or not 0 <= replica < total:
+        raise ValueError("Invalid replica identity for the runtime overlay")
+    return (
+        Path(run_directory)
+        if total == 1
+        else Path(run_directory) / f"runtime-replica-{replica}"
+    )
+
+
 def main(args):
     source = Path(__file__).resolve().parents[2]
     manifest = json.loads((source / "overlay-manifest.json").read_text())
@@ -28,7 +40,9 @@ def main(args):
         actual = digest(installed / relative)
         if actual != expected:
             raise ValueError(f"SGLang image source mismatch: {relative}: {actual}")
-    output = Path(os.environ["RUN_DIR"]) / "sglang-python"
+    runtime_root = replica_runtime_root(os.environ["RUN_DIR"], os.environ)
+    runtime_root.mkdir(parents=True, exist_ok=True)
+    output = runtime_root / "sglang-python"
     target = output / "sglang"
     shutil.copytree(
         installed, target, ignore=shutil.ignore_patterns("__pycache__", "*.pyc")

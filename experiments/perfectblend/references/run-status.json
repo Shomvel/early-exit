@@ -169,6 +169,90 @@
         "mmlu": 2
       },
       "scope": "Same-GPU paired full/async evaluation smoke, five-shot MMLU, greedy nonthinking math generation, one fixed128 replay per math task. No complete task score claim."
+    },
+    {
+      "stage": "sglang-eval-8gpu",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-evaluate-1120-r1",
+      "uuid": "8273319d-8232-492c-a92d-9dbf64fd6913",
+      "job_id": "j-1795143762-282789",
+      "phase": "Stopped",
+      "status": "migrated_to_32gpu",
+      "complete_benchmark_results": false,
+      "completed_full_predictions": 6111,
+      "active_replicas": 0
+    },
+    {
+      "stage": "sglang-eval-32gpu-attempt",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-evaluate32-1120-r1",
+      "uuid": "75e41d20-98eb-48c8-850a-27d86a8205cb",
+      "job_id": "j-1795147248-679958",
+      "phase": "Failed",
+      "status": "startup_failed_stop_requested_all_replicas_terminal",
+      "failure": "Shared overlay copytree raced across replicas; fixed with per-replica runtime directories.",
+      "source": "0af369f5294ce08c33b064fc463fc7d67c81bb74",
+      "complete_benchmark_results": false,
+      "active_replicas": 0,
+      "terminal_replica_phases": {
+        "Failed": 3,
+        "Stopped": 1
+      }
+    },
+    {
+      "stage": "sglang-eval-32gpu",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-evaluate32-1120-r2",
+      "uuid": "d3a6c646-00f4-463f-8c64-14eaf4922647",
+      "job_id": "j-1795147691-511706",
+      "controller_job_id": "j-1795147685-389717",
+      "phase": "Running",
+      "status": "running",
+      "gpus": 32,
+      "replicas": 4,
+      "local_workers": 8,
+      "batch_size": 1,
+      "source": "e678f0b3c6a32e6c305afb8525e1ffab934d6877",
+      "imported_full_predictions": 6111,
+      "resume_manifest_sha256": "12b056a8dbfb300eecdf008d0fe9a2f35a4806a1ee1a554d19786f2f77939ed1",
+      "complete_benchmark_results": false,
+      "last_observation": {
+        "observed_at": "2026-11-20T04:17:41.490669+00:00",
+        "full_at_least": 8280,
+        "early_exit_at_least": 0,
+        "new_full_ranks_seen": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31
+        ],
+        "first_error": null
+      }
     }
   ]
 }
