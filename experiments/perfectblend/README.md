@@ -173,6 +173,12 @@ same full batch-one 128-token trajectories for fixed-input timing. This entrypoi
 is a throughput pilot and always reports `complete_benchmarks=false`. The full
 20,361-question evaluation remains a separate run.
 
+The [small-batch GPU verification](references/sglang-batch-runtime-report.md)
+passed full/no-skip and serial/async mixed-route bitwise logits/cache controls at
+batch1/2/3/4/8, with exact route, padding and exclusive batch-eight branch counts.
+The real-request batch1/2 entrypoint E2E also succeeded. The active 16-question
+throughput pilot has its own run identity in `references/run-status.json`.
+
 After a successful completed native run, collect small receipts and render the comparison:
 
 ```bash

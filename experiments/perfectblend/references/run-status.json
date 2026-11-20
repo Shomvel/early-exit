@@ -214,9 +214,9 @@
       "resume_manifest_sha256": "12b056a8dbfb300eecdf008d0fe9a2f35a4806a1ee1a554d19786f2f77939ed1",
       "complete_benchmark_results": false,
       "last_observation": {
-        "observed_at": "2026-11-20T04:54:27.850695+00:00",
-        "full_at_least": 20090,
-        "early_exit_at_least": 480,
+        "observed_at": "2026-11-20T04:59:05.539160+00:00",
+        "full_at_least": 20355,
+        "early_exit_at_least": 1610,
         "new_full_ranks_seen": [
           0,
           1,
@@ -251,7 +251,40 @@
           30,
           31
         ],
-        "first_error": null
+        "first_error": null,
+        "full_completed_ranks": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          30,
+          31
+        ]
       }
     },
     {
@@ -312,6 +345,29 @@
       "summary_sha256": "2ad2ec6ebe1f3050578d44a84bcaa5d6c688559bf7780f43a6365f3d747d67ea",
       "complete_benchmark_results": false,
       "scope": "Full/no-skip logits and all KV/GDN states bitwise; serial/async mixed routes bitwise; exact route, padding and exclusive batch8 no-skip branch counters."
+    },
+    {
+      "stage": "sglang-batch-throughput-pilot",
+      "run": "/mnt/work/shom/early-exit-perfectblend-20261120/training_runs/pb-sglang-batch-evaluate-1120-r1",
+      "uuid": "4d46df45-2661-4a81-b8fa-b75475178754",
+      "job_id": "j-1795150409-791357",
+      "controller_job_id": "j-1795150399-256642",
+      "phase": "Running",
+      "source": "4adba5efe68d04426bad125f0e1c1a8a57f8557c",
+      "batch_sizes": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "selected_counts": {
+        "gsm8k": 16,
+        "math": 16,
+        "mmlu": 16
+      },
+      "replay_examples_per_math_task": 8,
+      "matched_tokens": 128,
+      "complete_benchmark_results": false
     }
   ]
 }
